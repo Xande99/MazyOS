@@ -1,0 +1,31 @@
+/* duPolvo — Typography tokens */
+:root {
+  /* Families */
+  --font-display: "Bricolage Grotesque Display", "Bricolage Grotesque", system-ui, sans-serif;
+  --font-text: "Bricolage Grotesque", system-ui, sans-serif;
+
+  /* Weights */
+  --fw-regular: 400; /* @kind other */
+  --fw-bold: 700; /* @kind other */
+  --fw-extrabold: 800; /* @kind other */
+
+  /* Fluid display scale (clamp: mobile → desktop) */
+  --fs-display: clamp(2.75rem, 1.6rem + 5.6vw, 6rem); /* @kind other */
+  --fs-h1: clamp(2.25rem, 1.4rem + 3.8vw, 4rem); /* @kind other */
+  --fs-h2: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem); /* @kind other */
+  --fs-h3: clamp(1.25rem, 1.05rem + 0.9vw, 1.6rem); /* @kind other */
+  --fs-lead: clamp(1.05rem, 0.98rem + 0.4vw, 1.3rem); /* @kind other */
+  --fs-body: 1.0625rem; /* @kind other */
+  --fs-small: 0.9375rem; /* @kind other */
+  --fs-eyebrow: 0.8125rem; /* @kind other */
+
+  /* Line heights */
+  --lh-tight: 0.96; /* @kind other */
+  --lh-snug: 1.1; /* @kind other */
+  --lh-body: 1.6; /* @kind other */
+
+  /* Letter spacing */
+  --ls-display: -0.03em; /* @kind other */
+  --ls-h: -0.015em; /* @kind other */
+  --ls-eyebrow: 0.18em; /* @kind other */
+}

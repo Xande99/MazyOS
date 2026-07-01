@@ -1,0 +1,20 @@
+<!-- @dsCard group="Brand" viewport="700x200" name="Logo & mascote" subtitle="Wordmark lockup + octopus mascot" -->
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<style>
+  body{margin:0;font-family:var(--font-text);padding:0;display:flex;min-height:200px}
+  .half{flex:1;display:flex;align-items:center;justify-content:center;gap:12px}
+  .light{background:var(--du-cream)}
+  .dark{background:var(--du-ink)}
+  .logo{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-weight:800;font-size:1.7rem;letter-spacing:-.02em}
+  .light .logo{color:var(--du-blue)} .dark .logo{color:#F4F8FF}
+  .logo b{color:var(--du-pink)}
+  .mark{width:38px;height:38px;border-radius:11px;background:var(--du-pink);display:grid;place-items:center;box-shadow:var(--shadow-pink)}
+  .mark .lucide{width:22px;height:22px;color:#fff}
+  img{width:120px;filter:drop-shadow(0 14px 20px rgba(253,75,144,.3))}
+</style></head><body>
+  <div class="half light"><span class="mark"><i data-lucide="waves"></i></span><span class="logo">du<b>Polvo</b></span></div>
+  <div class="half dark"><img src="../assets/octopus.png" alt="Mascote polvo"><span class="logo">du<b>Polvo</b></span></div>
+  <script>lucide.createIcons();</script>
+</body></html>

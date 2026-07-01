@@ -1,0 +1,328 @@
+<!-- @dsCard group="Landing" viewport="1280x760" name="duPolvo — Landing Page" subtitle="Full animated marketing site" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>duPolvo — Agência criativa | Programação, Design, Vídeo & Tráfego</title>
+<meta name="description" content="duPolvo é a agência criativa de Guaratinguetá-SP que cuida de todos os braços da sua marca: programação, design, vídeo e tráfego pago em uma só estratégia." />
+<!-- CDN early connection -->
+<link rel="dns-prefetch" href="https://unpkg.com" />
+<link rel="preconnect" href="https://unpkg.com" crossorigin />
+<!-- Preload critical fonts (ativar quando assets/fonts estiverem no projeto) -->
+<!-- <link rel="preload" href="css/assets/fonts/BricolageGrotesque_36pt-ExtraBold.ttf" as="font" type="font/truetype" crossorigin /> -->
+<!-- <link rel="preload" href="css/assets/fonts/BricolageGrotesque_24pt-Regular.ttf" as="font" type="font/truetype" crossorigin /> -->
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="header" id="header">
+  <div class="container header__inner">
+    <a href="#top" class="logo" aria-label="duPolvo, página inicial">
+      <span class="logo__mark"><i data-lucide="waves"></i></span>
+      <span>du<b>Polvo</b></span>
+    </a>
+    <nav class="nav" aria-label="Navegação principal">
+      <a href="#servicos">Serviços</a>
+      <a href="#processo">Processo</a>
+      <a href="#blog">Blog</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <div class="header__cta">
+      <a href="#contato" class="btn"><span>Solicitar orçamento</span><i data-lucide="arrow-up-right"></i></a>
+      <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+        <span class="icon-menu"><i data-lucide="menu"></i></span>
+        <span class="icon-close"><i data-lucide="x"></i></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MOBILE NAV ============ -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true" inert>
+  <div class="mobile-nav__inner">
+    <a href="#servicos" class="mobile-nav__link">Serviços</a>
+    <a href="#processo" class="mobile-nav__link">Processo</a>
+    <a href="#blog" class="mobile-nav__link">Blog</a>
+    <a href="#faq" class="mobile-nav__link">FAQ</a>
+    <a href="#contato" class="mobile-nav__link">Contato</a>
+  </div>
+  <a href="#contato" class="btn btn--lg mobile-nav__cta"><span>Solicitar orçamento</span><i data-lucide="arrow-up-right"></i></a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <span class="hero__glow"></span>
+  <span class="hero__glow two"></span>
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <span class="eyebrow on-dark">Agência criativa · Guaratinguetá-SP</span>
+      <h1 id="heroHead">
+        <span class="word">Sua</span> <span class="word">marca</span> <span class="word">tem</span>
+        <span class="word">muitos</span> <span class="word">braços.</span><br>
+        <span class="word">A</span> <span class="word">gente</span> <span class="word">cuida</span>
+        <span class="word">de</span> <span class="word accent-pink">todos.</span>
+      </h1>
+      <p class="lead">Programação, design, vídeo e tráfego pago sob o mesmo teto. Um time que abraça o seu projeto inteiro — e puxa todos os tentáculos pra fazer sua marca vender mais.</p>
+      <div class="hero__ctas">
+        <a href="#contato" class="btn btn--lg"><span>Solicitar orçamento</span><i data-lucide="arrow-up-right"></i></a>
+        <a href="#blog" class="btn btn--ghost btn--lg on-dark"><span>Ver trabalhos</span></a>
+      </div>
+      <div class="hero__proof">
+        <span class="stars">
+          <i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i>
+        </span>
+        <span>+50 projetos com mar de resultado</span>
+      </div>
+    </div>
+    <div class="hero__media">
+      <span class="hero__blob"></span>
+      <img class="octo" src="assets/octopus.png" alt="Polvo mascote da duPolvo segurando os braços da sua marca" />
+      <span class="hero__chip c1"><i data-lucide="code-2"></i> Programação</span>
+      <span class="hero__chip c2"><i data-lucide="pen-tool"></i> Design</span>
+      <span class="hero__chip c3"><i data-lucide="trending-up"></i> Tráfego</span>
+      <span class="hero__chip c4"><i data-lucide="clapperboard"></i> Vídeo</span>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track" id="ticker">
+    <span class="ticker__item">Programação</span><span class="ticker__item">Design</span><span class="ticker__item">Vídeo & Edição</span><span class="ticker__item">Tráfego Pago</span><span class="ticker__item">Landing Pages</span><span class="ticker__item">Branding</span><span class="ticker__item">Social Media</span><span class="ticker__item">Automação</span>
+  </div>
+</div>
+
+<!-- ============ PROBLEMA ============ -->
+<section class="section" id="problema">
+  <div class="container">
+    <div class="prob__head">
+      <div class="reveal">
+        <span class="eyebrow">O problema</span>
+        <h2 style="margin-top:16px">Sua marca não precisa só de posts bonitos. Precisa de direção.</h2>
+      </div>
+      <p class="lead reveal" style="--reveal-y:18px">Quando cada serviço vive numa ilha, a sua marca paga a conta: ruído, retrabalho e zero estratégia. Esses são os sinais de que falta um time grudado no mesmo objetivo.</p>
+    </div>
+    <div class="prob__grid" data-stagger>
+      <div class="pain"><div class="pain__ic"><i data-lucide="unplug"></i></div><h3>Comunicação desalinhada</h3><p>Cada fornecedor fala uma língua e o recado nunca chega redondo ao cliente.</p></div>
+      <div class="pain"><div class="pain__ic"><i data-lucide="ghost"></i></div><h3>Marca sem identidade</h3><p>Visual genérico que some no feed e não gruda na memória de ninguém.</p></div>
+      <div class="pain"><div class="pain__ic"><i data-lucide="compass"></i></div><h3>Anúncios sem direção</h3><p>Verba queimando em campanha no escuro, sem rumo e sem leitura de dados.</p></div>
+      <div class="pain"><div class="pain__ic"><i data-lucide="settings"></i></div><h3>Processos manuais demais</h3><p>Tarefa repetida na mão, tempo perdido e gente cansada do operacional.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOLUÇÃO ============ -->
+<section class="section dark" id="solucao">
+  <div class="container">
+    <div class="sol__head reveal">
+      <span class="eyebrow on-dark">A solução duPolvo</span>
+      <h2 style="margin-top:16px">A gente mergulha no problema antes de criar a solução.</h2>
+      <p class="lead" style="margin-top:18px">Um fluxo só, do diagnóstico à evolução. Cada braço puxa na mesma direção pra resolver a dor de verdade — não só maquiar o sintoma.</p>
+    </div>
+    <div class="steps" data-stagger>
+      <div class="step"><div class="step__ic"><i data-lucide="search"></i></div><div class="step__n">ETAPA 01</div><h3>Diagnóstico</h3><p>Entendemos o momento da marca, seus desafios e oportunidades reais.</p></div>
+      <div class="step"><div class="step__ic"><i data-lucide="target"></i></div><div class="step__n">ETAPA 02</div><h3>Estratégia</h3><p>Definimos o caminho ideal pra posicionar, conectar e crescer.</p></div>
+      <div class="step"><div class="step__ic"><i data-lucide="sparkles"></i></div><div class="step__n">ETAPA 03</div><h3>Criação</h3><p>Desenvolvemos materiais, campanhas e soluções com propósito.</p></div>
+      <div class="step"><div class="step__ic"><i data-lucide="line-chart"></i></div><div class="step__n">ETAPA 04</div><h3>Evolução</h3><p>Acompanhamos, analisamos e melhoramos o resultado continuamente.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVIÇOS ============ -->
+<section class="section" id="servicos">
+  <div class="container">
+    <div class="serv__head">
+      <div class="reveal">
+        <span class="eyebrow">Nossos serviços</span>
+        <h2 style="margin-top:16px">Quatro tentáculos,<br>uma só estratégia.</h2>
+      </div>
+      <p class="lead reveal" style="--reveal-y:18px">Cada especialidade puxa na mesma direção. Você não precisa de cinco fornecedores — precisa de uma agência que conversa entre si.</p>
+    </div>
+    <div class="serv__grid" data-stagger>
+      <article class="serv-card">
+        <span class="serv-card__num">01</span>
+        <div class="serv-card__ic ic-aqua"><i data-lucide="code-2"></i></div>
+        <h3>Programação</h3>
+        <p>Sites, landing pages e automações sob medida. Rápidos, escaláveis e feitos pra converter.</p>
+        <div class="tags"><span class="tag">Sites</span><span class="tag">WordPress</span><span class="tag">Sistemas</span><span class="tag">No-code</span></div>
+      </article>
+      <article class="serv-card">
+        <span class="serv-card__num">02</span>
+        <div class="serv-card__ic ic-pink"><i data-lucide="pen-tool"></i></div>
+        <h3>Design</h3>
+        <p>Identidade visual, social media e peças que param o feed e sobram na memória.</p>
+        <div class="tags"><span class="tag">Branding</span><span class="tag">UI/UX</span><span class="tag">Social</span><span class="tag">Print</span></div>
+      </article>
+      <article class="serv-card">
+        <span class="serv-card__num">03</span>
+        <div class="serv-card__ic ic-lime"><i data-lucide="clapperboard"></i></div>
+        <h3>Vídeo / Edição</h3>
+        <p>Reels, VSL e cortes que prendem do primeiro frame ao último call to action.</p>
+        <div class="tags"><span class="tag">Reels</span><span class="tag">Motion</span><span class="tag">VSL</span><span class="tag">Cortes</span></div>
+      </article>
+      <article class="serv-card">
+        <span class="serv-card__num">04</span>
+        <div class="serv-card__ic ic-blue"><i data-lucide="trending-up"></i></div>
+        <h3>Tráfego Pago</h3>
+        <p>Campanhas que saem do retorno da venda. Cada real investido com lupa em cima.</p>
+        <div class="tags"><span class="tag">Meta Ads</span><span class="tag">Google</span><span class="tag">Leads</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESSO ============ -->
+<section class="section" id="processo" style="background:#fff">
+  <div class="container">
+    <div class="proc__head reveal">
+      <span class="eyebrow">Como funciona</span>
+      <h2 style="margin-top:16px">Trabalhar com a gente<br>é leve assim.</h2>
+      <p class="lead" style="margin-top:16px">Sem ruído, sem sumiço, sem surpresa. Quatro etapas claras do briefing ao resultado.</p>
+    </div>
+    <div class="proc__grid" data-stagger>
+      <div class="proc-item"><div class="proc-item__n">01</div><h3>Mergulho</h3><p>A gente entra no seu mar: público, oferta e objetivo. Sem entender, não dá pra nadar fundo.</p></div>
+      <div class="proc-item"><div class="proc-item__n">02</div><h3>Estratégia</h3><p>Montamos o plano e o que faz sentido pra cada canal. Tudo combinado antes de começar.</p></div>
+      <div class="proc-item"><div class="proc-item__n">03</div><h3>Mão na massa</h3><p>Os tentáculos entram em ação: design, vídeo e tráfego trabalhando em paralelo.</p></div>
+      <div class="proc-item"><div class="proc-item__n">04</div><h3>Otimização</h3><p>Não acha que acabou? A gente mede, ajusta e melhora a cada ciclo dando certo.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOG ============ -->
+<section class="section" id="blog">
+  <div class="container">
+    <div class="blog__head">
+      <div class="reveal">
+        <span class="eyebrow">Conteúdo</span>
+        <h2 style="margin-top:16px">Pra marcas que querem<br>pensar antes de postar.</h2>
+      </div>
+      <a href="#blog" class="link-arrow reveal">Ver todos os artigos <i data-lucide="arrow-right"></i></a>
+    </div>
+    <div class="blog__grid" data-stagger>
+      <article class="post">
+        <div class="post__cover c1"><span class="post__cat">Branding</span><i data-lucide="palette" class="glyph"></i></div>
+        <div class="post__body">
+          <h3>Como saber se a sua marca precisa de uma identidade nova</h3>
+          <div class="post__meta"><i data-lucide="calendar"></i> 24 jun 2026 <span>·</span><i data-lucide="clock"></i> 5 min</div>
+        </div>
+      </article>
+      <article class="post">
+        <div class="post__cover c2"><span class="post__cat">Social</span><i data-lucide="calendar-x" class="glyph"></i></div>
+        <div class="post__body">
+          <h3>Por que postar todo dia não resolve sua estratégia ruim</h3>
+          <div class="post__meta"><i data-lucide="calendar"></i> 16 jun 2026 <span>·</span><i data-lucide="clock"></i> 4 min</div>
+        </div>
+      </article>
+      <article class="post">
+        <div class="post__cover c3"><span class="post__cat">Performance</span><i data-lucide="rocket" class="glyph"></i></div>
+        <div class="post__body">
+          <h3>O que uma landing page precisa ter pra vender de verdade</h3>
+          <div class="post__meta"><i data-lucide="calendar"></i> 10 jun 2026 <span>·</span><i data-lucide="clock"></i> 6 min</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIFERENCIAIS ============ -->
+<section class="section dark" id="diferenciais">
+  <div class="container diff__grid">
+    <div class="diff__list reveal">
+      <span class="eyebrow on-dark">Dados e resultado</span>
+      <h2 style="margin-top:16px">Oito braços,<br>muito resultado.</h2>
+      <p class="lead">Uma amostra do que os tentáculos já fizeram. Resultado real, cliente real, sem print mágico.</p>
+      <div class="diff-row"><div class="diff-row__ic"><i data-lucide="layers"></i></div><div><h4>Tudo num lugar só</h4><p>Do design ao tráfego, sem ruído entre fornecedores. Um briefing, um time, um resultado.</p></div></div>
+      <div class="diff-row"><div class="diff-row__ic"><i data-lucide="heart-handshake"></i></div><div><h4>A gente se importa</h4><p>Seu projeto não é só mais um. Atendimento humano, direto e sem enrolação.</p></div></div>
+      <div class="diff-row"><div class="diff-row__ic"><i data-lucide="message-circle-off"></i></div><div><h4>Sem letrinha miúda</h4><p>Escopo claro, proposta transparente. Você só sabe o que está pagando.</p></div></div>
+    </div>
+    <div class="stats" data-stagger>
+      <div class="stat"><div class="stat__num"><span data-count="49">0</span><span class="suf">+</span></div><div class="stat__label">Projetos entregues</div></div>
+      <div class="stat"><div class="stat__num"><span class="suf">+</span><span data-count="85">0</span><span class="suf">%</span></div><div class="stat__label">ROAS médio em tráfego</div></div>
+      <div class="stat"><div class="stat__num"><span data-count="4.9" data-decimals="1">0</span></div><div class="stat__label">Nota média dos clientes</div></div>
+      <div class="stat"><div class="stat__num"><span data-count="2">0</span> <span class="suf">anos</span></div><div class="stat__label">De experiência tentacular</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section" id="faq" style="background:#fff">
+  <div class="container faq__wrap">
+    <div class="faq__intro reveal">
+      <span class="eyebrow">Dúvidas frequentes</span>
+      <h2 style="margin-top:16px">O que todo mundo<br>pergunta antes.</h2>
+      <p class="lead" style="margin-top:16px">Se ficou faltando alguma, é só chamar no WhatsApp. A gente responde rápido.</p>
+    </div>
+    <div class="faq__list" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q">Quanto custa um projeto?<span class="faq-q__ic"><i data-lucide="plus"></i></span></button>
+        <div class="faq-a"><div class="faq-a__inner">Cada projeto é orçado pelo escopo — nós não vendemos pacote de prateleira. Você recebe uma proposta clara, com tudo bem detalhado antes de fechar. Sem letra miúda, sem susto na fatura.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Qual é o prazo de entrega?<span class="faq-q__ic"><i data-lucide="plus"></i></span></button>
+        <div class="faq-a"><div class="faq-a__inner">Depende do braço. Uma landing page sai em cerca de 24h a 2 dias; um branding completo leva um pouco mais. No diagnóstico já te damos um cronograma realista — e a gente cumpre.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Como funciona o contrato?<span class="faq-q__ic"><i data-lucide="plus"></i></span></button>
+        <div class="faq-a"><div class="faq-a__inner">Trabalhamos com projeto fechado ou mensalidade para tráfego e social. Tudo no papel, transparente, e sem fidelidade abusiva. Você fica porque dá resultado, não porque está preso.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Vocês atendem fora da sua cidade?<span class="faq-q__ic"><i data-lucide="plus"></i></span></button>
+        <div class="faq-a"><div class="faq-a__inner">Sim! Somos de Guaratinguetá-SP, mas o mar é grande. Atendemos clientes de todo o Brasil 100% online, com reuniões por vídeo e tudo organizado num lugar só.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Dá pra contratar só um serviço?<span class="faq-q__ic"><i data-lucide="plus"></i></span></button>
+        <div class="faq-a"><div class="faq-a__inner">Dá sim. Você pode começar por um tentáculo — só design, só tráfego — e ir somando conforme faz sentido. Mas a mágica acontece quando os braços trabalham juntos.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<section class="cta section" id="contato">
+  <span class="cta__glow"></span>
+  <img class="cta__octo" src="assets/octopus.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+  <div class="container">
+    <div class="cta__card reveal">
+      <span class="eyebrow on-dark" style="justify-content:center">Vamos juntos?</span>
+      <h2 style="margin-top:18px">Bora dar oito braços<br>pro seu marketing?</h2>
+      <p>Conta o que você precisa. A gente responde em até 24h úteis com um caminho — sem compromisso e sem robô do outro lado.</p>
+      <div class="cta__ctas">
+        <a href="https://wa.me/5512999990000" class="btn btn--lime btn--lg"><i data-lucide="message-circle"></i><span>Falar no WhatsApp</span></a>
+        <button id="btnEmail" type="button" class="btn btn--ghost btn--lg on-dark"><i data-lucide="mail"></i><span>Mandar e-mail</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a href="#top" class="logo"><span>du<b>Polvo</b></span></a>
+        <p>Agência criativa e estratégia para marcas que querem sair da superfície. Programação, design, vídeo e tráfego no mesmo mar.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+          <a href="#" aria-label="Behance"><i data-lucide="dribbble"></i></a>
+          <a href="https://wa.me/5512999990000" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
+        </div>
+      </div>
+      <div class="footer__col"><h5>Serviços</h5><a href="#servicos">Programação</a><a href="#servicos">Design</a><a href="#servicos">Vídeo / Edição</a><a href="#servicos">Tráfego Pago</a></div>
+      <div class="footer__col"><h5>Agência</h5><a href="#solucao">Sobre nós</a><a href="#processo">Processo</a><a href="#blog">Blog</a><a href="#faq">FAQ</a></div>
+      <div class="footer__col"><h5>Contato</h5><a href="https://wa.me/5512999990000">(12) 99999-0000</a><a href="mailto:ola@dupolvo.com.br">ola@dupolvo.com.br</a><a href="#">Guaratinguetá, SP</a><a href="#contato">Solicitar orçamento</a></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 duPolvo. Todos os tentáculos reservados.</span>
+      <span>Feito com oito braços em Guaratinguetá-SP.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>

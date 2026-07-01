@@ -1,0 +1,44 @@
+/* duPolvo — Color tokens */
+:root {
+  /* ---- Brand base palette ---- */
+  --du-cream: #F7F4F1;        /* light section background */
+  --du-ink: #020E20;          /* deep navy — dark sections */
+  --du-pink: #FD4B90;         /* primary accent / CTAs / active links */
+  --du-blue: #123047;         /* primary — headings on light */
+  --du-lime: #DFFF5A;         /* secondary accent — badges / highlights */
+  --du-aqua: #81DFC0;         /* tertiary accent — icons / borders */
+
+  /* ---- Tints & shades (derived, harmonious) ---- */
+  --du-ink-2: #08182E;        /* raised dark surface (cards on dark) */
+  --du-ink-3: #0E2440;        /* hover dark surface */
+  --du-pink-600: #E23A7C;     /* pink pressed */
+  --du-pink-100: #FFE3EE;     /* pink wash */
+  --du-blue-700: #0C2336;     /* deepest blue text */
+  --du-aqua-200: #D8F6EC;     /* aqua wash */
+  --du-lime-200: #F2FFC4;     /* lime wash */
+  --du-line: #E5DFD8;         /* hairline on cream */
+  --du-line-dark: rgba(255,255,255,0.10); /* hairline on ink */
+
+  /* ---- Semantic surfaces ---- */
+  --surface-light: var(--du-cream);
+  --surface-dark: var(--du-ink);
+  --surface-card-dark: var(--du-ink-2);
+  --surface-card-light: #FFFFFF;
+
+  /* ---- Semantic text ---- */
+  --text-primary: var(--du-blue);     /* headings on light */
+  --text-body: #45586A;               /* body on light */
+  --text-muted: #7E8C99;              /* captions on light */
+  --text-on-dark: #F4F8FF;            /* heading on dark */
+  --text-body-dark: #A9B8CC;          /* body on dark */
+  --text-muted-dark: #6E7F95;         /* captions on dark */
+
+  /* ---- Accent semantics ---- */
+  --accent: var(--du-pink);
+  --accent-press: var(--du-pink-600);
+  --accent-2: var(--du-lime);
+  --accent-3: var(--du-aqua);
+
+  /* ---- Focus ---- */
+  --focus-ring: 0 0 0 3px rgba(253,75,144,0.35);
+}

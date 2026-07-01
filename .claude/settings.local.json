@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Recurse \"C:\\\\Users\\\\Xande\\\\Desktop\\\\cerebro\")",
+      "Bash(Select-Object FullName, Length)",
+      "Skill(update-config)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "PowerShell(\\(Get-Item \"C:\\\\Users\\\\Xande\\\\Desktop\\\\projeto\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\SKILL.md\"\\).Length)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(git checkout *)",
+      "Bash(curl *)",
+      "PowerShell(git clone https://github.com/mazzeoia/MazyOS.git \"c:\\\\Users\\\\Xande\\\\Desktop\\\\projeto\\\\MazyOS\")",
+      "Bash(gh repo *)",
+      "PowerShell(gh repo view Xande99/duPolvo --json name,description,defaultBranchRef,updatedAt 2>&1)",
+      "PowerShell(Get-ChildItem \"C:\\\\Temp\\\\wondelai-skills\" -Directory | Where-Object { $_.Name -notmatch '^\\\\.' -and $_.Name -ne 'scripts' } | ForEach-Object { Copy-Item -Path $_.FullName -Destination \".claude\\\\skills\\\\$\\($_.Name\\)\" -Recurse -Force; Write-Output \"Copiado: $\\($_.Name\\)\" })"
+    ]
+  }
+}
