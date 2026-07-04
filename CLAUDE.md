@@ -100,6 +100,8 @@ Quando iniciar um novo projeto de cliente:
 
 Antes de executar qualquer tarefa, verificar se existe skill relevante em `.claude/skills/`. Se encontrar, seguir as instruções da skill. Se não encontrar, executar a tarefa normalmente.
 
+Sempre que o pedido envolver fazer ou melhorar algo com skill, buscar entre todas as skills já analisadas (catálogo em `saidas/outros/arsenal-skills.html`) qual(is) a mais adequada(s) — não só a mais óbvia. As skills nativas do MazyOS (abrir, novo-projeto, instalar, salvar, mapear-rotinas, atualizar, carrossel, seo, anuncio-google, aprovar-post, publicar-tema, relatorio-ads, responder-avaliacoes, email-profissional, analisar-dados) continuam óbvias, uso direto. As demais (adicionadas depois) devem ser usadas tanto pra executar o que foi pedido quanto pra auxiliar a melhoria do próprio MazyOS.
+
 Ao concluir uma tarefa que não tinha skill mas parece repetível (o usuário provavelmente vai pedir de novo no futuro), perguntar:
 
 > "Isso pode virar uma skill pra próxima vez. Quer que eu crie?"
