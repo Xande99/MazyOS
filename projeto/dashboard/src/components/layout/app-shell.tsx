@@ -1,19 +1,33 @@
 "use client";
 
 import { Sidebar } from "@/components/layout/sidebar";
+import { CurrentUserProvider, useCurrentUser } from "@/lib/hooks/use-current-user";
 import { useEffect, useState } from "react";
 
 export function AppShell({
-  userId,
-  userEmail,
   signOutAction,
   children,
 }: {
-  userId: string;
-  userEmail: string;
   signOutAction: () => Promise<void>;
   children: React.ReactNode;
 }) {
+  return (
+    <CurrentUserProvider>
+      <AppShellContent signOutAction={signOutAction}>
+        {children}
+      </AppShellContent>
+    </CurrentUserProvider>
+  );
+}
+
+function AppShellContent({
+  signOutAction,
+  children,
+}: {
+  signOutAction: () => Promise<void>;
+  children: React.ReactNode;
+}) {
+  const user = useCurrentUser();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -26,6 +40,8 @@ export function AppShell({
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [mobileOpen]);
+
+  const userId = user?.id ?? "";
 
   return (
     <div className="flex min-h-full flex-1">
@@ -72,7 +88,7 @@ export function AppShell({
             </button>
 
             <span className="truncate text-sm text-text-muted">
-              {userEmail}
+              {user?.email ?? ""}
             </span>
           </div>
 
