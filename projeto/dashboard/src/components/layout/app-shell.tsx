@@ -4,10 +4,12 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { useEffect, useState } from "react";
 
 export function AppShell({
+  userId,
   userEmail,
   signOutAction,
   children,
 }: {
+  userId: string;
   userEmail: string;
   signOutAction: () => Promise<void>;
   children: React.ReactNode;
@@ -27,7 +29,7 @@ export function AppShell({
 
   return (
     <div className="flex min-h-full flex-1">
-      <Sidebar className="hidden border-r border-border lg:flex" />
+      <Sidebar userId={userId} className="hidden border-r border-border lg:flex" />
 
       {mobileOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
@@ -37,6 +39,7 @@ export function AppShell({
             aria-hidden="true"
           />
           <Sidebar
+            userId={userId}
             className="absolute inset-y-0 left-0 border-r border-border shadow-xl"
             onNavigate={() => setMobileOpen(false)}
           />

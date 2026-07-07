@@ -4,6 +4,7 @@ export type Profile = {
   id: string;
   nome: string;
   cor_avatar: string;
+  favoritos: string[];
 };
 
 export type Contact = {

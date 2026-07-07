@@ -9,11 +9,15 @@ export default async function AppLayout({
 }) {
   const supabase = await createClient();
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
   return (
-    <AppShell userEmail={user?.email ?? ""} signOutAction={signOut}>
+    <AppShell
+      userId={session?.user.id ?? ""}
+      userEmail={session?.user.email ?? ""}
+      signOutAction={signOut}
+    >
       {children}
     </AppShell>
   );
