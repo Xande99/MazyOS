@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+import { ResponsiveTable, type ResponsiveTableColumn } from "@/components/ui/responsive-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { OrdemCompraDetailDialog } from "@/components/estoque/ordem-compra-detail-dialog";
 import { OrdemCompraDialog } from "@/components/estoque/ordem-compra-dialog";
@@ -12,8 +13,38 @@ import {
 } from "@/lib/constants/estoque";
 import { useFornecedores } from "@/lib/hooks/use-fornecedores";
 import { useOrdemCompra, useOrdensCompra } from "@/lib/hooks/use-ordens-compra";
+import type { Fornecedor, OrdemCompra } from "@/lib/types";
 import { formatBRL } from "@/lib/utils/currency";
 import { useState } from "react";
+
+function buildColumns(
+  fornecedoresById: Map<string, Fornecedor>,
+): ResponsiveTableColumn<OrdemCompra>[] {
+  return [
+    {
+      header: "Fornecedor",
+      mobile: "title",
+      cell: (o) => (
+        <span className="text-text">
+          {o.fornecedor_id ? (fornecedoresById.get(o.fornecedor_id)?.nome ?? "—") : "—"}
+        </span>
+      ),
+    },
+    {
+      header: "Status",
+      mobile: "subtitle",
+      cell: (o) => (
+        <Badge variant={ORDEM_COMPRA_STATUS_BADGE[o.status]}>
+          {ORDEM_COMPRA_STATUS_LABELS[o.status]}
+        </Badge>
+      ),
+    },
+    {
+      header: "Total",
+      cell: (o) => <span className="text-text-muted">{formatBRL(o.total)}</span>,
+    },
+  ];
+}
 
 export default function OrdensCompraPage() {
   const { data: ordens, isLoading, isError } = useOrdensCompra();
@@ -53,40 +84,12 @@ export default function OrdensCompraPage() {
       )}
 
       {ordens && ordens.length > 0 && (
-        <div className="overflow-hidden rounded-xl border border-border">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-surface-2 text-text-muted">
-              <tr>
-                <th className="px-4 py-2 font-medium">Fornecedor</th>
-                <th className="px-4 py-2 font-medium">Status</th>
-                <th className="px-4 py-2 font-medium">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ordens.map((ordem) => (
-                <tr
-                  key={ordem.id}
-                  onClick={() => setDetalheId(ordem.id)}
-                  className="cursor-pointer border-t border-border hover:bg-surface-2"
-                >
-                  <td className="px-4 py-2.5 text-text">
-                    {ordem.fornecedor_id
-                      ? (fornecedoresById.get(ordem.fornecedor_id)?.nome ?? "—")
-                      : "—"}
-                  </td>
-                  <td className="px-4 py-2.5">
-                    <Badge variant={ORDEM_COMPRA_STATUS_BADGE[ordem.status]}>
-                      {ORDEM_COMPRA_STATUS_LABELS[ordem.status]}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {formatBRL(ordem.total)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ResponsiveTable
+          data={ordens}
+          keyField={(o) => o.id}
+          columns={buildColumns(fornecedoresById)}
+          onRowClick={(o) => setDetalheId(o.id)}
+        />
       )}
 
       <OrdemCompraDialog open={criarAberto} onClose={() => setCriarAberto(false)} />

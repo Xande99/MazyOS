@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
+import { ResponsiveTable, type ResponsiveTableColumn } from "@/components/ui/responsive-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { VaultEntryDetailDialog } from "@/components/cofre/vault-entry-detail-dialog";
 import { VaultEntryDialog } from "@/components/cofre/vault-entry-dialog";
@@ -11,6 +12,25 @@ import { VAULT_CATEGORIA_LABELS } from "@/lib/constants/cofre";
 import { useVaultEntries } from "@/lib/hooks/use-cofre";
 import type { VaultEntry } from "@/lib/types";
 import { useState } from "react";
+
+const COLUMNS: ResponsiveTableColumn<VaultEntry>[] = [
+  {
+    header: "Rótulo",
+    mobile: "title",
+    cell: (e) => <span className="text-text">{e.rotulo}</span>,
+  },
+  {
+    header: "Categoria",
+    mobile: "subtitle",
+    cell: (e) => (
+      <Badge variant="accent">{VAULT_CATEGORIA_LABELS[e.categoria]}</Badge>
+    ),
+  },
+  {
+    header: "Usuário",
+    cell: (e) => <span className="text-text-muted">{e.usuario ?? "—"}</span>,
+  },
+];
 
 export default function CofrePage() {
   const [busca, setBusca] = useState("");
@@ -55,36 +75,12 @@ export default function CofrePage() {
       )}
 
       {entries && entries.length > 0 && (
-        <div className="overflow-hidden rounded-xl border border-border">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-surface-2 text-text-muted">
-              <tr>
-                <th className="px-4 py-2 font-medium">Rótulo</th>
-                <th className="px-4 py-2 font-medium">Categoria</th>
-                <th className="px-4 py-2 font-medium">Usuário</th>
-              </tr>
-            </thead>
-            <tbody>
-              {entries.map((entry) => (
-                <tr
-                  key={entry.id}
-                  onClick={() => setDetalheEntry(entry)}
-                  className="cursor-pointer border-t border-border hover:bg-surface-2"
-                >
-                  <td className="px-4 py-2.5 text-text">{entry.rotulo}</td>
-                  <td className="px-4 py-2.5">
-                    <Badge variant="accent">
-                      {VAULT_CATEGORIA_LABELS[entry.categoria]}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {entry.usuario ?? "—"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ResponsiveTable
+          data={entries}
+          keyField={(e) => e.id}
+          columns={COLUMNS}
+          onRowClick={(e) => setDetalheEntry(e)}
+        />
       )}
 
       <VaultEntryDialog open={criarAberto} onClose={() => setCriarAberto(false)} />

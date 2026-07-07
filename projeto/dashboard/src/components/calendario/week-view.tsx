@@ -40,7 +40,7 @@ export function WeekView({
   }
 
   return (
-    <div className="grid grid-cols-7 gap-3">
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-7">
       {days.map((day) => (
         <div
           key={day.toISOString()}

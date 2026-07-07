@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+import { ResponsiveTable, type ResponsiveTableColumn } from "@/components/ui/responsive-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { OrcamentoDetailDialog } from "@/components/estoque/orcamento-detail-dialog";
 import { OrcamentoDialog } from "@/components/estoque/orcamento-dialog";
@@ -12,8 +13,42 @@ import {
 } from "@/lib/constants/estoque";
 import { useContacts } from "@/lib/hooks/use-contacts";
 import { useOrcamento, useOrcamentos } from "@/lib/hooks/use-orcamentos";
+import type { Contact, Orcamento } from "@/lib/types";
 import { formatBRL } from "@/lib/utils/currency";
 import { useState } from "react";
+
+function buildColumns(
+  contactsById: Map<string, Contact>,
+): ResponsiveTableColumn<Orcamento>[] {
+  return [
+    {
+      header: "Cliente",
+      mobile: "title",
+      cell: (o) => (
+        <span className="text-text">
+          {o.contact_id ? (contactsById.get(o.contact_id)?.nome ?? "—") : "—"}
+        </span>
+      ),
+    },
+    {
+      header: "Status",
+      mobile: "subtitle",
+      cell: (o) => (
+        <Badge variant={ORCAMENTO_STATUS_BADGE[o.status]}>
+          {ORCAMENTO_STATUS_LABELS[o.status]}
+        </Badge>
+      ),
+    },
+    {
+      header: "Validade",
+      cell: (o) => <span className="text-text-muted">{o.validade ?? "—"}</span>,
+    },
+    {
+      header: "Total",
+      cell: (o) => <span className="text-text-muted">{formatBRL(o.total)}</span>,
+    },
+  ];
+}
 
 export default function OrcamentosPage() {
   const { data: orcamentos, isLoading, isError } = useOrcamentos();
@@ -53,44 +88,12 @@ export default function OrcamentosPage() {
       )}
 
       {orcamentos && orcamentos.length > 0 && (
-        <div className="overflow-hidden rounded-xl border border-border">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-surface-2 text-text-muted">
-              <tr>
-                <th className="px-4 py-2 font-medium">Cliente</th>
-                <th className="px-4 py-2 font-medium">Status</th>
-                <th className="px-4 py-2 font-medium">Validade</th>
-                <th className="px-4 py-2 font-medium">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orcamentos.map((orcamento) => (
-                <tr
-                  key={orcamento.id}
-                  onClick={() => setDetalheId(orcamento.id)}
-                  className="cursor-pointer border-t border-border hover:bg-surface-2"
-                >
-                  <td className="px-4 py-2.5 text-text">
-                    {orcamento.contact_id
-                      ? (contactsById.get(orcamento.contact_id)?.nome ?? "—")
-                      : "—"}
-                  </td>
-                  <td className="px-4 py-2.5">
-                    <Badge variant={ORCAMENTO_STATUS_BADGE[orcamento.status]}>
-                      {ORCAMENTO_STATUS_LABELS[orcamento.status]}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {orcamento.validade ?? "—"}
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {formatBRL(orcamento.total)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ResponsiveTable
+          data={orcamentos}
+          keyField={(o) => o.id}
+          columns={buildColumns(contactsById)}
+          onRowClick={(o) => setDetalheId(o.id)}
+        />
       )}
 
       <OrcamentoDialog open={criarAberto} onClose={() => setCriarAberto(false)} />

@@ -3,11 +3,25 @@
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
+import { ResponsiveTable, type ResponsiveTableColumn } from "@/components/ui/responsive-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FornecedorDialog } from "@/components/estoque/fornecedor-dialog";
 import { useFornecedores } from "@/lib/hooks/use-fornecedores";
 import type { Fornecedor } from "@/lib/types";
 import { useState } from "react";
+
+const COLUMNS: ResponsiveTableColumn<Fornecedor>[] = [
+  { header: "Nome", mobile: "title", cell: (f) => <span className="text-text">{f.nome}</span> },
+  {
+    header: "Telefone",
+    mobile: "subtitle",
+    cell: (f) => <span className="text-text-muted">{f.telefone ?? "—"}</span>,
+  },
+  {
+    header: "E-mail",
+    cell: (f) => <span className="text-text-muted">{f.email ?? "—"}</span>,
+  },
+];
 
 export default function FornecedoresPage() {
   const [busca, setBusca] = useState("");
@@ -18,12 +32,12 @@ export default function FornecedoresPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:justify-between">
         <Input
           placeholder="Buscar fornecedor..."
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
-          className="max-w-xs"
+          className="sm:max-w-xs"
         />
         <Button
           onClick={() => {
@@ -56,37 +70,15 @@ export default function FornecedoresPage() {
       )}
 
       {fornecedores && fornecedores.length > 0 && (
-        <div className="overflow-hidden rounded-xl border border-border">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-surface-2 text-text-muted">
-              <tr>
-                <th className="px-4 py-2 font-medium">Nome</th>
-                <th className="px-4 py-2 font-medium">Telefone</th>
-                <th className="px-4 py-2 font-medium">E-mail</th>
-              </tr>
-            </thead>
-            <tbody>
-              {fornecedores.map((fornecedor) => (
-                <tr
-                  key={fornecedor.id}
-                  onClick={() => {
-                    setEditFornecedor(fornecedor);
-                    setDialogOpen(true);
-                  }}
-                  className="cursor-pointer border-t border-border hover:bg-surface-2"
-                >
-                  <td className="px-4 py-2.5 text-text">{fornecedor.nome}</td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {fornecedor.telefone ?? "—"}
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {fornecedor.email ?? "—"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ResponsiveTable
+          data={fornecedores}
+          keyField={(f) => f.id}
+          columns={COLUMNS}
+          onRowClick={(f) => {
+            setEditFornecedor(f);
+            setDialogOpen(true);
+          }}
+        />
       )}
 
       <FornecedorDialog

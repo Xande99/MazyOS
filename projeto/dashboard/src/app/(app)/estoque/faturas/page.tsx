@@ -3,11 +3,12 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+import { ResponsiveTable, type ResponsiveTableColumn } from "@/components/ui/responsive-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaturaDialog } from "@/components/estoque/fatura-dialog";
 import { useContacts } from "@/lib/hooks/use-contacts";
 import { useFaturas, useMarcarFaturaPaga } from "@/lib/hooks/use-faturas";
-import type { Fatura } from "@/lib/types";
+import type { Contact, Fatura } from "@/lib/types";
 import { formatBRL } from "@/lib/utils/currency";
 import { startOfDay } from "@/lib/utils/calendar";
 import { parseDateOnly } from "@/lib/utils/date";
@@ -15,6 +16,59 @@ import { useState } from "react";
 
 function estaAtrasada(fatura: Fatura) {
   return fatura.status === "pendente" && parseDateOnly(fatura.vencimento) < startOfDay(new Date());
+}
+
+function buildColumns(
+  contactsById: Map<string, Contact>,
+  marcarPago: ReturnType<typeof useMarcarFaturaPaga>,
+): ResponsiveTableColumn<Fatura>[] {
+  return [
+    {
+      header: "Cliente",
+      mobile: "title",
+      cell: (f) => (
+        <span className="text-text">
+          {f.contact_id ? (contactsById.get(f.contact_id)?.nome ?? "—") : "—"}
+        </span>
+      ),
+    },
+    {
+      header: "Status",
+      mobile: "subtitle",
+      cell: (f) =>
+        f.status === "pago" ? (
+          <Badge variant="success">Pago</Badge>
+        ) : estaAtrasada(f) ? (
+          <Badge variant="danger">Atrasado</Badge>
+        ) : (
+          <Badge variant="warning">Pendente</Badge>
+        ),
+    },
+    {
+      header: "Valor",
+      cell: (f) => <span className="text-text-muted">{formatBRL(f.valor)}</span>,
+    },
+    {
+      header: "Vencimento",
+      cell: (f) => <span className="text-text-muted">{f.vencimento}</span>,
+    },
+    {
+      header: "",
+      cell: (f) =>
+        f.status === "pendente" ? (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              marcarPago.mutate(f.id);
+            }}
+            className="min-h-11 text-xs text-text-muted hover:text-success"
+          >
+            marcar como pago
+          </button>
+        ) : null,
+    },
+  ];
 }
 
 export default function FaturasPage() {
@@ -60,65 +114,15 @@ export default function FaturasPage() {
       )}
 
       {faturas && faturas.length > 0 && (
-        <div className="overflow-hidden rounded-xl border border-border">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-surface-2 text-text-muted">
-              <tr>
-                <th className="px-4 py-2 font-medium">Cliente</th>
-                <th className="px-4 py-2 font-medium">Valor</th>
-                <th className="px-4 py-2 font-medium">Vencimento</th>
-                <th className="px-4 py-2 font-medium">Status</th>
-                <th className="px-4 py-2" />
-              </tr>
-            </thead>
-            <tbody>
-              {faturas.map((fatura) => {
-                const atrasada = estaAtrasada(fatura);
-                return (
-                  <tr key={fatura.id} className="border-t border-border hover:bg-surface-2">
-                    <td
-                      onClick={() => {
-                        setEditFatura(fatura);
-                        setDialogOpen(true);
-                      }}
-                      className="cursor-pointer px-4 py-2.5 text-text"
-                    >
-                      {fatura.contact_id
-                        ? (contactsById.get(fatura.contact_id)?.nome ?? "—")
-                        : "—"}
-                    </td>
-                    <td className="px-4 py-2.5 text-text-muted">
-                      {formatBRL(fatura.valor)}
-                    </td>
-                    <td className="px-4 py-2.5 text-text-muted">
-                      {fatura.vencimento}
-                    </td>
-                    <td className="px-4 py-2.5">
-                      {fatura.status === "pago" ? (
-                        <Badge variant="success">Pago</Badge>
-                      ) : atrasada ? (
-                        <Badge variant="danger">Atrasado</Badge>
-                      ) : (
-                        <Badge variant="warning">Pendente</Badge>
-                      )}
-                    </td>
-                    <td className="px-4 py-2.5 text-right">
-                      {fatura.status === "pendente" && (
-                        <button
-                          type="button"
-                          onClick={() => marcarPago.mutate(fatura.id)}
-                          className="text-xs text-text-muted hover:text-success"
-                        >
-                          marcar como pago
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <ResponsiveTable
+          data={faturas}
+          keyField={(f) => f.id}
+          columns={buildColumns(contactsById, marcarPago)}
+          onRowClick={(f) => {
+            setEditFatura(f);
+            setDialogOpen(true);
+          }}
+        />
       )}
 
       <FaturaDialog

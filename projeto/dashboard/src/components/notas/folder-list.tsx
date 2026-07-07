@@ -25,7 +25,7 @@ export function FolderList({
   }
 
   return (
-    <div className="flex w-48 shrink-0 flex-col gap-1">
+    <div className="flex flex-row flex-wrap gap-2 md:w-48 md:shrink-0 md:flex-col md:gap-1">
       <FolderItem
         label="Todas as notas"
         active={selected === "todas"}
@@ -46,12 +46,12 @@ export function FolderList({
         />
       ))}
 
-      <form onSubmit={handleCreate} className="mt-2">
+      <form onSubmit={handleCreate} className="md:mt-2">
         <input
           value={novaPasta}
           onChange={(e) => setNovaPasta(e.target.value)}
           placeholder="+ nova pasta"
-          className="w-full rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent"
+          className="min-h-11 w-36 rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent md:w-full"
         />
       </form>
     </div>
@@ -72,7 +72,7 @@ function FolderItem({
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-lg px-2.5 py-1.5 text-left text-sm",
+        "flex min-h-11 items-center rounded-lg px-3 py-1.5 text-left text-sm",
         active
           ? "bg-accent text-white"
           : "text-text-muted hover:bg-surface-2 hover:text-text",

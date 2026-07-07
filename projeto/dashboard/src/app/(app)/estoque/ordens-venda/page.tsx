@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+import { ResponsiveTable, type ResponsiveTableColumn } from "@/components/ui/responsive-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { OrdemVendaDetailDialog } from "@/components/estoque/ordem-venda-detail-dialog";
 import { OrdemVendaDialog } from "@/components/estoque/ordem-venda-dialog";
@@ -12,8 +13,38 @@ import {
 } from "@/lib/constants/estoque";
 import { useContacts } from "@/lib/hooks/use-contacts";
 import { useOrdemVenda, useOrdensVenda } from "@/lib/hooks/use-ordens-venda";
+import type { Contact, OrdemVenda } from "@/lib/types";
 import { formatBRL } from "@/lib/utils/currency";
 import { useState } from "react";
+
+function buildColumns(
+  contactsById: Map<string, Contact>,
+): ResponsiveTableColumn<OrdemVenda>[] {
+  return [
+    {
+      header: "Cliente",
+      mobile: "title",
+      cell: (o) => (
+        <span className="text-text">
+          {o.contact_id ? (contactsById.get(o.contact_id)?.nome ?? "—") : "—"}
+        </span>
+      ),
+    },
+    {
+      header: "Status",
+      mobile: "subtitle",
+      cell: (o) => (
+        <Badge variant={ORDEM_VENDA_STATUS_BADGE[o.status]}>
+          {ORDEM_VENDA_STATUS_LABELS[o.status]}
+        </Badge>
+      ),
+    },
+    {
+      header: "Total",
+      cell: (o) => <span className="text-text-muted">{formatBRL(o.total)}</span>,
+    },
+  ];
+}
 
 export default function OrdensVendaPage() {
   const { data: ordens, isLoading, isError } = useOrdensVenda();
@@ -53,40 +84,12 @@ export default function OrdensVendaPage() {
       )}
 
       {ordens && ordens.length > 0 && (
-        <div className="overflow-hidden rounded-xl border border-border">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-surface-2 text-text-muted">
-              <tr>
-                <th className="px-4 py-2 font-medium">Cliente</th>
-                <th className="px-4 py-2 font-medium">Status</th>
-                <th className="px-4 py-2 font-medium">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ordens.map((ordem) => (
-                <tr
-                  key={ordem.id}
-                  onClick={() => setDetalheId(ordem.id)}
-                  className="cursor-pointer border-t border-border hover:bg-surface-2"
-                >
-                  <td className="px-4 py-2.5 text-text">
-                    {ordem.contact_id
-                      ? (contactsById.get(ordem.contact_id)?.nome ?? "—")
-                      : "—"}
-                  </td>
-                  <td className="px-4 py-2.5">
-                    <Badge variant={ORDEM_VENDA_STATUS_BADGE[ordem.status]}>
-                      {ORDEM_VENDA_STATUS_LABELS[ordem.status]}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {formatBRL(ordem.total)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ResponsiveTable
+          data={ordens}
+          keyField={(o) => o.id}
+          columns={buildColumns(contactsById)}
+          onRowClick={(o) => setDetalheId(o.id)}
+        />
       )}
 
       <OrdemVendaDialog open={criarAberto} onClose={() => setCriarAberto(false)} />

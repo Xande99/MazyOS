@@ -34,7 +34,7 @@ export function Dialog({
         if (e.target === ref.current) onClose();
       }}
       className={cn(
-        "m-auto max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-border bg-surface p-6 text-text backdrop:bg-black/60",
+        "m-0 h-[100dvh] max-h-[100dvh] w-full overflow-y-auto rounded-none border-0 bg-surface p-4 text-text backdrop:bg-black/60 sm:m-auto sm:h-auto sm:max-h-[90vh] sm:w-full sm:max-w-lg sm:rounded-xl sm:border sm:border-border sm:p-6",
         className,
       )}
     >
@@ -44,7 +44,7 @@ export function Dialog({
           type="button"
           onClick={onClose}
           aria-label="Fechar"
-          className="rounded p-1 text-text-muted hover:bg-surface-2 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded text-text-muted hover:bg-surface-2 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         >
           ✕
         </button>

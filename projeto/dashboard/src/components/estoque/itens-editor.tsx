@@ -78,8 +78,8 @@ export function ItensEditor({
       )}
 
       {itens && itens.length > 0 && (
-        <div className="overflow-hidden rounded-lg border border-border">
-          <table className="w-full text-left text-sm">
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full min-w-[480px] text-left text-sm">
             <thead className="bg-surface-2 text-text-muted">
               <tr>
                 <th className="px-3 py-2 font-medium">Item</th>

@@ -45,7 +45,7 @@ export default function NotasPage() {
         </Button>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col gap-6 md:flex-row">
         <FolderList selected={folderFilter} onSelect={setFolderFilter} />
 
         <div className="flex flex-1 flex-col gap-4">
@@ -57,7 +57,7 @@ export default function NotasPage() {
           />
 
           {isLoading && (
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <Skeleton className="h-32 w-full" />
               <Skeleton className="h-32 w-full" />
               <Skeleton className="h-32 w-full" />

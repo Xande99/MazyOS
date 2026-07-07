@@ -38,27 +38,29 @@ export function SortableItem({
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2.5"
+      className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2.5"
     >
       <button
         type="button"
         {...attributes}
         {...listeners}
         aria-label="Reordenar"
-        className="cursor-grab text-text-muted active:cursor-grabbing"
+        className="flex h-11 w-6 shrink-0 cursor-grab items-center justify-center text-text-muted active:cursor-grabbing"
       >
         ⠿
       </button>
 
-      <input
-        type="checkbox"
-        checked={item.feito}
-        onChange={(e) =>
-          updateItem.mutate({ id: item.id, feito: e.target.checked })
-        }
-        className="h-4 w-4 rounded border-border accent-[--color-accent]"
-        aria-label={`Marcar "${item.titulo}" como concluída`}
-      />
+      <label className="flex h-11 w-6 shrink-0 items-center justify-center">
+        <input
+          type="checkbox"
+          checked={item.feito}
+          onChange={(e) =>
+            updateItem.mutate({ id: item.id, feito: e.target.checked })
+          }
+          className="h-4 w-4 rounded border-border accent-[--color-accent]"
+          aria-label={`Marcar "${item.titulo}" como concluída`}
+        />
+      </label>
 
       <button
         type="button"

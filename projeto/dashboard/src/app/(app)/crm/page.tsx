@@ -4,14 +4,38 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
+import { ResponsiveTable, type ResponsiveTableColumn } from "@/components/ui/responsive-table";
 import { Select } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ContactDialog } from "@/components/crm/contact-dialog";
 import { ContactDetailDialog } from "@/components/crm/contact-detail-dialog";
 import { CATEGORIA_BADGE, CATEGORIA_LABELS } from "@/lib/constants/crm";
 import { useContact, useContacts } from "@/lib/hooks/use-contacts";
-import type { ContactCategory } from "@/lib/types";
+import type { Contact, ContactCategory } from "@/lib/types";
 import { useState } from "react";
+
+const COLUMNS: ResponsiveTableColumn<Contact>[] = [
+  { header: "Nome", mobile: "title", cell: (c) => <span className="text-text">{c.nome}</span> },
+  {
+    header: "Categoria",
+    mobile: "subtitle",
+    cell: (c) => (
+      <Badge variant={CATEGORIA_BADGE[c.categoria]}>
+        {CATEGORIA_LABELS[c.categoria]}
+      </Badge>
+    ),
+  },
+  {
+    header: "Empresa",
+    cell: (c) => <span className="text-text-muted">{c.empresa ?? "—"}</span>,
+  },
+  {
+    header: "Contato",
+    cell: (c) => (
+      <span className="text-text-muted">{c.telefone ?? c.email ?? "—"}</span>
+    ),
+  },
+];
 
 export default function CrmPage() {
   const [busca, setBusca] = useState("");
@@ -34,19 +58,19 @@ export default function CrmPage() {
         <Button onClick={() => setCriarAberto(true)}>Novo contato</Button>
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <Input
           placeholder="Buscar por nome ou empresa..."
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
-          className="max-w-xs"
+          className="sm:max-w-xs"
         />
         <Select
           value={categoria}
           onChange={(e) =>
             setCategoria(e.target.value as ContactCategory | "")
           }
-          className="max-w-[180px]"
+          className="sm:max-w-[180px]"
         >
           <option value="">Todas categorias</option>
           {Object.entries(CATEGORIA_LABELS).map(([valor, label]) => (
@@ -79,40 +103,12 @@ export default function CrmPage() {
       )}
 
       {contacts && contacts.length > 0 && (
-        <div className="overflow-hidden rounded-xl border border-border">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-surface-2 text-text-muted">
-              <tr>
-                <th className="px-4 py-2 font-medium">Nome</th>
-                <th className="px-4 py-2 font-medium">Categoria</th>
-                <th className="px-4 py-2 font-medium">Empresa</th>
-                <th className="px-4 py-2 font-medium">Contato</th>
-              </tr>
-            </thead>
-            <tbody>
-              {contacts.map((contact) => (
-                <tr
-                  key={contact.id}
-                  onClick={() => setDetalheId(contact.id)}
-                  className="cursor-pointer border-t border-border hover:bg-surface-2"
-                >
-                  <td className="px-4 py-2.5 text-text">{contact.nome}</td>
-                  <td className="px-4 py-2.5">
-                    <Badge variant={CATEGORIA_BADGE[contact.categoria]}>
-                      {CATEGORIA_LABELS[contact.categoria]}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {contact.empresa ?? "—"}
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {contact.telefone ?? contact.email ?? "—"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ResponsiveTable
+          data={contacts}
+          keyField={(c) => c.id}
+          columns={COLUMNS}
+          onRowClick={(c) => setDetalheId(c.id)}
+        />
       )}
 
       <ContactDialog open={criarAberto} onClose={() => setCriarAberto(false)} />

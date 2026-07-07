@@ -8,6 +8,36 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { format } from "date-fns";
 
+function CardContent({
+  card,
+  responsavel,
+  contact,
+}: {
+  card: KanbanCardType;
+  responsavel?: Profile;
+  contact?: Contact;
+}) {
+  return (
+    <>
+      <p className="font-medium text-text">{card.titulo}</p>
+
+      {contact && (
+        <p className="mt-1 text-xs text-text-muted">{contact.nome}</p>
+      )}
+
+      <div className="mt-2 flex flex-wrap items-center gap-1.5">
+        <Badge variant={PRIORIDADE_BADGE[card.prioridade]}>
+          {PRIORIDADE_LABELS[card.prioridade]}
+        </Badge>
+        {card.prazo && (
+          <Badge>{format(parseDateOnly(card.prazo), "dd/MM")}</Badge>
+        )}
+        {responsavel && <Badge variant="accent">{responsavel.nome}</Badge>}
+      </div>
+    </>
+  );
+}
+
 export function KanbanCard({
   card,
   responsavel,
@@ -43,21 +73,29 @@ export function KanbanCard({
       onClick={onClick}
       className="cursor-grab rounded-lg border border-border bg-surface p-3 text-sm shadow-sm transition-colors active:cursor-grabbing hover:border-accent/50"
     >
-      <p className="font-medium text-text">{card.titulo}</p>
-
-      {contact && (
-        <p className="mt-1 text-xs text-text-muted">{contact.nome}</p>
-      )}
-
-      <div className="mt-2 flex flex-wrap items-center gap-1.5">
-        <Badge variant={PRIORIDADE_BADGE[card.prioridade]}>
-          {PRIORIDADE_LABELS[card.prioridade]}
-        </Badge>
-        {card.prazo && (
-          <Badge>{format(parseDateOnly(card.prazo), "dd/MM")}</Badge>
-        )}
-        {responsavel && <Badge variant="accent">{responsavel.nome}</Badge>}
-      </div>
+      <CardContent card={card} responsavel={responsavel} contact={contact} />
     </div>
+  );
+}
+
+export function KanbanCardStatic({
+  card,
+  responsavel,
+  contact,
+  onClick,
+}: {
+  card: KanbanCardType;
+  responsavel?: Profile;
+  contact?: Contact;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full rounded-lg border border-border bg-surface p-3 text-left text-sm transition-colors hover:border-accent/50"
+    >
+      <CardContent card={card} responsavel={responsavel} contact={contact} />
+    </button>
   );
 }

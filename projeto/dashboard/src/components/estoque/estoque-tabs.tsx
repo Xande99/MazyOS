@@ -26,7 +26,7 @@ export function EstoqueTabs() {
             key={tab.href}
             href={tab.href}
             className={cn(
-              "shrink-0 border-b-2 px-3 py-2 text-sm",
+              "flex min-h-11 shrink-0 items-center border-b-2 px-3 py-2 text-sm",
               active
                 ? "border-accent text-text"
                 : "border-transparent text-text-muted hover:text-text",

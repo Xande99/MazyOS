@@ -131,7 +131,7 @@ function CardForm({
         />
       </Field>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Responsável">
           <Select
             value={form.responsavel_id}
@@ -157,7 +157,7 @@ function CardForm({
         </Field>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Prioridade">
           <Select
             value={form.prioridade}

@@ -70,13 +70,13 @@ export default function CalendarioPage() {
           })}
         </h1>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <div className="flex overflow-hidden rounded-lg border border-border">
             <button
               type="button"
               onClick={() => setModo("mes")}
               className={cn(
-                "px-3 py-1.5 text-sm",
+                "min-h-11 px-3 py-1.5 text-sm",
                 modo === "mes" ? "bg-accent text-white" : "text-text-muted",
               )}
             >
@@ -86,7 +86,7 @@ export default function CalendarioPage() {
               type="button"
               onClick={() => setModo("semana")}
               className={cn(
-                "px-3 py-1.5 text-sm",
+                "min-h-11 px-3 py-1.5 text-sm",
                 modo === "semana" ? "bg-accent text-white" : "text-text-muted",
               )}
             >

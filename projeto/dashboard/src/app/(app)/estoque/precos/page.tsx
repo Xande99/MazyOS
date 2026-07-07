@@ -2,12 +2,25 @@
 
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+import { ResponsiveTable, type ResponsiveTableColumn } from "@/components/ui/responsive-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PriceBookDetailDialog } from "@/components/estoque/price-book-detail-dialog";
 import { PriceBookDialog } from "@/components/estoque/price-book-dialog";
 import { usePriceBooks } from "@/lib/hooks/use-precos";
 import type { LivroPreco } from "@/lib/types";
 import { useState } from "react";
+
+const COLUMNS: ResponsiveTableColumn<LivroPreco>[] = [
+  { header: "Nome", mobile: "title", cell: (l) => <span className="text-text">{l.nome}</span> },
+  {
+    header: "Válido de",
+    cell: (l) => <span className="text-text-muted">{l.valido_de ?? "—"}</span>,
+  },
+  {
+    header: "Válido até",
+    cell: (l) => <span className="text-text-muted">{l.valido_ate ?? "—"}</span>,
+  },
+];
 
 export default function PrecosPage() {
   const { data: livros, isLoading, isError } = usePriceBooks();
@@ -49,34 +62,12 @@ export default function PrecosPage() {
       )}
 
       {livros && livros.length > 0 && (
-        <div className="overflow-hidden rounded-xl border border-border">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-surface-2 text-text-muted">
-              <tr>
-                <th className="px-4 py-2 font-medium">Nome</th>
-                <th className="px-4 py-2 font-medium">Válido de</th>
-                <th className="px-4 py-2 font-medium">Válido até</th>
-              </tr>
-            </thead>
-            <tbody>
-              {livros.map((livro) => (
-                <tr
-                  key={livro.id}
-                  onClick={() => setDetalheLivro(livro)}
-                  className="cursor-pointer border-t border-border hover:bg-surface-2"
-                >
-                  <td className="px-4 py-2.5 text-text">{livro.nome}</td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {livro.valido_de ?? "—"}
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {livro.valido_ate ?? "—"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ResponsiveTable
+          data={livros}
+          keyField={(l) => l.id}
+          columns={COLUMNS}
+          onRowClick={(l) => setDetalheLivro(l)}
+        />
       )}
 
       <PriceBookDialog

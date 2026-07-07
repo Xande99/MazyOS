@@ -3,13 +3,51 @@
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
+import { ResponsiveTable, type ResponsiveTableColumn } from "@/components/ui/responsive-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProdutoDialog } from "@/components/estoque/produto-dialog";
 import { useFornecedores } from "@/lib/hooks/use-fornecedores";
 import { useProdutos } from "@/lib/hooks/use-produtos";
-import type { Produto } from "@/lib/types";
+import type { Fornecedor, Produto } from "@/lib/types";
 import { formatBRL } from "@/lib/utils/currency";
 import { useState } from "react";
+
+function buildColumns(
+  fornecedoresById: Map<string, Fornecedor>,
+): ResponsiveTableColumn<Produto>[] {
+  return [
+    { header: "Nome", mobile: "title", cell: (p) => <span className="text-text">{p.nome}</span> },
+    {
+      header: "SKU",
+      mobile: "subtitle",
+      cell: (p) => <span className="text-text-muted">{p.sku ?? "—"}</span>,
+    },
+    {
+      header: "Custo",
+      cell: (p) => <span className="text-text-muted">{formatBRL(p.preco_custo)}</span>,
+    },
+    {
+      header: "Venda",
+      cell: (p) => <span className="text-text-muted">{formatBRL(p.preco_venda)}</span>,
+    },
+    {
+      header: "Estoque",
+      cell: (p) => (
+        <span className="text-text-muted">
+          {p.estoque} {p.unidade}
+        </span>
+      ),
+    },
+    {
+      header: "Fornecedor",
+      cell: (p) => (
+        <span className="text-text-muted">
+          {p.fornecedor_id ? (fornecedoresById.get(p.fornecedor_id)?.nome ?? "—") : "—"}
+        </span>
+      ),
+    },
+  ];
+}
 
 export default function ProdutosPage() {
   const [busca, setBusca] = useState("");
@@ -22,12 +60,12 @@ export default function ProdutosPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:justify-between">
         <Input
           placeholder="Buscar por nome ou SKU..."
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
-          className="max-w-xs"
+          className="sm:max-w-xs"
         />
         <Button
           onClick={() => {
@@ -60,51 +98,15 @@ export default function ProdutosPage() {
       )}
 
       {produtos && produtos.length > 0 && (
-        <div className="overflow-hidden rounded-xl border border-border">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-surface-2 text-text-muted">
-              <tr>
-                <th className="px-4 py-2 font-medium">Nome</th>
-                <th className="px-4 py-2 font-medium">SKU</th>
-                <th className="px-4 py-2 font-medium">Custo</th>
-                <th className="px-4 py-2 font-medium">Venda</th>
-                <th className="px-4 py-2 font-medium">Estoque</th>
-                <th className="px-4 py-2 font-medium">Fornecedor</th>
-              </tr>
-            </thead>
-            <tbody>
-              {produtos.map((produto) => (
-                <tr
-                  key={produto.id}
-                  onClick={() => {
-                    setEditProduto(produto);
-                    setDialogOpen(true);
-                  }}
-                  className="cursor-pointer border-t border-border hover:bg-surface-2"
-                >
-                  <td className="px-4 py-2.5 text-text">{produto.nome}</td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {produto.sku ?? "—"}
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {formatBRL(produto.preco_custo)}
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {formatBRL(produto.preco_venda)}
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {produto.estoque} {produto.unidade}
-                  </td>
-                  <td className="px-4 py-2.5 text-text-muted">
-                    {produto.fornecedor_id
-                      ? (fornecedoresById.get(produto.fornecedor_id)?.nome ?? "—")
-                      : "—"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ResponsiveTable
+          data={produtos}
+          keyField={(p) => p.id}
+          columns={buildColumns(fornecedoresById)}
+          onRowClick={(p) => {
+            setEditProduto(p);
+            setDialogOpen(true);
+          }}
+        />
       )}
 
       <ProdutoDialog

@@ -110,7 +110,7 @@ function VaultEntryForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Rótulo *">
           <Input
             required
@@ -139,7 +139,7 @@ function VaultEntryForm({
         </Field>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Usuário / login">
           <Input
             value={form.usuario}

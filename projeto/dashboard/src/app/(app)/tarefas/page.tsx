@@ -119,12 +119,12 @@ export default function TarefasPage() {
           ))}
         </Select>
 
-        <form onSubmit={handleCreateProject} className="ml-auto">
+        <form onSubmit={handleCreateProject} className="w-full sm:ml-auto sm:w-auto">
           <input
             value={novoProjeto}
             onChange={(e) => setNovoProjeto(e.target.value)}
             placeholder="+ novo projeto"
-            className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent"
+            className="min-h-11 w-full rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent sm:w-auto"
           />
         </form>
       </div>

@@ -1,6 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Select } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useContacts } from "@/lib/hooks/use-contacts";
 import { useCards, useColumns, useMoveCards } from "@/lib/hooks/use-kanban";
@@ -16,6 +18,7 @@ import {
 } from "@dnd-kit/core";
 import { useState } from "react";
 import { CardDialog } from "./card-dialog";
+import { KanbanCardStatic } from "./kanban-card";
 import { KanbanColumn } from "./kanban-column";
 
 export function KanbanBoard() {
@@ -95,12 +98,37 @@ export function KanbanBoard() {
     moveCards.mutate(updates);
   }
 
+  function moverCardParaColuna(card: KanbanCard, destColumnId: string) {
+    if (!cards || card.column_id === destColumnId) return;
+
+    const destCards = cardsForColumn(destColumnId);
+    const sourceCards = cardsForColumn(card.column_id).filter(
+      (c) => c.id !== card.id,
+    );
+
+    const updates = [
+      ...destCards.map((c, index) => ({
+        id: c.id,
+        column_id: destColumnId,
+        posicao: index,
+      })),
+      { id: card.id, column_id: destColumnId, posicao: destCards.length },
+      ...sourceCards.map((c, index) => ({
+        id: c.id,
+        column_id: card.column_id,
+        posicao: index,
+      })),
+    ];
+
+    moveCards.mutate(updates);
+  }
+
   if (columnsLoading || cardsLoading) {
     return (
-      <div className="flex gap-4">
-        <Skeleton className="h-64 w-72" />
-        <Skeleton className="h-64 w-72" />
-        <Skeleton className="h-64 w-72" />
+      <div className="flex gap-4 overflow-x-auto pb-4">
+        <Skeleton className="h-64 w-72 shrink-0" />
+        <Skeleton className="h-64 w-72 shrink-0" />
+        <Skeleton className="h-64 w-72 shrink-0" />
       </div>
     );
   }
@@ -117,32 +145,117 @@ export function KanbanBoard() {
 
   return (
     <>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragEnd={handleDragEnd}
-      >
-        <div className="flex gap-4 overflow-x-auto pb-4">
-          {columns.map((column) => (
-            <KanbanColumn
-              key={column.id}
-              column={column}
-              cards={cardsForColumn(column.id)}
-              profilesById={profilesById}
-              contactsById={contactsById}
-              onCardClick={(card) => {
-                setEditCard(card);
-                setDialogOpen(true);
-              }}
-              onAddCard={() => {
-                setEditCard(undefined);
-                setCreateColumnId(column.id);
-                setDialogOpen(true);
-              }}
-            />
-          ))}
-        </div>
-      </DndContext>
+      <div className="hidden md:block">
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragEnd={handleDragEnd}
+        >
+          <div className="flex gap-4 overflow-x-auto pb-4">
+            {columns.map((column) => (
+              <KanbanColumn
+                key={column.id}
+                column={column}
+                cards={cardsForColumn(column.id)}
+                profilesById={profilesById}
+                contactsById={contactsById}
+                onCardClick={(card) => {
+                  setEditCard(card);
+                  setDialogOpen(true);
+                }}
+                onAddCard={() => {
+                  setEditCard(undefined);
+                  setCreateColumnId(column.id);
+                  setDialogOpen(true);
+                }}
+              />
+            ))}
+          </div>
+        </DndContext>
+      </div>
+
+      <div className="flex flex-col gap-6 md:hidden">
+        {columns.map((column) => {
+          const columnCards = cardsForColumn(column.id);
+
+          return (
+            <div key={column.id} className="flex flex-col gap-3">
+              <div className="flex items-center justify-between px-1">
+                <h3 className="text-sm font-medium text-text">
+                  {column.nome}
+                </h3>
+                <span className="text-xs text-text-muted">
+                  {columnCards.length}
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                {columnCards.length === 0 && (
+                  <p className="px-1 text-xs text-text-muted">
+                    Nenhum card aqui.
+                  </p>
+                )}
+
+                {columnCards.map((card) => (
+                  <div key={card.id} className="flex flex-col gap-2">
+                    <KanbanCardStatic
+                      card={card}
+                      responsavel={
+                        card.responsavel_id
+                          ? profilesById.get(card.responsavel_id)
+                          : undefined
+                      }
+                      contact={
+                        card.contact_id
+                          ? contactsById.get(card.contact_id)
+                          : undefined
+                      }
+                      onClick={() => {
+                        setEditCard(card);
+                        setDialogOpen(true);
+                      }}
+                    />
+
+                    <div className="flex items-center gap-2 px-1">
+                      <label
+                        htmlFor={`status-${card.id}`}
+                        className="shrink-0 text-xs text-text-muted"
+                      >
+                        Mover para
+                      </label>
+                      <Select
+                        id={`status-${card.id}`}
+                        value={card.column_id}
+                        onChange={(e) =>
+                          moverCardParaColuna(card, e.target.value)
+                        }
+                        className="flex-1"
+                      >
+                        {columns.map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.nome}
+                          </option>
+                        ))}
+                      </Select>
+                    </div>
+                  </div>
+                ))}
+
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setEditCard(undefined);
+                    setCreateColumnId(column.id);
+                    setDialogOpen(true);
+                  }}
+                >
+                  + Card
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
       <CardDialog
         open={dialogOpen}
