@@ -14,6 +14,7 @@ async function exigirUsuario() {
 }
 
 export async function criarEntradaCofre(input: {
+  sessionId: string;
   rotulo: string;
   categoria: VaultCategoria;
   usuario: string | null;
@@ -25,6 +26,7 @@ export async function criarEntradaCofre(input: {
 
   const service = createServiceClient();
   const { error } = await service.rpc("cofre_criar_entrada", {
+    p_session_id: input.sessionId,
     p_rotulo: input.rotulo,
     p_categoria: input.categoria,
     p_usuario: input.usuario,
@@ -33,6 +35,14 @@ export async function criarEntradaCofre(input: {
     p_senha: input.senha,
     p_created_by: user.id,
   });
+  if (error) throw new Error(error.message);
+}
+
+export async function excluirSessaoCofre(id: string) {
+  await exigirUsuario();
+
+  const service = createServiceClient();
+  const { error } = await service.rpc("cofre_excluir_sessao", { p_id: id });
   if (error) throw new Error(error.message);
 }
 

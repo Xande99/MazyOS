@@ -20,10 +20,12 @@ export function VaultEntryDialog({
   open,
   onClose,
   entry,
+  sessionId,
 }: {
   open: boolean;
   onClose: () => void;
   entry?: VaultEntry;
+  sessionId: string;
 }) {
   return (
     <Dialog
@@ -31,16 +33,20 @@ export function VaultEntryDialog({
       onClose={onClose}
       title={entry ? "Editar credencial" : "Nova credencial"}
     >
-      {open && <VaultEntryForm entry={entry} onClose={onClose} />}
+      {open && (
+        <VaultEntryForm entry={entry} sessionId={sessionId} onClose={onClose} />
+      )}
     </Dialog>
   );
 }
 
 function VaultEntryForm({
   entry,
+  sessionId,
   onClose,
 }: {
   entry?: VaultEntry;
+  sessionId: string;
   onClose: () => void;
 }) {
   const isEdit = !!entry;
@@ -82,7 +88,7 @@ function VaultEntryForm({
           senha: form.senha || null,
         });
       } else {
-        await criarEntradaCofre({ ...payload, senha: form.senha });
+        await criarEntradaCofre({ sessionId, ...payload, senha: form.senha });
       }
       onClose();
     } catch {

@@ -224,10 +224,20 @@ export type VaultCategoria =
   | "financeiro"
   | "outro";
 
+export type VaultSession = {
+  id: string;
+  nome: string;
+  notas: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 /** O segredo em si nunca trafega aqui — só a referência (secret_id)
  * pro Vault. Ver src/app/(app)/cofre/actions.ts. */
 export type VaultEntry = {
   id: string;
+  session_id: string;
   rotulo: string;
   categoria: VaultCategoria;
   usuario: string | null;
