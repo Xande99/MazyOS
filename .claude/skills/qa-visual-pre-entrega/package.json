@@ -1,0 +1,8 @@
+{
+  "name": "qa-visual-pre-entrega",
+  "private": true,
+  "description": "Dependências dos scripts de QA visual (ver SKILL.md). Rodar `npm install` uma vez dentro desta pasta antes do primeiro uso.",
+  "dependencies": {
+    "playwright": "^1.61.1"
+  }
+}
