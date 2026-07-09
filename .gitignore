@@ -24,3 +24,7 @@ node_modules/
 # Drop zone do usuário (só o README vai versionado)
 dados/*
 !dados/README.md
+
+# Projeto com repositório git próprio (github.com/Xande99/cv-digital) —
+# não é submodule registrado, fica de fora pra não virar embedded repo quebrado
+projeto/curriculo_digital/
