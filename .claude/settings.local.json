@@ -53,7 +53,20 @@
       "Bash(node -e 'JSON.parse\\(require\\(\"fs\"\\).readFileSync\\(\".claude/settings.json\",\"utf8\"\\)\\); console.log\\(\"settings.json OK\"\\)')",
       "Bash(grep -rl \"superpowers:do\\\\b\\\\|[^-]\\\\bdo\\\\b skill\\\\|skills/do\\\\b\" --include=\"SKILL.md\" .)",
       "Bash(grep -rl \"subagent-driven-development\" --include=\"*.md\" .)",
-      "Bash(grep -rn \"skills/do\\\\b\\\\|superpowers:do\\\\b\\\\|\\\\`/do\\\\`\" .claude/skills --include=\"*.md\")"
+      "Bash(grep -rn \"skills/do\\\\b\\\\|superpowers:do\\\\b\\\\|\\\\`/do\\\\`\" .claude/skills --include=\"*.md\")",
+      "Bash(supabase --version)",
+      "Bash(where supabase *)",
+      "PowerShell(supabase *)",
+      "PowerShell(winget search *)",
+      "Bash(npm install *)",
+      "Bash(npx supabase *)",
+      "Bash(mkdir -p /c/Users/Angel/AppData/Local/Temp/claude/C--Users-Angel-OneDrive--rea-de-Trabalho-MazyOS/90c2113f-f797-4002-85b8-23b7d7e6baf6/scratchpad/supabase-init-test)",
+      "Read(//c/Users/Angel/AppData/Local/Temp/claude/C--Users-Angel-OneDrive--rea-de-Trabalho-MazyOS/90c2113f-f797-4002-85b8-23b7d7e6baf6/scratchpad/**)",
+      "Bash(npx --prefix \"/c/Users/Angel/OneDrive/Área de Trabalho/MazyOS/projeto/dashboard\" supabase init)",
+      "Bash(find . -maxdepth 2)",
+      "Skill(run)",
+      "Bash(grep -Hm1 ^description: '/c/Users/Angel/OneDrive/Área de Trabalho/MazyOS/projeto/dashboard/.claude/skills/*/SKILL.md')",
+      "PowerShell(Start-Process \"http://localhost:3000\")"
     ]
   }
 }
