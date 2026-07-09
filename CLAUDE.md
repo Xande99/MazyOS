@@ -128,7 +128,7 @@ Não é necessário listar o que foi lido nem confirmar a leitura. Apenas usar o
 Quando iniciar um novo projeto de cliente:
 
 1. Rodar `/novo-projeto` e responder as perguntas do cliente
-2. O briefing gerado fica em `clientes/<Nome>/briefing.md` — incluir no briefing o tipo do projeto (Tipo A: Astro / Tipo B: Next.js + Supabase)
+2. O briefing gerado fica em `clientes/<Nome>/briefing.md` — incluir no briefing o tipo do projeto (Tipo A: Astro / Tipo B: Next.js + Supabase). O `/novo-projeto` já ativa sozinho, sem precisar pedir: skills de animação (mapa acima), Context7 MCP, Playwright MCP, padrão de qualidade nível referência e (se Tipo B) o checklist Supabase — o resumo do comando confirma o que foi ativado.
 3. Comunicar o caminho do briefing pro Claude Code em `projeto/`:
    ```
    Lê o briefing em C:\Users\Xande\Desktop\MazyOS\clientes\<Nome>\briefing.md,

@@ -35,8 +35,16 @@ Definir stack e deploy conforme a resposta (regras completas em `projeto/CLAUDE.
 
 - **Tipo A** → stack: Astro + Tailwind + TypeScript + GSAP · deploy: Netlify ou Cloudflare Pages
 - **Tipo B** → stack: Next.js + TypeScript + Tailwind + Supabase/Postgres + Motion · deploy: Vercel
-  (avisar: "Como tem banco de dados, antes de começar vale consultar
-  `_memoria/checklist-novo-projeto-supabase.md`.")
+
+**Ativação automática (Tipo A ou B) — não pedir nem lembrar, só acontece:**
+
+- Skills de animação relevantes (mapa completo em `CLAUDE.md` raiz): `gsap-scrolltrigger` e complementares pra Tipo A, `motion-framer` e complementares pra Tipo B
+- Context7 MCP antes de escrever qualquer código com GSAP, Motion, Next.js ou Tailwind
+- Playwright MCP pra verificar cada seção visual antes de considerá-la concluída
+- Padrão de qualidade nível referência (Awwwards/godly.website), conforme `_memoria/preferencias.md`
+- `identidade/design-guide.md` + tokens de `projeto/duPolvoNovo/tokens/*.css` como base de design — não se aplica se o Passo 1.2 confirmar identidade própria do cliente
+
+**Se Tipo B:** consultar `_memoria/checklist-novo-projeto-supabase.md` agora, nesta entrevista — não só avisar o usuário depois. Aplicar o que der pra resolver sem input manual e listar no briefing só o que realmente depende dele (chaves de API, projeto criado no dashboard do Supabase, etc.).
 
 Se a entrega não envolve site/sistema (só ads, conteúdo, proposta, etc.), pular esse passo — nem toda entrega é desenvolvimento.
 
@@ -86,6 +94,12 @@ o primeiro arquivo que a sessão do Claude Code em `projeto/` lê:
 - [entrega 1 da resposta 4]
 - [entrega 2 da resposta 4]
 - ...
+
+## Ativação automática
+*(Preencher só se o Passo 1.1 rodou.)*
+- Skills de animação: [lista conforme Tipo A/B]
+- MCPs em uso: Context7, Playwright
+- Checklist Supabase: [aplicável — pendências: ... | não aplicável, Tipo A]
 
 ## Identidade visual
 [Preencher só se o Passo 1.2 rodou.
@@ -151,6 +165,9 @@ Se o Passo 1.1 rodou, incluir também:
 
 ```
 ✓ Tipo técnico: [A | B] — stack: [Astro | Next.js + Supabase]
+✓ Skills de animação ativas: [lista, ex: gsap-scrolltrigger, locomotive-scroll]
+✓ MCPs em uso: Context7 (docs atualizadas), Playwright (verificação visual)
+✓ Checklist Supabase: [aplicável — já consultado, pendências: X | não aplicável]
 ```
 
 Se o Passo 1.2 rodou e a entrega envolve LP/site novo, incluir também esse lembrete (não deixar implícito no "herda da raiz" do CLAUDE.md — na prática isso não é suficiente pra garantir que a identidade seja de fato aplicada):
