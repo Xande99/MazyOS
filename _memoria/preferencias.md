@@ -16,3 +16,10 @@ Também evitar o oposto: gíria jogada sem contexto, "bora?" no final de cada pa
 ## Estilo geral
 
 Escreve como quem tem algo real a dizer — não como quem precisa parecer agência. Problema claro, solução direta, resultado concreto. Quanto mais curto, melhor. Se uma frase pode virar duas palavras, vira.
+
+## Forma de trabalhar em projetos técnicos
+
+- Sempre aprovar o modelo de dados (schema/migration) antes de rodar — mostrar a estrutura proposta e esperar confirmação explícita, nunca aplicar direto.
+- Não aceitar "melhorou"/"resolvido" só pela afirmação — quer evidência medida (números antes/depois, teste ponta a ponta) antes de considerar algo corrigido.
+- Nunca commitar ou dar push sem pedido explícito a cada vez, mesmo que uma mudança anterior já tenha sido aprovada.
+- Testar o fluxo completo (criar/editar/excluir, em pelo menos alguns cenários/larguras) antes de considerar uma feature pronta — não só "parece que funciona no código".

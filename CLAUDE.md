@@ -18,7 +18,7 @@ Operação da agência. Aqui ficam todos os clientes, propostas, conteúdo e ent
 
 | Pasta | Caminho | Para que serve |
 |---|---|---|
-| `projeto/` | `C:\Users\Xande\Desktop\MazyOS\projeto\` | Desenvolvimento dos sites e LPs |
+| `projeto/` | `C:\Users\Xande\Desktop\MazyOS\projeto\` | Desenvolvimento dos sites e LPs (stack e regras técnicas no `projeto/CLAUDE.md`) |
 | `cerebro/` | `C:\Users\Xande\Desktop\cerebro\` | Base de conhecimento técnico (referência, não editar) |
 
 ---
@@ -47,6 +47,7 @@ Evitar: alavancar, ecossistema, jornada, entregar valor, metodologia ágil, mind
 ## Regras do sistema
 
 - Cliente novo → criar pasta `clientes/<Nome>/` com briefing, estratégia e subpastas conforme as entregas contratadas
+- Projeto de desenvolvimento novo → classificar no briefing como **Tipo A** (LP/site institucional → Astro) ou **Tipo B** (sistema/SaaS/área logada → Next.js + Supabase), conforme a regra de stack do `projeto/CLAUDE.md`. Registrar o tipo no briefing.
 - Proposta nova → `propostas/<cliente>-<data>.html` antes de fechar
 - Casos de sucesso ficam em `clientes/<Nome>/caso.md` (reuso em pitches)
 - Toda peça visual consulta `identidade/design-guide.md` antes de criar
@@ -68,12 +69,16 @@ Evitar: alavancar, ecossistema, jornada, entregar valor, metodologia ágil, mind
 No início de toda conversa, ler os seguintes arquivos (quando existirem e estiverem preenchidos):
 
 1. `_memoria/empresa.md` — quem é a duPolvo, o que faz, como funciona
-2. `_memoria/preferencias.md` — tom de voz, estilo de escrita, o que evitar
+2. `_memoria/preferencias.md` — tom de voz, estilo de escrita, o que evitar, e como prefiro colaborar em projetos técnicos (validação antes de migrations, evidência medida, etc.)
 3. `_memoria/estrategia.md` — foco atual, prioridades, prazos
 
 Usar essas informações como base pra qualquer resposta ou decisão. Ao sugerir prioridades, formatos ou abordagens, considerar o foco atual descrito em `estrategia.md`.
 
 Pra qualquer tarefa visual (carrossel, post, landing page), consultar `identidade/design-guide.md` como referência de estilo.
+
+Antes de começar a desenvolver qualquer sistema novo (fora de LP/site institucional), consultar `_memoria/oportunidades-sistemas.md` — ele já tem o mapa de possibilidades, os 10 sistemas verticais priorizados por nicho, a recomendação de por onde começar e o esboço de arquitetura de cada um. Não repetir essa análise do zero; usar como base e só aprofundar o que for pedido.
+
+Ao iniciar um projeto novo que precisa de banco de dados/Supabase, consultar `_memoria/checklist-novo-projeto-supabase.md` antes de pedir pro usuário qualquer configuração manual.
 
 Não é necessário listar o que foi lido nem confirmar a leitura. Apenas usar o contexto naturalmente.
 
@@ -84,7 +89,7 @@ Não é necessário listar o que foi lido nem confirmar a leitura. Apenas usar o
 Quando iniciar um novo projeto de cliente:
 
 1. Rodar `/novo-projeto` e responder as perguntas do cliente
-2. O briefing gerado fica em `clientes/<Nome>/briefing.md`
+2. O briefing gerado fica em `clientes/<Nome>/briefing.md` — incluir no briefing o tipo do projeto (Tipo A: Astro / Tipo B: Next.js + Supabase)
 3. Comunicar o caminho do briefing pro Claude Code em `projeto/`:
    ```
    Lê o briefing em C:\Users\Xande\Desktop\MazyOS\clientes\<Nome>\briefing.md,
@@ -92,7 +97,8 @@ Quando iniciar um novo projeto de cliente:
    e cria a estrutura do site.
    ```
 4. Desenvolvimento acontece dentro de `projeto/<Nome>/`
-5. Quando pronto, mover a pasta `projeto/<Nome>/` pro Desktop
+5. Deploy conforme o tipo: Tipo A → Netlify ou Cloudflare Pages; Tipo B → Vercel + Supabase
+6. Quando pronto, mover a pasta `projeto/<Nome>/` pro Desktop
 
 ---
 
