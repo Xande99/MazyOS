@@ -70,7 +70,11 @@ There is no codebase or Figma file — this is a from-brief brand build. The oct
 - Spacing: `spacing-radius.html`
 
 **Deliverable**
-- `duPolvo Landing.html` — full animated landing page (Header, Hero+ticker, Problema, Solução, Serviços, Processo, Blog, Diferenciais/stats, FAQ, CTA final, Footer). Single file, all tokens in `:root`, embedded CSS/JS; references local fonts + mascot.
+- `duPolvo/index.html` (+ `duPolvo/css/style.css`, `duPolvo/js/main.js`) — full animated landing page (Header, Hero+ticker, Problema, Solução, Serviços, Processo, Blog, Diferenciais/stats, FAQ, CTA final, Footer). Tokens consumed from `../tokens/*.css` at the top of `style.css`; references local fonts + mascot.
+
+**Reusable library** (extracted 2026-07-09, from the front-end evolution plan)
+- `sections/` — the sections above, genericized (client-agnostic copy, no duPolvo-specific classes) for reuse in any new LP. See `sections/README.md`.
+- `motion-kit/` — the animation system (reveal/stagger/counter/word-split) as a standalone vanilla-JS module, plus GSAP/Motion equivalent recipes for Astro/Next.js projects. See `motion-kit/README.md`.
 
 **Skill**
 - `SKILL.md` — Agent-Skill manifest for reuse in Claude Code.

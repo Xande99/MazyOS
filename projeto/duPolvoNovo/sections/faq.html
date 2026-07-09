@@ -1,0 +1,58 @@
+<!-- ============================================================
+     SEÇÃO: FAQ (accordion, claro)
+     Depende de: ../styles.css (JS do accordion, ver abaixo — não faz
+     parte do motion-kit porque não é uma animação de entrada, é uma
+     interação persistente de toggle)
+     Padrão extraído de: duPolvo/index.html #faq
+
+     Customizar: eyebrow, título, lead, e as perguntas/respostas — 4 a 6
+     é o ponto doce (menos parece pouco conteúdo, mais vira parede de texto).
+     Responda objeções reais de venda (preço, prazo, contrato, atendimento),
+     não perguntas genéricas de preenchimento.
+     ============================================================ -->
+<section class="section" id="faq" style="background:#fff">
+  <div class="container faq__wrap">
+    <div class="faq__intro reveal">
+      <span class="eyebrow">Dúvidas frequentes</span>
+      <h2 style="margin-top:16px">Título que convida a resolver a última objeção.</h2>
+      <p class="lead" style="margin-top:16px">Uma frase convidando a perguntar direto caso falte algo aqui.</p>
+    </div>
+    <div class="faq__list" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q">Pergunta 1?<span class="faq-q__ic"><i data-lucide="plus"></i></span></button>
+        <div class="faq-a"><div class="faq-a__inner">Resposta objetiva, sem enrolação, encerrando a objeção.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Pergunta 2?<span class="faq-q__ic"><i data-lucide="plus"></i></span></button>
+        <div class="faq-a"><div class="faq-a__inner">Resposta objetiva, sem enrolação, encerrando a objeção.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Pergunta 3?<span class="faq-q__ic"><i data-lucide="plus"></i></span></button>
+        <div class="faq-a"><div class="faq-a__inner">Resposta objetiva, sem enrolação, encerrando a objeção.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Pergunta 4?<span class="faq-q__ic"><i data-lucide="plus"></i></span></button>
+        <div class="faq-a"><div class="faq-a__inner">Resposta objetiva, sem enrolação, encerrando a objeção.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--
+  Boot (toggle do accordion — independente do motion-kit):
+
+  document.querySelectorAll('#faqList .faq-item').forEach(function (item) {
+    var q = item.querySelector('.faq-q');
+    var a = item.querySelector('.faq-a');
+    q.addEventListener('click', function () {
+      var open = item.classList.contains('open');
+      document.querySelectorAll('#faqList .faq-item.open').forEach(function (o) {
+        o.classList.remove('open');
+        o.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if (!open) { item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
+    });
+  });
+
+  Além disso, `.faq__intro` entra via reveal padrão (initReveal).
+-->

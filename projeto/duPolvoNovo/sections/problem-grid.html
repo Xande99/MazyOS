@@ -1,0 +1,32 @@
+<!-- ============================================================
+     SEÇÃO: Grid de problemas/dores (4 cards, claro)
+     Depende de: ../styles.css + ../motion-kit/motion-kit.{css,js}
+     Padrão extraído de: duPolvo/index.html #problema
+
+     Customizar: eyebrow, título, lead, e os 4 pares ícone/título/texto.
+     Funciona igualmente bem pra "dores do cliente" ou "benefícios/
+     diferenciais" — só troca o enquadramento do título e o tom dos textos.
+     ============================================================ -->
+<section class="section" id="problema">
+  <div class="container">
+    <div class="prob__head">
+      <div class="reveal">
+        <span class="eyebrow">O problema</span>
+        <h2 style="margin-top:16px">Título que nomeia a dor central do público — direto, sem enrolação.</h2>
+      </div>
+      <p class="lead reveal" style="--reveal-y:18px">Parágrafo de apoio explicando por que essa dor existe e o que ela custa (tempo, dinheiro, oportunidade) se não for resolvida.</p>
+    </div>
+    <div class="prob__grid" data-stagger>
+      <div class="pain"><div class="pain__ic"><i data-lucide="unplug"></i></div><h3>Dor 1 — título curto</h3><p>Uma frase concreta descrevendo o sintoma, não a causa abstrata.</p></div>
+      <div class="pain"><div class="pain__ic"><i data-lucide="ghost"></i></div><h3>Dor 2 — título curto</h3><p>Uma frase concreta descrevendo o sintoma, não a causa abstrata.</p></div>
+      <div class="pain"><div class="pain__ic"><i data-lucide="compass"></i></div><h3>Dor 3 — título curto</h3><p>Uma frase concreta descrevendo o sintoma, não a causa abstrata.</p></div>
+      <div class="pain"><div class="pain__ic"><i data-lucide="settings"></i></div><h3>Dor 4 — título curto</h3><p>Uma frase concreta descrevendo o sintoma, não a causa abstrata.</p></div>
+    </div>
+  </div>
+</section>
+
+<!--
+  Boot (reveal com stagger, sem lógica extra — basta estar dentro do
+  seletor default de MotionKit.initReveal(), que já cobre '.reveal' e
+  '[data-stagger]').
+-->

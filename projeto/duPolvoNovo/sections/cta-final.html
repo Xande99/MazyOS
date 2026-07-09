@@ -1,0 +1,53 @@
+<!-- ============================================================
+     SEÇÃO: CTA final (dark, headline em palavras)
+     Depende de: ../styles.css + ../motion-kit/motion-kit.{css,js}
+     Padrão extraído de: duPolvo/index.html #contato
+
+     Customizar: eyebrow, headline (2 CTAs — uma canal direto tipo
+     WhatsApp/telefone, outra alternativa tipo e-mail/formulário),
+     texto de apoio, e a imagem/ilustração decorativa (opcional —
+     pode remover .cta__octo se não tiver mascote/ilustração própria).
+     ============================================================ -->
+<section class="cta section" id="contato">
+  <span class="cta__glow"></span>
+  <div class="container">
+    <div class="cta__card reveal">
+      <span class="eyebrow on-dark" style="justify-content:center">Vamos juntos?</span>
+      <h2 style="margin-top:18px">Headline final com uma pergunta direta e um pouco de tensão.</h2>
+      <p>Uma frase de apoio reforçando resposta rápida e zero fricção pra começar a conversa.</p>
+      <div class="cta__ctas">
+        <a href="https://wa.me/SEUNUMERO" class="btn btn--lime btn--lg"><i data-lucide="message-circle"></i><span>Falar no WhatsApp</span></a>
+        <button id="btnEmail" type="button" class="btn btn--ghost btn--lg on-dark"><i data-lucide="mail"></i><span>Mandar e-mail</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--
+  Boot (headline em palavras + botões entrando depois do card subir —
+  registrar dentro do onReveal do initReveal, disparado quando .cta__card
+  entra em cena):
+
+  var ctaH2 = document.querySelector('.cta__card h2');
+  MotionKit.splitWords(ctaH2);
+
+  MotionKit.initReveal({
+    selector: '.reveal, [data-stagger]',
+    onReveal: function (el) {
+      if (!el.classList.contains('cta__card')) return;
+      var words = el.querySelectorAll('h2 .word');
+      words.forEach(function (w, i) {
+        setTimeout(function () { w.classList.add('in'); }, i * 100 + 420);
+      });
+      var ctas = el.querySelector('.cta__ctas');
+      if (ctas) setTimeout(function () {
+        ctas.classList.add('cta-in');
+      }, 420 + words.length * 100 + 200);
+    }
+  });
+
+  Note que `.cta__card` tem `opacity:1` fixo no CSS original (o card em
+  si não faz fade — só a headline em palavras e os botões animam por
+  dentro dele). Se copiar o padrão, mantenha essa particularidade ou
+  vai duplicar a animação de entrada.
+-->

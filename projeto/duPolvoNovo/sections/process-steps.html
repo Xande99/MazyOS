@@ -1,0 +1,49 @@
+<!-- ============================================================
+     SEÇÃO: Processo em etapas (4 passos, claro ou dark)
+     Depende de: ../styles.css + ../motion-kit/motion-kit.{css,js}
+     Padrão extraído de: duPolvo/index.html #processo (variante clara)
+     e #solucao (variante dark com anel de ícone + linha conectora, use
+     a classe .steps em vez de .proc__grid se quiser a versão com anel).
+
+     Customizar: eyebrow, título, lead, e as 4 etapas (número, título,
+     texto curto). Mantenha só 4 — o grid e a linha conectora (.steps)
+     são desenhados pra esse número; menos ou mais exige ajustar o CSS.
+     ============================================================ -->
+<section class="section" id="processo" style="background:#fff">
+  <div class="container">
+    <div class="proc__head reveal">
+      <span class="eyebrow">Como funciona</span>
+      <h2 style="margin-top:16px">Título curto que promete simplicidade no processo.</h2>
+      <p class="lead" style="margin-top:16px">Uma frase reforçando previsibilidade: sem ruído, sem sumiço, sem surpresa.</p>
+    </div>
+    <div class="proc__grid" data-stagger>
+      <div class="proc-item"><div class="proc-item__n">01</div><h3>Etapa 1</h3><p>O que acontece nessa etapa, em uma frase.</p></div>
+      <div class="proc-item"><div class="proc-item__n">02</div><h3>Etapa 2</h3><p>O que acontece nessa etapa, em uma frase.</p></div>
+      <div class="proc-item"><div class="proc-item__n">03</div><h3>Etapa 3</h3><p>O que acontece nessa etapa, em uma frase.</p></div>
+      <div class="proc-item"><div class="proc-item__n">04</div><h3>Etapa 4</h3><p>O que acontece nessa etapa, em uma frase.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Variante dark com anel de ícone + linha conectora que "cresce" no reveal
+     (classe .steps em vez de .proc__grid) — usar quando a seção anterior
+     ou seguinte já for clara, pra alternar o ritmo da página: -->
+<!--
+<section class="section dark" id="solucao">
+  <div class="container">
+    <div class="sol__head reveal">
+      <span class="eyebrow on-dark">Como resolvemos</span>
+      <h2 style="margin-top:16px">Título curto.</h2>
+      <p class="lead" style="margin-top:18px">Frase de apoio.</p>
+    </div>
+    <div class="steps" data-stagger>
+      <div class="step"><div class="step__ic"><i data-lucide="search"></i></div><div class="step__n">ETAPA 01</div><h3>Nome</h3><p>Texto curto.</p></div>
+      <div class="step"><div class="step__ic"><i data-lucide="target"></i></div><div class="step__n">ETAPA 02</div><h3>Nome</h3><p>Texto curto.</p></div>
+      <div class="step"><div class="step__ic"><i data-lucide="sparkles"></i></div><div class="step__n">ETAPA 03</div><h3>Nome</h3><p>Texto curto.</p></div>
+      <div class="step"><div class="step__ic"><i data-lucide="line-chart"></i></div><div class="step__n">ETAPA 04</div><h3>Nome</h3><p>Texto curto.</p></div>
+    </div>
+  </div>
+</section>
+-->
+
+<!-- Boot: reveal padrão (initReveal), sem lógica extra. -->

@@ -1,0 +1,44 @@
+<!-- ============================================================
+     SEÇÃO: Diferenciais + prova social em números (dark, 2 colunas)
+     Depende de: ../styles.css + ../motion-kit/motion-kit.{css,js}
+     Padrão extraído de: duPolvo/index.html #diferenciais
+
+     Customizar: eyebrow, título, lead, as 3 linhas de diferencial
+     (ícone + título + texto) e os 4 números — data-count é o valor
+     final, data-decimals casas decimais (omitir = inteiro). O contador
+     só anima quando entra em viewport (ver README de motion-kit).
+     Use números reais — número inventado é o tipo de coisa que essa
+     mesma auditoria de front-end pegaria numa entrega de cliente.
+     ============================================================ -->
+<section class="section dark" id="diferenciais">
+  <div class="container diff__grid">
+    <div class="diff__list reveal">
+      <span class="eyebrow on-dark">Dados e resultado</span>
+      <h2 style="margin-top:16px">Título que ancora prova em números, não em adjetivo.</h2>
+      <p class="lead">Uma frase reforçando que o resultado é real e verificável.</p>
+      <div class="diff-row"><div class="diff-row__ic"><i data-lucide="layers"></i></div><div><h4>Diferencial 1</h4><p>Uma frase explicando o porquê disso importar pro cliente.</p></div></div>
+      <div class="diff-row"><div class="diff-row__ic"><i data-lucide="heart-handshake"></i></div><div><h4>Diferencial 2</h4><p>Uma frase explicando o porquê disso importar pro cliente.</p></div></div>
+      <div class="diff-row"><div class="diff-row__ic"><i data-lucide="message-circle-off"></i></div><div><h4>Diferencial 3</h4><p>Uma frase explicando o porquê disso importar pro cliente.</p></div></div>
+    </div>
+    <div class="stats" data-stagger>
+      <div class="stat"><div class="stat__num"><span data-count="0">0</span><span class="suf">+</span></div><div class="stat__label">Legenda do número 1</div></div>
+      <div class="stat"><div class="stat__num"><span data-count="0">0</span><span class="suf">%</span></div><div class="stat__label">Legenda do número 2</div></div>
+      <div class="stat"><div class="stat__num"><span data-count="0" data-decimals="1">0</span></div><div class="stat__label">Legenda do número 3</div></div>
+      <div class="stat"><div class="stat__num"><span data-count="0">0</span></div><div class="stat__label">Legenda do número 4</div></div>
+    </div>
+  </div>
+</section>
+
+<!--
+  Boot (contador só dispara quando o grid .stats entra em cena):
+
+  MotionKit.initReveal({
+    selector: '.reveal, [data-stagger]',
+    onReveal: function (el) {
+      if (!el.classList.contains('stats')) return;
+      el.querySelectorAll('[data-count]').forEach(function (counter, i) {
+        setTimeout(function () { MotionKit.animateCount(counter); }, i * 110 + 200);
+      });
+    }
+  });
+-->

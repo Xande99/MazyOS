@@ -1,0 +1,61 @@
+/* ============================================================
+   duPolvo Motion Kit — CSS companion
+   ============================================================
+   Classes consumidas por motion-kit.js. Requer os tokens de motion
+   (../tokens/motion.css: --ease-out-expo, --dur-reveal, --reveal-y).
+   Import depois dos tokens, antes do CSS específico da página.
+   ============================================================ */
+
+/* ─── Reveal simples: fade + sobe ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 26px));
+  transition: opacity var(--dur-reveal, 700ms) var(--ease-out-expo, ease-out),
+              transform var(--dur-reveal, 700ms) var(--ease-out-expo, ease-out);
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* ─── Stagger: cada filho revela em sequência (delay setado via JS) ─── */
+[data-stagger] > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--dur-reveal, 700ms) var(--ease-out-expo, ease-out),
+              transform var(--dur-reveal, 700ms) var(--ease-out-expo, ease-out);
+}
+[data-stagger].in > * { opacity: 1; transform: none; }
+
+/* ─── Headline quebrada em palavras (via MotionKit.splitWords) ───
+   Cada .word entra com leve rotação, imitando o reveal do hero da duPolvo.
+   Ative com heroEntrance() ou adicionando `.in` manualmente por palavra. */
+.word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(45%) rotate(3deg);
+  transition: opacity var(--dur-reveal, 700ms) var(--ease-out-expo, ease-out),
+              transform var(--dur-reveal, 700ms) var(--ease-out-expo, ease-out);
+}
+.word.in { opacity: 1; transform: none; }
+
+/* ─── Qualquer elemento com entrada coreografada via heroEntrance() ───
+   Aplique esta classe base + `hero-in` (ou o className customizado) no JS. */
+.entrance {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 500ms var(--ease-out-expo, ease-out),
+              transform 500ms var(--ease-out-expo, ease-out);
+}
+.entrance.hero-in { opacity: 1; transform: none; }
+
+/* ─── Respeita prefers-reduced-motion: reduce ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal, [data-stagger] > *, .word, .entrance {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

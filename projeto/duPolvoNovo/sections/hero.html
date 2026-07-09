@@ -1,0 +1,65 @@
+<!-- ============================================================
+     SEÇÃO: Hero (dark)
+     Depende de: ../styles.css (ou tokens/ + classes .hero* do CSS
+     da duPolvo) + ../motion-kit/motion-kit.{css,js}
+     Padrão extraído de: duPolvo/index.html + duPolvo/js/main.js
+
+     Customizar: eyebrow, headline (mantenha 1-2 palavras marcadas com
+     .accent-pink pra dar ênfase), lead, CTAs, prova social, chips do
+     hero__media (uma por serviço/diferencial) e a imagem/ilustração.
+     Troque data-lucide pelos ícones do seu set (ou mantenha Lucide).
+     ============================================================ -->
+<section class="hero" id="top">
+  <span class="hero__glow"></span>
+  <span class="hero__glow two"></span>
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <span class="eyebrow on-dark">[Categoria] · [Cidade-UF]</span>
+      <h1 id="heroHead">
+        <!-- Texto puro aqui — o JS quebra em .word automaticamente via MotionKit.splitWords().
+             Se preferir já marcar a manoautorização de destaque, envolva a(s) palavra(s)
+             de ênfase com <span class="accent-pink">…</span> antes do split. -->
+        Título de impacto em duas frases curtas, uma delas com uma <span class="accent-pink">palavra de destaque</span>.
+      </h1>
+      <p class="lead">Uma frase de apoio que explica a promessa central — o que o visitante ganha, em linguagem direta, sem jargão.</p>
+      <div class="hero__ctas">
+        <a href="#contato" class="btn btn--lg"><span>Ação principal</span><i data-lucide="arrow-up-right"></i></a>
+        <a href="#servicos" class="btn btn--ghost btn--lg on-dark"><span>Ação secundária</span></a>
+      </div>
+      <div class="hero__proof">
+        <span class="stars">
+          <i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i>
+        </span>
+        <span>Prova social curta — nº de clientes, avaliação, anos de mercado</span>
+      </div>
+    </div>
+    <div class="hero__media">
+      <span class="hero__blob"></span>
+      <img class="octo" src="assets/imagem-hero.png" alt="Descreva a imagem — o que ela mostra e por quê importa" />
+      <!-- 2 a 4 chips flutuantes, um por serviço/diferencial. c1/c2/c3/c4 controlam posição (ver style.css) -->
+      <span class="hero__chip c1"><i data-lucide="code-2"></i> Serviço 1</span>
+      <span class="hero__chip c2"><i data-lucide="pen-tool"></i> Serviço 2</span>
+      <span class="hero__chip c3"><i data-lucide="trending-up"></i> Serviço 3</span>
+      <span class="hero__chip c4"><i data-lucide="clapperboard"></i> Serviço 4</span>
+    </div>
+  </div>
+</section>
+
+<!--
+  Boot da coreografia de entrada (uma vez por página, no JS principal):
+
+  MotionKit.splitWords(document.getElementById('heroHead'));
+  MotionKit.heroEntrance([
+    { selector: '.hero .eyebrow',    delay: 80,  className: 'hero-in' },
+    { selector: '#heroHead .word',   delay: 180, stagger: 70, className: 'in' },
+    { selector: '.hero p.lead',      delay: 620, className: 'hero-in' },
+    { selector: '.hero__ctas',       delay: 780, className: 'hero-in' },
+    { selector: '.hero__proof',      delay: 960, className: 'hero-in' },
+    { selector: '.octo',             delay: 260, className: 'hero-in' },
+    { selector: '.hero__chip',       delay: 540, stagger: 150, className: 'hero-in' }
+  ]);
+
+  Requer no CSS as classes .hero .eyebrow / .hero p.lead / .hero__ctas /
+  .hero__proof / .octo / .hero__chip com estado inicial oculto + '.hero-in'
+  revelando (ver duPolvo/css/style.css, bloco "ANIMATION EXTENSIONS").
+-->
