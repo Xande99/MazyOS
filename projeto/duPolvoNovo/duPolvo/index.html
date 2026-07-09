@@ -122,7 +122,8 @@
       <h2 style="margin-top:16px">A gente mergulha no problema antes de criar a solução.</h2>
       <p class="lead" style="margin-top:18px">Um fluxo só, do diagnóstico à evolução. Cada braço puxa na mesma direção pra resolver a dor de verdade — não só maquiar o sintoma.</p>
     </div>
-    <div class="steps" data-stagger>
+    <div class="steps" id="stepsRow">
+      <div class="steps__line" aria-hidden="true"><span class="steps__line-fill"></span></div>
       <div class="step"><div class="step__ic"><i data-lucide="search"></i></div><div class="step__n">ETAPA 01</div><h3>Diagnóstico</h3><p>Entendemos o momento da marca, seus desafios e oportunidades reais.</p></div>
       <div class="step"><div class="step__ic"><i data-lucide="target"></i></div><div class="step__n">ETAPA 02</div><h3>Estratégia</h3><p>Definimos o caminho ideal pra posicionar, conectar e crescer.</p></div>
       <div class="step"><div class="step__ic"><i data-lucide="sparkles"></i></div><div class="step__n">ETAPA 03</div><h3>Criação</h3><p>Desenvolvemos materiais, campanhas e soluções com propósito.</p></div>
@@ -323,6 +324,8 @@
 </footer>
 
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js" defer></script>
+<script src="https://unpkg.com/gsap@3.15.0/dist/gsap.min.js" defer></script>
+<script src="https://unpkg.com/gsap@3.15.0/dist/ScrollTrigger.min.js" defer></script>
 <script src="js/main.js" defer></script>
 </body>
 </html>

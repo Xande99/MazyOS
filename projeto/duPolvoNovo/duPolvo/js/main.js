@@ -246,6 +246,45 @@
   heroEntrance();
 })();
 
+/* ─── Solução: linha de processo pinada com scroll (GSAP + ScrollTrigger) ───
+   Só ativa com motion permitido e as duas libs carregadas — sem elas, ou com
+   prefers-reduced-motion, a seção fica no estado final estático (ver CSS,
+   regras .motion-ready), sem perda de conteúdo. */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var section = document.getElementById('solucao');
+  var stepsEl = section && document.getElementById('stepsRow');
+  var fill    = stepsEl && stepsEl.querySelector('.steps__line-fill');
+  if (!section || !stepsEl || !fill || reduce) return;
+  if (!window.gsap || !window.ScrollTrigger) return;
+
+  gsap.registerPlugin(ScrollTrigger);
+  stepsEl.classList.add('motion-ready');
+
+  var steps = stepsEl.querySelectorAll('.step');
+  var thresholds = Array.prototype.map.call(steps, function (_, i) {
+    return (i + 1) / steps.length - 0.08;
+  });
+
+  var tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: section,
+      start: 'top top',
+      end: '+=100%',
+      scrub: 0.6,
+      pin: true,
+      anticipatePin: 1,
+      onUpdate: function (self) {
+        Array.prototype.forEach.call(steps, function (step, i) {
+          step.classList.toggle('step--active', self.progress >= thresholds[i]);
+        });
+      }
+    }
+  });
+
+  tl.to(fill, { scaleX: 1, ease: 'none' });
+})();
+
 /* ─── Contact modal ─── */
 (function () {
   var MODAL_HTML =

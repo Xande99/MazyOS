@@ -29,7 +29,8 @@ Agência criativa e digital, 4 pessoas, Guaratinguetá SP. Atendemos pequenos ne
 
 ## Clientes ativos
 
-*(Nenhum ainda — fase de pré-lançamento. Atualizar quando o primeiro entrar.)*
+- **Vinicius-Brito** — LP entregável em `clientes/Vinicius-Brito/landing-page/`
+- **Ribas Suplementos** — em desenvolvimento (`projeto/Ribas Suplementos/`), briefing em `clientes/Ribas Suplementos/`
 
 ## O que mais produzimos aqui
 
@@ -54,6 +55,8 @@ Evitar: alavancar, ecossistema, jornada, entregar valor, metodologia ágil, mind
 
 ## Ferramentas conectadas
 
+- [x] Playwright MCP — verificação visual/funcional de páginas renderizadas
+- [x] Context7 MCP — documentação atualizada de libs (GSAP, Motion, Next.js, Tailwind etc.)
 - [ ] Notion
 - [ ] Gmail
 - [ ] Google Calendar
@@ -61,6 +64,42 @@ Evitar: alavancar, ecossistema, jornada, entregar valor, metodologia ágil, mind
 - [ ] Google Ads
 
 *(Marcar conforme for instalando os MCPs)*
+
+---
+
+## Skills de animação (nível referência)
+
+Instaladas via marketplace `freshtechbro/claudedesignskills` (bundles `core-3d-animation`, `extended-3d-scroll`, `animation-components`). Regra de stack de animação completa (hierarquia CSS → View Transitions → GSAP → Motion) já vive em `projeto/CLAUDE.md` — aqui só o mapa de qual skill nova puxar em cada caso.
+
+**Tipo A (Astro/GSAP) — puxar por padrão:**
+- `gsap-scrolltrigger` — scroll storytelling, pinning, scrub, timelines (a base, já é stack oficial)
+- `locomotive-scroll` — smooth scroll + parallax quando a LP pede uma camada extra de imersão
+- `lightweight-3d-effects` (Zdog/Vanta/Vanilla-Tilt) — profundidade decorativa leve em hero sem WebGL pesado
+- `scroll-reveal-libraries` (AOS) — só pra fade/slide simples quando GSAP for overkill
+- `animejs` — SVG morphing e coreografias timeline fora do escopo do GSAP
+- `barba-js` — transição entre páginas, quando a View Transitions API nativa não bastar
+- `threejs-webgl` / `pixijs-2d` — só se a peça pedir um centro 3D/2D ambicioso (hero de impacto); usar com moderação, pesa no Lighthouse
+
+**Tipo B (Next.js/Motion) — puxar por padrão:**
+- `motion-framer` — já é a stack oficial (`motion`, App Router)
+- `react-spring-physics` — gestos com inércia e física real (drag, swipe) além do que Motion cobre bem
+- `animated-component-libraries` (Magic UI/React Bits) — componentes prontos pra dashboards quando não vale a pena entalhar do zero
+- `react-three-fiber` — 3D declarativo dentro de app React (configurador de produto, dataviz)
+
+**Uso cruzado (A ou B):**
+- `lottie-animations` — ícones animados, loading states, micro-interações vindas do design
+- `babylonjs-engine` / `playcanvas-engine` / `aframe-webxr` — engines de jogo/VR completas; raramente necessárias pra LP/sistema de agência, só se o projeto for literalmente um jogo/experiência 3D
+
+## Regras obrigatórias de front-end
+
+Valendo pra qualquer projeto (LP, site, sistema, dashboard) — comportamento automático, sem precisar pedir:
+
+1. Ao criar ou editar qualquer interface visual, avaliar automaticamente se motion design agrega (consultando as skills acima) antes de entregar uma seção estática. Motion é avaliado sempre, mesmo que a resposta seja "não precisa".
+2. Usar o Context7 MCP antes de escrever código com GSAP, Motion, Next.js ou Tailwind — API sempre atual, nunca de memória.
+3. Verificar todo trabalho visual com o Playwright MCP antes de dar como concluído: abrir a página, testar a animação renderizada, confirmar que não quebrou layout nem performance.
+4. Padrão de qualidade é nível referência (Awwwards, godly.website): tipografia intencional, espaçamento preciso, micro-interações, hierarquia visual forte. "Funciona" não é suficiente. Se uma entrega estiver visualmente genérica, apontar isso proativamente e propor o upgrade.
+5. Animação é deliberada, não decorativa — cada movimento revela, guia o olhar ou conta a história do scroll. Evitar fade genérico espalhado; preferir um momento orquestrado de impacto.
+6. Performance e acessibilidade não são negociáveis: `prefers-reduced-motion` sempre implementado, animar só `transform`/`opacity` (regra que já existe em `projeto/CLAUDE.md`, reforçada aqui pro nível de ambição subir).
 
 ---
 
@@ -159,6 +198,14 @@ Mostrar o que vai mudar antes de salvar. Não reformatar o arquivo inteiro, só 
 **Dica:** rode `/atualizar` pra uma varredura completa quando houver dúvida.
 
 ---
+
+## Pendências conhecidas
+
+Levantadas em `saidas/relatorio-estado-mazyos.md` (2026-07-09), decisão de resolver adiada — não remover esta seção até cada item ser tratado:
+
+- **`propostas/` e `briefings/` nunca foram criadas** — nenhum dos 2 clientes ativos tem proposta formal registrada, apesar do fluxo padrão prever isso.
+- **`duPolvoNovo` (site institucional) não segue a stack oficial de Tipo A** — é HTML/CSS/JS vanilla, não Astro. Migração pendente de decisão (quando/se vale a pena).
+- **`projeto/curriculo_digital`** é um repositório git próprio, sem relação clara com a agência — confirmar se deve continuar dentro de `projeto/` ou sair daqui.
 
 ## Criação de skills
 

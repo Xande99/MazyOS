@@ -218,19 +218,36 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
 .sol__head{max-width:680px;margin-bottom:54px}
 .sol__head h2{font-size:var(--fs-h1)}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
-.steps::before{content:"";position:absolute;top:30px;left:8%;right:8%;height:2px;
-  background:linear-gradient(90deg,var(--du-aqua),rgba(129,223,192,.15))}
+.steps__line{position:absolute;top:30px;left:8%;width:84%;height:2px;border-radius:2px;
+  background:rgba(129,223,192,.15);overflow:hidden}
+.steps__line-fill{position:absolute;inset:0;background:var(--du-aqua);
+  transform-origin:left center;transform:scaleX(0)}
 .step{position:relative;padding:0 18px;text-align:left}
 .step__ic{width:62px;height:62px;border-radius:50%;background:var(--du-ink-2);
   border:2px solid var(--du-aqua);color:var(--du-aqua);display:grid;place-items:center;
   position:relative;z-index:2;margin-bottom:22px;transition:transform var(--dur) var(--ease-back),
-  background var(--dur) var(--ease),color var(--dur) var(--ease)}
+  background var(--dur) var(--ease),color var(--dur) var(--ease),opacity var(--dur-slow) var(--ease)}
 .step__ic .lucide{width:26px;height:26px}
 .step:hover .step__ic{background:var(--du-aqua);color:var(--du-ink);transform:translateY(-4px) scale(1.06)}
 .step__n{font-family:var(--font-display);font-weight:800;color:var(--du-aqua);font-size:.9rem;
-  letter-spacing:.1em;margin-bottom:6px}
-.step h3{font-size:var(--fs-h3);margin-bottom:8px}
-.step p{font-size:var(--fs-small);color:var(--text-body-dark)}
+  letter-spacing:.1em;margin-bottom:6px;transition:opacity var(--dur-slow) var(--ease),transform var(--dur-slow) var(--ease)}
+.step h3{font-size:var(--fs-h3);margin-bottom:8px;transition:opacity var(--dur-slow) var(--ease),transform var(--dur-slow) var(--ease)}
+.step p{font-size:var(--fs-small);color:var(--text-body-dark);transition:opacity var(--dur-slow) var(--ease),transform var(--dur-slow) var(--ease)}
+
+/* Estado inicial só existe quando o JS confirma GSAP + ScrollTrigger + motion permitido
+   (classe .motion-ready adicionada via JS) — sem JS ou com prefers-reduced-motion, os
+   passos ficam sempre visíveis no estado final, sem depender de scroll pra aparecer. */
+.steps.motion-ready .step__ic{opacity:.35;transform:scale(.7)}
+.steps.motion-ready .step.step--active .step__ic{opacity:1;transform:scale(1)}
+.steps.motion-ready .step__n,
+.steps.motion-ready .step h3,
+.steps.motion-ready .step p{opacity:0;transform:translateY(16px)}
+.steps.motion-ready .step.step--active .step__n{transition-delay:.05s}
+.steps.motion-ready .step.step--active h3{transition-delay:.09s}
+.steps.motion-ready .step.step--active p{transition-delay:.13s}
+.steps.motion-ready .step.step--active .step__n,
+.steps.motion-ready .step.step--active h3,
+.steps.motion-ready .step.step--active p{opacity:1;transform:none}
 
 /* ============================================================
    SERVIÇOS

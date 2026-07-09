@@ -66,7 +66,16 @@
       "Bash(find . -maxdepth 2)",
       "Skill(run)",
       "Bash(grep -Hm1 ^description: '/c/Users/Angel/OneDrive/Área de Trabalho/MazyOS/projeto/dashboard/.claude/skills/*/SKILL.md')",
-      "PowerShell(Start-Process \"http://localhost:3000\")"
+      "PowerShell(Start-Process \"http://localhost:3000\")",
+      "Bash(claude --version)",
+      "Bash(claude mcp *)",
+      "Bash(claude plugin *)",
+      "Bash(npx playwright *)",
+      "WebFetch(domain:github.com)",
+      "WebSearch",
+      "Bash(node --check \"/c/Users/Angel/OneDrive/Área de Trabalho/MazyOS/projeto/duPolvoNovo/duPolvo/js/main.js\")",
+      "Bash(git status *)",
+      "Bash(git add *)"
     ]
   }
 }

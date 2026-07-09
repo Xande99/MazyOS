@@ -23,3 +23,4 @@ Escreve como quem tem algo real a dizer — não como quem precisa parecer agên
 - Não aceitar "melhorou"/"resolvido" só pela afirmação — quer evidência medida (números antes/depois, teste ponta a ponta) antes de considerar algo corrigido.
 - Nunca commitar ou dar push sem pedido explícito a cada vez, mesmo que uma mudança anterior já tenha sido aprovada.
 - Testar o fluxo completo (criar/editar/excluir, em pelo menos alguns cenários/larguras) antes de considerar uma feature pronta — não só "parece que funciona no código".
+- Objetivo permanente: elevar o front-end a nível de referência (Awwwards, godly.website). Animação e design excepcional são prioridade em todo projeto visual daqui pra frente — não só quando pedido explicitamente.
