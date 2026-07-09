@@ -19,6 +19,38 @@ Quando o usuário começa um projeto novo (cliente, iniciativa, produto), cria u
 3. "Qual o objetivo principal? (uma frase)"
 4. "Que tipo de entrega vai ter? (ex: ads, site, conteúdo, automação, proposta — pode ser mais de uma)"
 
+### Passo 1.1 — Tipo técnico do projeto (só se a resposta 4 mencionar site, sistema, painel, app ou similar)
+
+Se a resposta 4 incluir desenvolvimento de site/sistema, perguntar antes de seguir:
+
+> "Esse projeto de desenvolvimento é **Tipo A** (landing page, site
+> institucional, site de conteúdo) ou **Tipo B** (sistema, SaaS, dashboard,
+> área logada com login)?"
+
+Se o usuário não souber classificar: "Vai ter login e banco de dados guardando
+informação de usuário, ou é só um site pra mostrar o negócio e captar
+contato?" — segunda opção é Tipo A, primeira é Tipo B.
+
+Definir stack e deploy conforme a resposta (regras completas em `projeto/CLAUDE.md`, não repetir aqui):
+
+- **Tipo A** → stack: Astro + Tailwind + TypeScript + GSAP · deploy: Netlify ou Cloudflare Pages
+- **Tipo B** → stack: Next.js + TypeScript + Tailwind + Supabase/Postgres + Motion · deploy: Vercel
+  (avisar: "Como tem banco de dados, antes de começar vale consultar
+  `_memoria/checklist-novo-projeto-supabase.md`.")
+
+Se a entrega não envolve site/sistema (só ads, conteúdo, proposta, etc.), pular esse passo — nem toda entrega é desenvolvimento.
+
+### Passo 1.2 — Identidade visual (se a entrega envolve site, LP, redes sociais, branding ou qualquer peça visual)
+
+Perguntar:
+
+> "Esse cliente já tem identidade visual (cores, tipografia, referências) ou é pra criar em cima da linha visual da duPolvo?"
+
+- **Se já tem:** pedir ali mesmo os essenciais — cores principais (hex se souber), fontes, 1-2 referências ou prints. Vai pro `briefing.md`, seção "Identidade visual" (template no Passo 3).
+- **Se não tem / é pra herdar da duPolvo:** registrar "Identidade: herda a linha visual da duPolvo" no briefing. O projeto deve consumir `identidade/design-guide.md` + os tokens em `projeto/duPolvoNovo/tokens/` — nunca redigitar valores de cor/tipografia à mão num CSS novo. Essa cópia manual foi a causa da maior parte das inconsistências visuais encontradas na auditoria de front-end de 2026-07-09 (tokens divergindo entre projetos, bug de contraste replicado em 2 lugares).
+
+Não pular esse passo achando que "herda automaticamente" é suficiente — sem essa pergunta feita explicitamente, a captura de identidade acaba não acontecendo (foi o que aconteceu com o Ribas Suplementos: nasceu sem nenhuma cor de marca).
+
 ### Passo 2 — Decidir local
 
 Baseado na resposta 2:
@@ -32,8 +64,34 @@ Baseado na resposta 2:
 Criar a pasta com:
 
 - `CLAUDE.md` do projeto (instruções herdadas + específicas)
-- `briefing.md` (com o que foi coletado na entrevista)
+- `briefing.md` (com o que foi coletado na entrevista — template abaixo)
 - Subpastas conforme as entregas mencionadas (ex: se mencionou "ads e conteúdo", criar `ads/` e `conteudo/`)
+
+Template do `briefing.md` — se o Passo 1.1 rodou, as duas primeiras linhas
+(**Tipo** e **Deploy**) vão no topo, antes de qualquer outra coisa, porque é
+o primeiro arquivo que a sessão do Claude Code em `projeto/` lê:
+
+```markdown
+# Briefing — [Nome do projeto]
+
+**Tipo:** [A — Astro | B — Next.js + Supabase]
+**Deploy:** [Netlify/Cloudflare Pages | Vercel + Supabase]
+
+*(Omitir as duas linhas acima se o Passo 1.1 não rodou — nem todo projeto é desenvolvimento.)*
+
+## Sobre
+[Objetivo da resposta 3]
+
+## Entregas previstas
+- [entrega 1 da resposta 4]
+- [entrega 2 da resposta 4]
+- ...
+
+## Identidade visual
+[Preencher só se o Passo 1.2 rodou.
+Se o cliente já tem marca: cores principais (hex se souber), fontes, referências/prints.
+Se não tem: "Herda a linha visual da duPolvo — ver identidade/design-guide.md e projeto/duPolvoNovo/tokens/."]
+```
 
 ### Passo 4 — Conteúdo do `CLAUDE.md` do projeto
 
@@ -58,6 +116,12 @@ Template:
 - [entrega 2 da resposta 4]
 - ...
 
+## Tipo técnico do desenvolvimento
+
+[Preencher só se o Passo 1.1 rodou. Omitir essa seção inteira se não houver site/sistema entre as entregas.]
+
+Ver `briefing.md` (Tipo e Deploy). Stack completa e regras técnicas em `projeto/CLAUDE.md`.
+
 ## Onde salvar o que
 
 - Briefings e contexto: nessa pasta na raiz
@@ -81,7 +145,38 @@ Pasta criada: [caminho]
 ✓ CLAUDE.md do projeto
 ✓ briefing.md
 ✓ Subpastas: [lista]
+```
 
+Se o Passo 1.1 rodou, incluir também:
+
+```
+✓ Tipo técnico: [A | B] — stack: [Astro | Next.js + Supabase]
+```
+
+Se o Passo 1.2 rodou e a entrega envolve LP/site novo, incluir também esse lembrete (não deixar implícito no "herda da raiz" do CLAUDE.md — na prática isso não é suficiente pra garantir que a identidade seja de fato aplicada):
+
+```
+✓ Identidade visual: [colada do cliente | herda a linha da duPolvo]
+
+Antes de montar o design: rodar o kit mínimo de skills pra LP nova
+(storybrand-messaging → copywriting → frontend-design → hooked-ux →
+cro-methodology — regra completa em projeto/CLAUDE.md). Pra estrutura
+e animação, começar pelas seções prontas em
+projeto/duPolvoNovo/sections/ e o kit de animação em
+projeto/duPolvoNovo/motion-kit/ em vez de do zero.
+```
+
+E mostrar o comando pronto pra colar na sessão do Claude Code dentro de `projeto/`:
+
+```
+Lê o briefing em C:\Users\Angel\OneDrive\Área de Trabalho\MazyOS\clientes\<Nome>\briefing.md,
+consulta o cérebro em C:\Users\Angel\OneDrive\Área de Trabalho\cerebro
+e cria a estrutura do site.
+```
+
+Fechar com:
+
+```
 Quando for trabalhar nesse projeto, abre o terminal já dentro da pasta — assim eu carrego o CLAUDE.md específico junto com o da raiz.
 ```
 
@@ -89,4 +184,5 @@ Quando for trabalhar nesse projeto, abre o terminal já dentro da pasta — assi
 
 - Nome de pasta: usar o nome como o usuário falou, sem normalizar agressivamente (manter acentos, espaços viram hífen, mas o nome reconhecível)
 - Não criar subpastas que não foram pedidas ("pra organizar melhor"). Só o que foi mencionado nas entregas
+- Não pular o Passo 1.1 quando a entrega envolve site/sistema — sem o tipo definido, o Claude Code em `projeto/` não sabe qual stack aplicar
 - Se o cliente/projeto já existe (pasta com mesmo nome), avisar e perguntar se é pra adicionar dentro ou criar com sufixo
