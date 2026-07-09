@@ -1,5 +1,7 @@
 # Identidade visual
 
+> **Fonte técnica canônica:** `projeto/duPolvoNovo/tokens/*.css` (colors, typography, spacing, motion, fonts). Este arquivo é o resumo de referência rápida em linguagem humana — os valores exatos (incluindo variantes derivadas e regras de acessibilidade) vivem nos tokens. Se os dois divergirem, os tokens têm precedência e este arquivo deve ser atualizado.
+
 ---
 
 ## Cores
@@ -11,6 +13,8 @@
 - **Amarelo limão — ticker, badges, acentos:** `#DFFF5A`
 - **Verde água — ícones, bordas secundárias:** `#81DFC0`
 
+**Regra de acessibilidade (obrigatória):** o rosa `#FD4B90` puro **não passa contraste WCAG AA** quando usado como texto/ícone sobre fundo claro (~2.9:1) ou como fundo de botão com texto branco (~3.2:1) — mínimo exigido é 4.5:1 para texto normal. Nesses dois casos, usar a variante escurecida **`#C81F66`** (`--du-pink-ink` em `tokens/colors.css`), que passa em ~5:1. O rosa vívido original continua correto para: superfícies grandes/decorativas, glows, ícones sobre fundo escuro, e texto grande (títulos ≥ 24px ou ≥ 18.6px em negrito).
+
 ---
 
 ## Tipografia
@@ -19,6 +23,28 @@
 - **Display / H1:** ExtraBold 800, 36pt, letter-spacing negativo
 - **H2 / H3:** Bold 700, 24pt
 - **Corpo:** Regular 400, 24pt
+- **Escala fluida completa (clamp mobile→desktop) e demais pesos/tamanhos (lead, small, eyebrow, line-heights, letter-spacing):** ver `tokens/typography.css` — não duplicado aqui pra evitar mais uma fonte divergente.
+
+---
+
+## Espaçamento
+
+- **Escala base:** 4px (`--sp-1: 4px` até `--sp-10: 128px`)
+- **Container:** largura máxima 1200px
+- **Gutter lateral:** fluido, `clamp(20px, 5vw, 48px)`
+- **Ritmo entre seções:** fluido, `clamp(72px, 9vw, 140px)`
+- **Border-radius:** de 8px (sm) a 28px (xl), mais pill (999px) para botões/badges — generoso, nunca quadrado
+- Valores exatos e tokens de sombra: `tokens/spacing.css`
+
+---
+
+## Motion
+
+- **Easing assinatura:** `cubic-bezier(0.16, 1, 0.3, 1)` (ease-out expressivo) — usar como padrão em reveals e transições
+- **Easing "back" (bounce leve):** `cubic-bezier(0.34, 1.56, 0.64, 1)` — usado em hovers de ícone/card, não em page-level
+- **Durações:** 180ms (fast/hover) · 300ms (base) · 400ms (slow) · 760ms (reveal de entrada)
+- **Sempre** respeitar `prefers-reduced-motion: reduce` — remover/zerar entrada, stagger e loops de flutuação
+- Ver `tokens/motion.css` e a seção de Animação em `projeto/claude.md` (hierarquia CSS → View Transitions → GSAP/Motion)
 
 ---
 
@@ -32,7 +58,7 @@ Visual ousado mas limpo. Contraste alto entre fundo escuro e acentos vibrantes (
 
 - Bordas: usar com moderação, preferencialmente em verde água
 - Border-radius dos cards: generoso (suave, não quadrado)
-- Botões: rosa `#FD4B90` como padrão de CTA
+- Botões: rosa como padrão de CTA — usar `#C81F66` (`--du-pink-ink`) como fundo do botão preenchido com texto branco (o `#FD4B90` puro falha contraste aí); `#FD4B90` continua ok em botão ghost/outline (texto colorido, sem fundo preenchido)
 - Sombras: leves ou nenhuma — o contraste de cor já separa os elementos
 
 ---
@@ -57,4 +83,4 @@ Visual ousado mas limpo. Contraste alto entre fundo escuro e acentos vibrantes (
 
 ## Observações adicionais
 
-Site da duPolvo já desenvolvido — serve como referência visual primária. Consultar antes de criar qualquer peça nova.
+Site da duPolvo já desenvolvido (`projeto/duPolvoNovo/duPolvo/`) — serve como referência visual primária, e seu CSS consome diretamente os tokens em `projeto/duPolvoNovo/tokens/`. Consultar antes de criar qualquer peça nova. Qualquer projeto novo que herde a identidade da duPolvo (não a de um cliente com marca própria) deve importar/replicar esses tokens em vez de redigitar valores — é a causa mais comum de deriva visual entre projetos.

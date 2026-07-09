@@ -9,7 +9,7 @@
   --dur-fast: 180ms; /* @kind other */
   --dur-base: 300ms; /* @kind other */
   --dur-slow: 400ms; /* @kind other */
-  --dur-reveal: 700ms; /* @kind other */
+  --dur-reveal: 760ms; /* @kind other */
 
   /* Reveal transform distance */
   --reveal-y: 26px; /* @kind spacing */

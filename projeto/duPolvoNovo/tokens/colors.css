@@ -13,6 +13,7 @@
   --du-ink-3: #0E2440;        /* hover dark surface */
   --du-pink-600: #E23A7C;     /* pink pressed */
   --du-pink-100: #FFE3EE;     /* pink wash */
+  --du-pink-ink: #C81F66;     /* accessible pink — text/icons on light bg, solid button fill w/ white text. --du-pink itself fails WCAG AA as text-on-light (2.9:1) or white-on-pink (3.2:1); this variant passes at 4.99:1 / 5.46:1. Use --du-pink for large decorative surfaces, glows and anything on dark backgrounds; use --du-pink-ink whenever pink is the foreground color on a light/white surface. */
   --du-blue-700: #0C2336;     /* deepest blue text */
   --du-aqua-200: #D8F6EC;     /* aqua wash */
   --du-lime-200: #F2FFC4;     /* lime wash */
@@ -28,13 +29,14 @@
   /* ---- Semantic text ---- */
   --text-primary: var(--du-blue);     /* headings on light */
   --text-body: #45586A;               /* body on light */
-  --text-muted: #7E8C99;              /* captions on light */
+  --text-muted: #5B6773;              /* captions on light — darkened from #7E8C99 (was 3.14:1, fails AA) to 5.28:1 */
   --text-on-dark: #F4F8FF;            /* heading on dark */
   --text-body-dark: #A9B8CC;          /* body on dark */
   --text-muted-dark: #6E7F95;         /* captions on dark */
 
   /* ---- Accent semantics ---- */
   --accent: var(--du-pink);
+  --accent-ink: var(--du-pink-ink);   /* accessible variant — see note above */
   --accent-press: var(--du-pink-600);
   --accent-2: var(--du-lime);
   --accent-3: var(--du-aqua);

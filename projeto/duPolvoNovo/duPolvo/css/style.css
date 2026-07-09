@@ -9,24 +9,31 @@
 
 /* ============================================================
    TOKENS
+   Fonte canônica: ../tokens/*.css (design system duPolvoNovo).
+   Este bloco é a cópia consumida em produção — qualquer mudança
+   de valor deve ser feita primeiro em ../tokens/ e replicada aqui.
+   Nomes curtos (--ease, --dur) são aliases dos nomes canônicos
+   (--ease-out-expo, --dur-base) usados nos arquivos de tokens/
+   e extraídos pelo design-system (_ds_manifest.json).
    ============================================================ */
 :root{
   --du-cream:#F7F4F1; --du-ink:#020E20; --du-pink:#FD4B90; --du-blue:#123047;
   --du-lime:#DFFF5A; --du-aqua:#81DFC0;
   --du-ink-2:#08182E; --du-ink-3:#0E2440; --du-pink-600:#E23A7C; --du-pink-100:#FFE3EE;
+  --du-pink-ink:#C81F66; /* accessível — texto/ícone sobre claro, botão com texto branco (ver tokens/colors.css) */
   --du-aqua-200:#D8F6EC; --du-lime-200:#F2FFC4; --du-line:#E5DFD8; --du-line-dark:rgba(255,255,255,.10);
 
-  --text-primary:var(--du-blue); --text-body:#45586A; --text-muted:#7E8C99;
+  --text-primary:var(--du-blue); --text-body:#45586A; --text-muted:#5B6773;
   --text-on-dark:#F4F8FF; --text-body-dark:#A9B8CC; --text-muted-dark:#6E7F95;
 
   --font-display:"Bricolage Grotesque Display","Bricolage Grotesque",system-ui,sans-serif;
   --font-text:"Bricolage Grotesque",system-ui,sans-serif;
 
   --fs-display:clamp(2.75rem,1.6rem + 5.6vw,6rem);
-  --fs-h1:clamp(2.1rem,1.4rem + 3.4vw,3.6rem);
-  --fs-h2:clamp(1.6rem,1.2rem + 1.9vw,2.5rem);
-  --fs-h3:clamp(1.2rem,1.05rem + .8vw,1.5rem);
-  --fs-lead:clamp(1.05rem,.98rem + .4vw,1.25rem);
+  --fs-h1:clamp(2.25rem,1.4rem + 3.8vw,4rem);
+  --fs-h2:clamp(1.75rem,1.2rem + 2.2vw,2.75rem);
+  --fs-h3:clamp(1.25rem,1.05rem + .9vw,1.6rem);
+  --fs-lead:clamp(1.05rem,.98rem + .4vw,1.3rem);
   --fs-body:1.0625rem; --fs-small:.9375rem; --fs-eyebrow:.8125rem;
 
   --ls-display:-.03em; --ls-h:-.015em; --ls-eyebrow:.18em;
@@ -39,9 +46,9 @@
   --shadow-pink:0 12px 30px rgba(253,75,144,.38);
   --shadow-dark:0 24px 60px rgba(0,0,0,.5);
 
-  --ease:cubic-bezier(0.16,1,0.3,1);
+  --ease-out-expo:cubic-bezier(0.16,1,0.3,1); --ease:var(--ease-out-expo);
   --ease-back:cubic-bezier(0.34,1.56,0.64,1);
-  --dur-fast:180ms; --dur:300ms; --dur-slow:400ms; --dur-reveal:760ms;
+  --dur-fast:180ms; --dur-base:300ms; --dur:var(--dur-base); --dur-slow:400ms; --dur-reveal:760ms;
 }
 
 /* ============================================================
@@ -62,14 +69,14 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
 .section{padding-block:var(--section-y);position:relative}
 .eyebrow{
   font-size:var(--fs-eyebrow);letter-spacing:var(--ls-eyebrow);text-transform:uppercase;
-  font-weight:700;color:var(--du-pink);display:inline-flex;align-items:center;gap:10px;
+  font-weight:700;color:var(--du-pink-ink);display:inline-flex;align-items:center;gap:10px;
 }
-.eyebrow::before{content:"";width:26px;height:2px;background:var(--du-pink);display:inline-block}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--du-pink-ink);display:inline-block}
 .eyebrow.on-dark{color:var(--du-aqua)}
 .eyebrow.on-dark::before{background:var(--du-aqua)}
 .lead{font-size:var(--fs-lead);color:var(--text-body);max-width:54ch}
 .dark .lead{color:var(--text-body-dark)}
-.accent-pink{color:var(--du-pink)}
+.accent-pink{color:var(--du-pink-ink)}
 .underline-aqua{background:linear-gradient(transparent 62%,var(--du-aqua) 62%);padding:0 .04em}
 .underline-lime{background:linear-gradient(transparent 62%,var(--du-lime) 62%);padding:0 .04em}
 
@@ -77,7 +84,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
    BUTTONS
    ============================================================ */
 .btn{
-  --bg:var(--du-pink);--fg:#fff;--fill:var(--du-pink-600);
+  --bg:var(--du-pink-ink);--fg:#fff;--fill:var(--du-pink-600);
   position:relative;display:inline-flex;align-items:center;gap:10px;
   font-family:var(--font-text);font-weight:700;font-size:var(--fs-small);
   padding:14px 24px;border-radius:var(--r-pill);border:none;cursor:pointer;
@@ -119,14 +126,14 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
 .logo__mark{width:30px;height:30px;border-radius:9px;background:var(--du-pink);
   display:grid;place-items:center;box-shadow:var(--shadow-pink)}
 .logo__mark .lucide{width:18px;height:18px;color:#fff}
-.logo b{color:var(--du-pink)}
+.logo b{color:var(--du-pink-ink)}
 .nav{display:flex;align-items:center;gap:30px}
 .nav a{font-size:var(--fs-small);font-weight:600;color:rgba(244,248,255,.82);position:relative;
   padding:4px 0;transition:color var(--dur) var(--ease)}
 .header.scrolled .nav a{color:var(--text-body)}
 .nav a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--du-pink);
   transition:width var(--dur) var(--ease)}
-.nav a:hover{color:var(--du-pink)}
+.nav a:hover{color:var(--du-pink-ink)}
 .nav a:hover::after{width:100%}
 .header__cta{display:flex;align-items:center;gap:14px}
 .menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--text-on-dark)}
@@ -167,7 +174,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
   padding:9px 14px;border-radius:var(--r-pill);box-shadow:0 12px 30px rgba(0,0,0,.3);
   animation:floaty 5s ease-in-out infinite;will-change:transform;backface-visibility:hidden}
 .hero__chip .lucide{width:16px;height:16px}
-.hero__chip.c1{top:14%;left:2%;color:var(--du-pink);animation-delay:.2s}
+.hero__chip.c1{top:14%;left:2%;color:var(--du-pink-ink);animation-delay:.2s}
 .hero__chip.c2{top:8%;right:6%;animation-delay:.6s}
 .hero__chip.c3{top:50%;right:-2%;color:#1c8f6e;animation-delay:1s}
 .hero__chip.c4{bottom:14%;left:-2%;animation-delay:1.4s}
@@ -196,7 +203,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
 .pain{background:#fff;border:1px solid var(--du-line);border-radius:var(--r-lg);padding:26px 24px;
   transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),border-color var(--dur) var(--ease)}
 .pain:hover{transform:translateY(-6px);box-shadow:var(--shadow-card-hover);border-color:transparent}
-.pain__ic{width:46px;height:46px;border-radius:13px;background:var(--du-pink-100);color:var(--du-pink);
+.pain__ic{width:46px;height:46px;border-radius:13px;background:var(--du-pink-100);color:var(--du-pink-ink);
   display:grid;place-items:center;margin-bottom:18px;transition:transform var(--dur) var(--ease-back)}
 .pain:hover .pain__ic{transform:rotate(-8deg) scale(1.08)}
 .pain__ic .lucide{width:22px;height:22px}
@@ -275,7 +282,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
    ============================================================ */
 .blog__head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:46px;flex-wrap:wrap}
 .blog__head h2{font-size:var(--fs-h1);max-width:18ch}
-.link-arrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--du-pink);font-size:var(--fs-small)}
+.link-arrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--du-pink-ink);font-size:var(--fs-small)}
 .link-arrow .lucide{width:18px;height:18px;transition:transform var(--dur) var(--ease)}
 .link-arrow:hover .lucide{transform:translateX(5px)}
 .blog__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
@@ -294,7 +301,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
   background:var(--du-lime);color:var(--du-ink)}
 .post__body{padding:22px 22px 26px}
 .post__body h3{font-size:1.16rem;margin-bottom:14px;line-height:1.2}
-.post:hover h3{color:var(--du-pink)}
+.post:hover h3{color:var(--du-pink-ink)}
 .post__meta{display:flex;align-items:center;gap:8px;color:var(--text-muted);font-size:var(--fs-small)}
 .post__meta .lucide{width:15px;height:15px}
 
@@ -330,7 +337,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
   background:none;border:none;cursor:pointer;text-align:left;padding:24px 4px;
   font-family:var(--font-display);font-weight:700;font-size:var(--fs-h3);color:var(--du-blue);
   transition:color var(--dur) var(--ease)}
-.faq-q:hover{color:var(--du-pink)}
+.faq-q:hover{color:var(--du-pink-ink)}
 .faq-q__ic{flex:none;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--du-line);
   display:grid;place-items:center;transition:all var(--dur) var(--ease)}
 .faq-q__ic .lucide{width:18px;height:18px;transition:transform var(--dur) var(--ease)}
