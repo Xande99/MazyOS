@@ -58,11 +58,10 @@
     var lead    = document.querySelector('.hero p.lead');
     var ctas    = document.querySelector('.hero__ctas');
     var proof   = document.querySelector('.hero__proof');
-    var octo    = document.querySelector('.octo');
     var chips   = document.querySelectorAll('.hero__chip');
 
     if (reduce) {
-      [eyebrow, lead, ctas, proof, octo].forEach(function (el) {
+      [eyebrow, lead, ctas, proof].forEach(function (el) {
         if (el) { el.classList.add('hero-in'); el.classList.add('in'); }
       });
       words.forEach(function (w) { w.classList.add('in'); });
@@ -90,10 +89,7 @@
     /* proof */
     setTimeout(function () { if (proof) proof.classList.add('hero-in'); }, afterWords + 260);
 
-    /* octo slides in from right */
-    setTimeout(function () { if (octo) octo.classList.add('hero-in'); }, 260);
-
-    /* chips stagger after octo */
+    /* chips stagger */
     chips.forEach(function (chip, i) {
       setTimeout(function () { chip.classList.add('hero-in'); }, 540 + i * 150);
     });
@@ -246,43 +242,75 @@
   heroEntrance();
 })();
 
-/* ─── Solução: linha de processo pinada com scroll (GSAP + ScrollTrigger) ───
+/* ─── Solução: linha de progresso das etapas (GSAP + ScrollTrigger) ───
    Só ativa com motion permitido e as duas libs carregadas — sem elas, ou com
    prefers-reduced-motion, a seção fica no estado final estático (ver CSS,
-   regras .motion-ready), sem perda de conteúdo. */
+   regras .motion-ready), sem perda de conteúdo.
+
+   Desktop (>1024px, grid de 4 colunas numa fileira só): timeline única
+   pinada — a linha mestra (.steps__line-fill) cresce horizontalmente
+   conforme o scroll avança pela seção inteira.
+
+   Tablet/mobile (≤1024px, grid quebra pra 2 colunas ou 1 coluna): a linha
+   mestra horizontal só alcançaria a 1ª fileira, então cada etapa ganha sua
+   própria linha horizontal curta ao lado do próprio ícone (.step__line-fill,
+   scaleX) com seu próprio ScrollTrigger independente — dispara e preenche
+   da esquerda pra direita conforme aquela etapa entra na área visível, sem
+   pin (pin numa lista vertical longa é ruim de usar). */
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var section = document.getElementById('solucao');
   var stepsEl = section && document.getElementById('stepsRow');
-  var fill    = stepsEl && stepsEl.querySelector('.steps__line-fill');
-  if (!section || !stepsEl || !fill || reduce) return;
+  var masterFill = stepsEl && stepsEl.querySelector('.steps__line-fill');
+  if (!section || !stepsEl || !masterFill || reduce) return;
   if (!window.gsap || !window.ScrollTrigger) return;
 
   gsap.registerPlugin(ScrollTrigger);
   stepsEl.classList.add('motion-ready');
 
   var steps = stepsEl.querySelectorAll('.step');
-  var thresholds = Array.prototype.map.call(steps, function (_, i) {
-    return (i + 1) / steps.length - 0.08;
-  });
+  var mm = gsap.matchMedia();
 
-  var tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: section,
-      start: 'top top',
-      end: '+=100%',
-      scrub: 0.6,
-      pin: true,
-      anticipatePin: 1,
-      onUpdate: function (self) {
-        Array.prototype.forEach.call(steps, function (step, i) {
-          step.classList.toggle('step--active', self.progress >= thresholds[i]);
-        });
+  mm.add('(min-width: 1025px)', function () {
+    var thresholds = Array.prototype.map.call(steps, function (_, i) {
+      return (i + 1) / steps.length - 0.08;
+    });
+
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: '+=100%',
+        scrub: 0.6,
+        pin: true,
+        anticipatePin: 1,
+        onUpdate: function (self) {
+          Array.prototype.forEach.call(steps, function (step, i) {
+            step.classList.toggle('step--active', self.progress >= thresholds[i]);
+          });
+        }
       }
-    }
+    }).to(masterFill, { scaleX: 1, ease: 'none' });
   });
 
-  tl.to(fill, { scaleX: 1, ease: 'none' });
+  mm.add('(max-width: 1024px)', function () {
+    Array.prototype.forEach.call(steps, function (step) {
+      var fill = step.querySelector('.step__line-fill');
+      if (!fill) return;
+
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: step,
+          start: 'top 75%',
+          end: 'top 30%',
+          scrub: 0.6,
+          onUpdate: function (self) {
+            step.classList.toggle('step--active', self.progress >= 0.15);
+          }
+        }
+      }).to(fill, { scaleX: 1, ease: 'none' });
+    });
+  });
 })();
 
 /* ─── Contact modal ─── */

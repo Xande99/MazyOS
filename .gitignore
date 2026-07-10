@@ -15,6 +15,9 @@ Thumbs.db
 .claude/backups/
 **/.claude/settings.local.json
 
+# Playwright MCP (logs e snapshots de sessão de browser, não são conteúdo do projeto)
+.playwright-mcp/
+
 # Dependências
 node_modules/
 

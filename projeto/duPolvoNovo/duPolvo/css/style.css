@@ -55,7 +55,7 @@
    RESET / BASE
    ============================================================ */
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 body{
   font-family:var(--font-text);background:var(--du-cream);color:var(--text-body);
   font-size:var(--fs-body);line-height:1.6;-webkit-font-smoothing:antialiased;
@@ -167,8 +167,6 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
   background:radial-gradient(circle at 42% 38%,#0d2138,#061327 70%);
   filter:blur(2px);animation:blobMorph 14s ease-in-out infinite;
   will-change:transform;backface-visibility:hidden}
-.octo{position:relative;z-index:2;width:min(78%,460px);filter:drop-shadow(0 30px 40px rgba(253,75,144,.28));
-  animation:floaty 6s ease-in-out infinite;will-change:transform;backface-visibility:hidden}
 .hero__chip{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:8px;
   background:rgba(255,255,255,.96);color:var(--du-blue);font-weight:700;font-size:13px;
   padding:9px 14px;border-radius:var(--r-pill);box-shadow:0 12px 30px rgba(0,0,0,.3);
@@ -228,6 +226,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
   position:relative;z-index:2;margin-bottom:22px;transition:transform var(--dur) var(--ease-back),
   background var(--dur) var(--ease),color var(--dur) var(--ease),opacity var(--dur-slow) var(--ease)}
 .step__ic .lucide{width:26px;height:26px}
+.step__line{display:none}
 .step:hover .step__ic{background:var(--du-aqua);color:var(--du-ink);transform:translateY(-4px) scale(1.06)}
 .step__n{font-family:var(--font-display);font-weight:800;color:var(--du-aqua);font-size:.9rem;
   letter-spacing:.1em;margin-bottom:6px;transition:opacity var(--dur-slow) var(--ease),transform var(--dur-slow) var(--ease)}
@@ -374,9 +373,6 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
 .cta h2{font-size:clamp(2.2rem,1.3rem + 4vw,4rem);color:var(--text-on-dark);line-height:.98}
 .cta p{color:var(--text-body-dark);font-size:var(--fs-lead);margin:22px auto 34px;max-width:50ch}
 .cta__ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.cta__octo{position:absolute;width:230px;bottom:-40px;right:6%;opacity:.9;z-index:1;
-  animation:floaty 7s ease-in-out infinite;filter:drop-shadow(0 20px 30px rgba(253,75,144,.3));
-  will-change:transform;backface-visibility:hidden}
 
 /* ============================================================
    FOOTER
@@ -433,13 +429,20 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
   .blog__grid .post:last-child{grid-column:1/-1}
   .diff__grid{grid-template-columns:1fr;gap:42px}
   .faq__wrap{grid-template-columns:1fr;gap:30px}
+  /* Grid de 2 colunas quebra a suposição da linha mestra horizontal
+     (.steps__line só alcança a 1ª fileira) — cada etapa passa a ter
+     sua própria linha horizontal ao lado do próprio ícone. */
+  .steps__line{display:none}
+  .step__line{display:block;position:absolute;top:31px;left:76px;right:16px;
+    height:2px;border-radius:2px;background:rgba(129,223,192,.15);overflow:hidden;transform:translateY(-50%)}
+  .step__line-fill{position:absolute;inset:0;background:var(--du-aqua);
+    transform-origin:left center;transform:scaleX(0)}
 }
 @media(max-width:760px){
   .nav,.header__cta .btn{display:none}
   .menu-toggle{display:grid;place-items:center}
   .hero__grid{grid-template-columns:1fr;gap:10px}
   .hero__media{display:none}
-  .octo{width:min(64%,300px)}
   .prob__head,.serv__head{grid-template-columns:1fr}
   .prob__grid,.serv__grid,.steps,.proc__grid,.blog__grid,.stats{grid-template-columns:1fr}
   .blog__grid .post:last-child{grid-column:auto}
@@ -471,11 +474,6 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
   transition:opacity 500ms var(--ease),transform 500ms var(--ease)}
 .hero .eyebrow.hero-in,.hero p.lead.hero-in,
 .hero__ctas.hero-in,.hero__proof.hero-in{opacity:1;transform:none}
-
-/* — Octo: entrance (translateX) then float — */
-.octo{animation:none;opacity:0;transform:translateX(60px);
-  transition:opacity 700ms var(--ease),transform 700ms var(--ease)}
-.octo.hero-in{opacity:1;transform:none;animation:floaty 6s 1s ease-in-out infinite}
 
 /* — Chips: entrance then per-chip float — */
 .hero__chip{animation:none;opacity:0;transform:translateY(18px) scale(.9);
@@ -532,14 +530,10 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
 .cta__ctas:not(.cta-in) .btn:nth-child(2){transition-delay:150ms}
 .cta__ctas.cta-in .btn{opacity:1}
 
-/* — CTA octo: breathe — */
-.cta__octo{animation:breathe 3s ease-in-out infinite}
-@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-
 /* — Reduced motion extras — */
 @media(prefers-reduced-motion:reduce){
   .hero .eyebrow,.hero p.lead,.hero__ctas,.hero__proof,
-  .octo,.hero__chip,.cta__card h2 .word,.cta__ctas .btn{
+  .hero__chip,.cta__card h2 .word,.cta__ctas .btn{
     opacity:1!important;transform:none!important;animation:none!important}
 }
 
@@ -587,9 +581,7 @@ body.nav-open{overflow:hidden}
    RESPONSIVE — complementos
    ============================================================ */
 
-/* Ocultar octo decorativo no CTA em mobile (sobrepõe botões) */
 @media(max-width:760px){
-  .cta__octo{display:none}
   .proc-item__n{font-size:1.8rem}
   .diff-row{padding:14px 0}
 }
