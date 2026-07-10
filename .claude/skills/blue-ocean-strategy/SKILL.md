@@ -1,6 +1,6 @@
 ---
 name: blue-ocean-strategy
-description: 'Create uncontested market space using value innovation instead of competing head-to-head. Use when the user mentions "blue ocean", "red ocean", "strategy canvas", "ERRC framework", "value innovation", "non-customers", "buyer utility map", "uncontested market", "stop competing on price", "everyone is undercutting us", "the market is too crowded", or "how do we stand out". Also trigger when comparing pricing strategies, exploring new market categories, finding underserved or non-customers, or escaping a brutal price war. Covers the Four Actions Framework, buyer utility map, and value-cost trade-offs. For tech adoption strategy, see crossing-the-chasm. For product positioning, see obviously-awesome.'
+description: 'Create uncontested market space using value innovation instead of competing head-to-head. Use when the user mentions "blue ocean", "red ocean", "strategy canvas", "ERRC framework", "value innovation", "non-customers", "buyer utility map", "uncontested market", "stop competing on price", "everyone is undercutting us", "the market is too crowded", or "how do we stand out". Also trigger when comparing pricing strategies, exploring new market categories, finding underserved or non-customers, or escaping a brutal price war. Covers the Four Actions Framework, buyer utility map, and value-cost trade-offs. For product positioning, see obviously-awesome.'
 license: MIT
 metadata:
   author: wondelai

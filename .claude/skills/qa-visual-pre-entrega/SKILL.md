@@ -31,17 +31,23 @@ npx --yes lighthouse <url> --output=html --output-path=./lighthouse-report.html 
 
 Ler o score de cada categoria. A categoria **Accessibility** do Lighthouse já
 roda regras do axe-core — cobre boa parte de contraste, `alt` ausente, ordem de
-heading e uso de landmark, então não precisa reimplementar isso.
+heading e uso de landmark, então não precisa reimplementar isso. Pra entender
+uma falha específica que o relatório apontar (o que ela significa, como
+corrigir), ver `.claude/skills/accessibility/` (WCAG 2.2 com padrão de código
+pronto) e `.claude/skills/core-web-vitals/` (LCP/INP/CLS) — este checklist só
+roda o Lighthouse e cobra o número, não repete esse conteúdo.
 
 No Windows, é comum o comando terminar com um erro `EPERM` ao tentar apagar a
 pasta temporária do Chrome depois de gerar o relatório — é cosmético, o
 `lighthouse-report.html`/`.json` já foi escrito antes desse erro acontecer.
 Ignorar e ler o relatório normalmente.
 
-Critério de aceite (alinhado ao orçamento de `projeto/claude.md`):
-- Performance ≥ 90 (idealmente 95+, meta declarada do Tipo A)
-- Accessibility ≥ 95 — abaixo disso, ler os itens específicos que o relatório aponta e corrigir, não só anotar o número
-- Best Practices e SEO ≥ 90
+Critério de aceite (thresholds do README do `web-quality-skills`, os mesmos
+usados em `projeto/claude.md`):
+- Performance ≥ 90
+- Accessibility = 100 — abaixo disso, ler os itens específicos que o relatório aponta e corrigir, não só anotar o número
+- Best Practices ≥ 95
+- SEO ≥ 95
 
 **b) Conformidade com os tokens de marca** (o que o Lighthouse NÃO cobre —
 ele audita contraste, não se a cor É a da marca):
@@ -92,3 +98,12 @@ Só responder "pronto pra entregar" se:
 
 Se algo não passar, listar exatamente o que falta — não arredondar pra "tá
 quase bom" quando não está.
+
+## Referências
+
+Este checklist roda o Lighthouse e cobra o número — pra entender o *porquê*
+de uma falha específica e como corrigi-la em profundidade, ver:
+
+- [`web-quality-audit`](../web-quality-audit/SKILL.md) — os 150+ checks completos por trás dos 4 scores do Lighthouse (performance/acessibilidade/SEO/boas práticas)
+- [`accessibility`](../accessibility/SKILL.md) — WCAG 2.2 com padrão de código pronto (contraste, foco, ARIA, target size)
+- [`core-web-vitals`](../core-web-vitals/SKILL.md) — LCP/INP/CLS em detalhe, com Speculation Rules API e View Transitions

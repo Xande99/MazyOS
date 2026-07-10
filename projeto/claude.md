@@ -29,7 +29,7 @@ TypeScript em modo strict é o padrão em qualquer projeto com build. Tipagem fo
 Stack: **Astro + Tailwind + TypeScript** (+ GSAP para animação).
 - Astro envia zero JS por padrão; interatividade é opt-in via ilhas (`client:load`, `client:idle`, `client:visible`).
 - Se precisar de um componente interativo (form complexo, calculadora), usar uma ilha React dentro do Astro — nunca converter o site todo pra SPA por causa de um widget.
-- Meta: Lighthouse 95+ em todas as categorias sem esforço extra.
+- Meta: Lighthouse Performance ≥ 90, Accessibility = 100, Best Practices ≥ 95, SEO ≥ 95 (thresholds do README do `web-quality-skills`; ver `.claude/skills/qa-visual-pre-entrega/`).
 - Deploy: Netlify ou Cloudflare Pages (site estático).
 - HTML/CSS/JS vanilla continua válido para páginas únicas muito simples, mas Astro é o padrão para qualquer site com mais de uma página ou componentes reutilizáveis.
 

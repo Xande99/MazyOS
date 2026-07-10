@@ -103,6 +103,29 @@ Valendo pra qualquer projeto (LP, site, sistema, dashboard) — comportamento au
 
 ---
 
+## Pipeline de QA — padrão obrigatório
+
+Este é o carimbo de qualidade de qualquer entrega da duPolvo — vale tanto pro painel interno (MazyOS) quanto pra sites/LPs de cliente (Tipo A e Tipo B). Executar automaticamente ao final de toda entrega de página ou seção nova, sem precisar que o usuário peça:
+
+1. **Build** da página/seção
+2. **Skill baseline visual** — `frontend-design` ou `ui-ux-pro-max`, conforme o caso, antes de considerar o visual pronto
+3. **Verificação visual real** via Playwright + Chrome DevTools MCP:
+   - Screenshot em desktop e mobile
+   - Medir performance (LCP, jank, frame rate) se houver animação
+4. **`mcp-accessibility-scanner`** — rodar auditoria axe-core na página
+5. **Skill `web-quality-audit`** — relatório final cobrindo Core Web Vitals + acessibilidade + SEO + best practices
+6. **Checar os thresholds** (definidos no próprio README do `web-quality-skills`):
+   - Performance ≥ 90
+   - Accessibility = 100
+   - Best Practices ≥ 95
+   - SEO ≥ 95
+
+Só reportar a entrega como "pronta" se os 4 números baterem com o threshold. Se algum não bater, corrigir antes de avisar que terminou — nunca entregar e perguntar depois.
+
+Essa sequência roda pra qualquer página/seção nova, tanto Tipo A (Astro) quanto Tipo B (Next.js). Sem skill de QA visual encontrada localmente → seguir esses 6 passos manualmente com as ferramentas MCP disponíveis.
+
+---
+
 ## Contexto do negócio
 
 No início de toda conversa, ler os seguintes arquivos (quando existirem e estiverem preenchidos):
@@ -128,7 +151,7 @@ Não é necessário listar o que foi lido nem confirmar a leitura. Apenas usar o
 Quando iniciar um novo projeto de cliente:
 
 1. Rodar `/novo-projeto` e responder as perguntas do cliente
-2. O briefing gerado fica em `clientes/<Nome>/briefing.md` — incluir no briefing o tipo do projeto (Tipo A: Astro / Tipo B: Next.js + Supabase). O `/novo-projeto` já ativa sozinho, sem precisar pedir: skills de animação (mapa acima), Context7 MCP, Playwright MCP, padrão de qualidade nível referência e (se Tipo B) o checklist Supabase — o resumo do comando confirma o que foi ativado.
+2. O briefing gerado fica em `clientes/<Nome>/briefing.md` — incluir no briefing o tipo do projeto (Tipo A: Astro / Tipo B: Next.js + Supabase)
 3. Comunicar o caminho do briefing pro Claude Code em `projeto/`:
    ```
    Lê o briefing em C:\Users\Xande\Desktop\MazyOS\clientes\<Nome>\briefing.md,
