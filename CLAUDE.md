@@ -21,6 +21,8 @@ Operação da agência. Aqui ficam todos os clientes, propostas, conteúdo e ent
 | `projeto/` | `C:\Users\Xande\Desktop\MazyOS\projeto\` | Desenvolvimento dos sites e LPs (stack e regras técnicas no `projeto/CLAUDE.md`) |
 | `cerebro/` | `C:\Users\Xande\Desktop\cerebro\` | Base de conhecimento técnico (referência, não editar) |
 
+**Estrutura de `cerebro/raw/nichos/`:** uma subpasta por nicho (empresa, fitness-gym, food-delivery, imoveis, infoprodutos, juridico-contabil, nutri-suplement, odonto, pet-veterinario, psicologia, saude-estetica). Clip novo segue `_clipper-template.md` (campo `nichos:`, plural) e vai direto pra subpasta do nicho certo — nunca solto na raiz.
+
 ---
 
 ## Sobre a agência
@@ -57,6 +59,8 @@ Evitar: alavancar, ecossistema, jornada, entregar valor, metodologia ágil, mind
 
 - [x] Playwright MCP — verificação visual/funcional de páginas renderizadas
 - [x] Context7 MCP — documentação atualizada de libs (GSAP, Motion, Next.js, Tailwind etc.)
+- [x] Chrome DevTools MCP — performance (LCP, jank, frame rate) e debug em navegador real
+- [x] mcp-accessibility-scanner MCP — auditoria axe-core de acessibilidade
 - [ ] Notion
 - [ ] Gmail
 - [ ] Google Calendar
