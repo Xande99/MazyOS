@@ -21,7 +21,7 @@ Operação da agência. Aqui ficam todos os clientes, propostas, conteúdo e ent
 | `projeto/` | `C:\Users\Xande\Desktop\MazyOS\projeto\` | Desenvolvimento dos sites e LPs (stack e regras técnicas no `projeto/CLAUDE.md`) |
 | `cerebro/` | `C:\Users\Xande\Desktop\cerebro\` | Base de conhecimento técnico (referência, não editar) |
 
-**Estrutura de `cerebro/raw/nichos/`:** uma subpasta por nicho (empresa, fitness-gym, food-delivery, imoveis, infoprodutos, juridico-contabil, nutri-suplement, odonto, pet-veterinario, psicologia, saude-estetica). Clip novo segue `_clipper-template.md` (campo `nichos:`, plural) e vai direto pra subpasta do nicho certo — nunca solto na raiz.
+**Estrutura de `cerebro/raw/nichos/`:** uma subpasta por nicho (automotivo, barbearia, empresa, fitness-gym, food-delivery, imoveis, infoprodutos, juridico-contabil, nutri-suplement, odonto, pet-veterinario, psicologia, saude-estetica). Clip novo segue `_clipper-template.md` (campo `nichos:`, plural) e vai direto pra subpasta do nicho certo — nunca solto na raiz.
 
 ---
 
@@ -154,8 +154,8 @@ Não é necessário listar o que foi lido nem confirmar a leitura. Apenas usar o
 
 Quando iniciar um novo projeto de cliente:
 
-1. Rodar `/novo-projeto` e responder as perguntas do cliente
-2. O briefing gerado fica em `clientes/<Nome>/briefing.md` — incluir no briefing o tipo do projeto (Tipo A: Astro / Tipo B: Next.js + Supabase)
+1. Rodar `/novo-projeto` e responder as perguntas do cliente. **Etapa obrigatória, não opcional:** se a entrega envolve site, LP, redes sociais, branding ou qualquer peça visual, o comando pergunta qual dos 13 nichos catalogados em `cerebro/raw/nichos/` se aplica ao cliente e lê automaticamente as notas `status: done` desse nicho, trazendo um resumo de "Insights para o nicho" + "Processar para" como contexto antes da fase de design começar. Pular essa consulta significa desperdiçar pesquisa de mercado que já está processada e validada no Cérebro.
+2. O briefing gerado fica em `clientes/<Nome>/briefing.md` — incluir no briefing o tipo do projeto (Tipo A: Astro / Tipo B: Next.js + Supabase) e o nicho de mercado identificado (com o resumo do Cérebro)
 3. Comunicar o caminho do briefing pro Claude Code em `projeto/`:
    ```
    Lê o briefing em C:\Users\Xande\Desktop\MazyOS\clientes\<Nome>\briefing.md,

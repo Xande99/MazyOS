@@ -59,6 +59,29 @@ Perguntar:
 
 Não pular esse passo achando que "herda automaticamente" é suficiente — sem essa pergunta feita explicitamente, a captura de identidade acaba não acontecendo (foi o que aconteceu com o Ribas Suplementos: nasceu sem nenhuma cor de marca).
 
+### Passo 1.3 — Nicho de mercado (Cérebro) — obrigatório quando a entrega envolve site, LP, redes sociais, branding ou qualquer peça visual
+
+Mesma condição de gatilho do Passo 1.2. Essa etapa não é opcional: sem ela, a fase de design começa sem a pesquisa de mercado que já está catalogada no Cérebro, e isso é desperdício de trabalho já feito.
+
+Perguntar:
+
+> "Qual desses nichos de mercado se aplica a esse cliente? automotivo, barbearia, empresa, fitness-gym, food-delivery, imoveis, infoprodutos, juridico-contabil, nutri-suplement, odonto, pet-veterinario, psicologia, saude-estetica — ou nenhum deles."
+
+A lista precisa sempre refletir a taxonomia oficial documentada na seção "Estrutura de `cerebro/raw/nichos/`" do `CLAUDE.md` raiz — se essa lista mudar lá, muda aqui também, não manter uma cópia desatualizada.
+
+**Se o cliente se encaixa em um nicho da lista:**
+
+1. Ler todas as notas em `C:\Users\Xande\Desktop\cerebro\raw\nichos\<nicho>\` que tenham `status: done` no frontmatter — ignorar notas `raw` (não processadas), `revisar` (sem conteúdo suficiente) e `duplicado` (redundantes), só o que já foi validado entra no resumo
+2. De cada nota, extrair só as seções `## Insights para o nicho` e `## Processar para` (ignorar `## O que observar`, que é detalhe visual da peça individual, não o que importa pra esse resumo)
+3. Condensar num resumo único — agrupar por padrão recorrente quando várias notas apontarem pra mesma coisa (ex: "3 referências confirmam que X é padrão robusto pro nicho") em vez de listar nota por nota sem síntese
+4. Apresentar esse resumo pro usuário como contexto de referência antes de seguir pro Passo 2 — é matéria-prima pra decisão de design, não só um FYI
+
+Se não houver nenhuma nota `status: done` nesse nicho ainda (pasta vazia ou só com `raw`/`revisar`), avisar isso explicitamente em vez de simular um resumo: "Ainda não há pesquisa processada pra esse nicho em `cerebro/raw/nichos/`. Seguindo sem essa referência."
+
+**Se o cliente não se encaixa em nenhum dos nichos catalogados:** não travar o fluxo — registrar no briefing "Nicho de mercado: fora da taxonomia atual do Cérebro" e seguir.
+
+O resumo gerado aqui vai pro `briefing.md` na seção "Nicho de mercado" (template no Passo 3).
+
 ### Passo 2 — Decidir local
 
 Baseado na resposta 2:
@@ -105,6 +128,12 @@ o primeiro arquivo que a sessão do Claude Code em `projeto/` lê:
 [Preencher só se o Passo 1.2 rodou.
 Se o cliente já tem marca: cores principais (hex se souber), fontes, referências/prints.
 Se não tem: "Herda a linha visual da duPolvo — ver identidade/design-guide.md e projeto/duPolvoNovo/tokens/."]
+
+## Nicho de mercado (Cérebro)
+[Preencher só se o Passo 1.3 rodou.
+Se um nicho foi identificado: nome do nicho + o resumo condensado de "Insights para o nicho" e "Processar para" gerado no Passo 1.3.
+Se não houver nota status: done nesse nicho ainda: "Nicho: [nome] — sem pesquisa processada em cerebro/raw/nichos/ ainda."
+Se o cliente não se encaixa em nenhum nicho catalogado: "Nicho de mercado: fora da taxonomia atual do Cérebro."]
 ```
 
 ### Passo 4 — Conteúdo do `CLAUDE.md` do projeto
@@ -183,11 +212,19 @@ projeto/duPolvoNovo/sections/ e o kit de animação em
 projeto/duPolvoNovo/motion-kit/ em vez de do zero.
 ```
 
+Se o Passo 1.3 rodou, incluir também o resumo do nicho antes desse lembrete de skills — é contexto que deveria informar as escolhas do kit acima, não só um anexo:
+
+```
+✓ Nicho de mercado: [nome do nicho]
+
+[resumo condensado de Insights para o nicho + Processar para, gerado no Passo 1.3]
+```
+
 E mostrar o comando pronto pra colar na sessão do Claude Code dentro de `projeto/`:
 
 ```
-Lê o briefing em C:\Users\Angel\OneDrive\Área de Trabalho\MazyOS\clientes\<Nome>\briefing.md,
-consulta o cérebro em C:\Users\Angel\OneDrive\Área de Trabalho\cerebro
+Lê o briefing em C:\Users\Xande\Desktop\MazyOS\clientes\<Nome>\briefing.md,
+consulta o cérebro em C:\Users\Xande\Desktop\cerebro
 e cria a estrutura do site.
 ```
 

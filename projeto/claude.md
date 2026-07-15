@@ -1,12 +1,12 @@
 # BASE DE CONHECIMENTO
 Antes de qualquer tarefa, consulte os arquivos em:
-C:\Users\Angel\OneDrive\Área de Trabalho\cerebro
+C:\Users\Xande\Desktop\cerebro
 
 Use esse conteúdo como referência técnica para decisões de arquitetura, UX, CSS, componentes e boas práticas. Priorize esse conhecimento ao fazer sugestões.
 
 # BRIEFING DO CLIENTE
 Quando iniciar um projeto, verificar se existe briefing em:
-C:\Users\Angel\OneDrive\Área de Trabalho\MazyOS\clientes\<Nome do cliente>\briefing.md
+C:\Users\Xande\Desktop\MazyOS\clientes\<Nome do cliente>\briefing.md
 
 Se existir, ler antes de qualquer outra coisa e usar como base pra todas as decisões do projeto.
 
