@@ -272,7 +272,6 @@ As skills abaixo ficam em `.claude/skills/` e estão disponíveis para todos os 
 - `.claude/skills/refactoring-ui/`
 - `.claude/skills/web-typography/`
 - `.claude/skills/top-design/`
-- `.claude/skills/ios-hig-design/`
 - `.claude/skills/steve-jobs-design-review/`
 - `.claude/skills/design-everyday-things/`
 
@@ -295,17 +294,12 @@ As skills abaixo ficam em `.claude/skills/` e estão disponíveis para todos os 
 - `.claude/skills/cro-methodology/`
 - `.claude/skills/improve-retention/`
 - `.claude/skills/lean-startup/`
-- `.claude/skills/predictable-revenue/`
 
 ## Fase 7 — Estratégia de agência
 - `.claude/skills/blue-ocean-strategy/`
 - `.claude/skills/good-strategy-bad-strategy/`
 - `.claude/skills/37signals-way/`
-- `.claude/skills/crossing-the-chasm/`
-- `.claude/skills/cold-start-problem/`
 - `.claude/skills/contagious/`
-- `.claude/skills/monetizing-innovation/`
-- `.claude/skills/traction-eos/`
 
 ## Kit mínimo para qualquer LP nova
 
