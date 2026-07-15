@@ -71,12 +71,12 @@ A lista precisa sempre refletir a taxonomia oficial documentada na seção "Estr
 
 **Se o cliente se encaixa em um nicho da lista:**
 
-1. Ler todas as notas em `C:\Users\Xande\Desktop\cerebro\raw\nichos\<nicho>\` que tenham `status: done` no frontmatter — ignorar notas `raw` (não processadas), `revisar` (sem conteúdo suficiente) e `duplicado` (redundantes), só o que já foi validado entra no resumo
-2. De cada nota, extrair só as seções `## Insights para o nicho` e `## Processar para` (ignorar `## O que observar`, que é detalhe visual da peça individual, não o que importa pra esse resumo)
-3. Condensar num resumo único — agrupar por padrão recorrente quando várias notas apontarem pra mesma coisa (ex: "3 referências confirmam que X é padrão robusto pro nicho") em vez de listar nota por nota sem síntese
-4. Apresentar esse resumo pro usuário como contexto de referência antes de seguir pro Passo 2 — é matéria-prima pra decisão de design, não só um FYI
+1. Verificar se existe `C:\Users\Xande\Desktop\cerebro\raw\nichos\<nicho>\_sintese.md`.
+   - **Se existir:** ler só esse arquivo — já é a consolidação de todas as notas `done` do nicho (estrutura, insights recorrentes, aplicação prática), gerada especificamente pra esse uso. Não ler as notas individuais além dele.
+   - **Se não existir:** cair no comportamento antigo — ler todas as notas em `raw/nichos/<nicho>/` que tenham `status: done` no frontmatter (ignorar `raw`, `revisar`, `duplicado`), extrair `## Insights para o nicho` e `## Processar para` de cada uma, condensar num resumo agrupando por padrão recorrente (não listar nota por nota sem síntese). **Avisar o usuário** que esse nicho ainda não tem `_sintese.md` e que vale gerar um (`cerebro/CLAUDE.md`, seção 13, documenta o processo) pra acelerar a próxima vez.
+2. Apresentar o resumo (da síntese ou consolidado na hora) pro usuário como contexto de referência antes de seguir pro Passo 2 — é matéria-prima pra decisão de design, não só um FYI.
 
-Se não houver nenhuma nota `status: done` nesse nicho ainda (pasta vazia ou só com `raw`/`revisar`), avisar isso explicitamente em vez de simular um resumo: "Ainda não há pesquisa processada pra esse nicho em `cerebro/raw/nichos/`. Seguindo sem essa referência."
+Se não houver nenhuma nota `status: done` nesse nicho ainda (nem `_sintese.md` nem notas individuais — pasta vazia ou só com `raw`/`revisar`), avisar isso explicitamente em vez de simular um resumo: "Ainda não há pesquisa processada pra esse nicho em `cerebro/raw/nichos/`. Seguindo sem essa referência."
 
 **Se o cliente não se encaixa em nenhum dos nichos catalogados:** não travar o fluxo — registrar no briefing "Nicho de mercado: fora da taxonomia atual do Cérebro" e seguir.
 
