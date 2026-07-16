@@ -72,34 +72,15 @@ Evitar: alavancar, ecossistema, jornada, entregar valor, metodologia ágil, mind
 
 ---
 
-## Skills de animação (nível referência)
+## Animação — hierarquia oficial
 
-Instaladas via marketplace `freshtechbro/claudedesignskills` (bundles `core-3d-animation`, `extended-3d-scroll`, `animation-components`). Regra de stack de animação completa (hierarquia CSS → View Transitions → GSAP → Motion) já vive em `projeto/CLAUDE.md` — aqui só o mapa de qual skill nova puxar em cada caso.
-
-**Tipo A (Astro/GSAP) — puxar por padrão:**
-- `gsap-scrolltrigger` — scroll storytelling, pinning, scrub, timelines (a base, já é stack oficial)
-- `locomotive-scroll` — smooth scroll + parallax quando a LP pede uma camada extra de imersão
-- `lightweight-3d-effects` (Zdog/Vanta/Vanilla-Tilt) — profundidade decorativa leve em hero sem WebGL pesado
-- `scroll-reveal-libraries` (AOS) — só pra fade/slide simples quando GSAP for overkill
-- `animejs` — SVG morphing e coreografias timeline fora do escopo do GSAP
-- `barba-js` — transição entre páginas, quando a View Transitions API nativa não bastar
-- `threejs-webgl` / `pixijs-2d` — só se a peça pedir um centro 3D/2D ambicioso (hero de impacto); usar com moderação, pesa no Lighthouse
-
-**Tipo B (Next.js/Motion) — puxar por padrão:**
-- `motion-framer` — já é a stack oficial (`motion`, App Router)
-- `react-spring-physics` — gestos com inércia e física real (drag, swipe) além do que Motion cobre bem
-- `animated-component-libraries` (Magic UI/React Bits) — componentes prontos pra dashboards quando não vale a pena entalhar do zero
-- `react-three-fiber` — 3D declarativo dentro de app React (configurador de produto, dataviz)
-
-**Uso cruzado (A ou B):**
-- `lottie-animations` — ícones animados, loading states, micro-interações vindas do design
-- `babylonjs-engine` / `playcanvas-engine` / `aframe-webxr` — engines de jogo/VR completas; raramente necessárias pra LP/sistema de agência, só se o projeto for literalmente um jogo/experiência 3D
+A hierarquia completa (CSS → View Transitions → GSAP → Motion) vive em `projeto/CLAUDE.md` e é a única fonte de verdade pra motion design nos projetos de cliente. Não há skills de animação de terceiros instaladas hoje — o marketplace `freshtechbro/claudedesignskills` citado em versões anteriores deste arquivo nunca chegou a ser registrado nem instalado (nenhuma das ~15 skills existe em `.claude/skills/` local ou global, confirmado em 2026-07-16). Se algum caso específico pedir uma lib fora dessa hierarquia (SVG morphing avançado, cena 3D ambiciosa, etc.), instalar via `npm` diretamente no projeto, sem depender de skill dedicada.
 
 ## Regras obrigatórias de front-end
 
 Valendo pra qualquer projeto (LP, site, sistema, dashboard) — comportamento automático, sem precisar pedir:
 
-1. Ao criar ou editar qualquer interface visual, avaliar automaticamente se motion design agrega (consultando as skills acima) antes de entregar uma seção estática. Motion é avaliado sempre, mesmo que a resposta seja "não precisa".
+1. Ao criar ou editar qualquer interface visual, avaliar automaticamente se motion design agrega (consultando a hierarquia de animação de `projeto/CLAUDE.md`) antes de entregar uma seção estática. Motion é avaliado sempre, mesmo que a resposta seja "não precisa".
 2. Usar o Context7 MCP antes de escrever código com GSAP, Motion, Next.js ou Tailwind — API sempre atual, nunca de memória.
 3. Verificar todo trabalho visual com o Playwright MCP antes de dar como concluído: abrir a página, testar a animação renderizada, confirmar que não quebrou layout nem performance.
 4. Padrão de qualidade é nível referência (Awwwards, godly.website): tipografia intencional, espaçamento preciso, micro-interações, hierarquia visual forte. "Funciona" não é suficiente. Se uma entrega estiver visualmente genérica, apontar isso proativamente e propor o upgrade.
@@ -113,7 +94,7 @@ Valendo pra qualquer projeto (LP, site, sistema, dashboard) — comportamento au
 Este é o carimbo de qualidade de qualquer entrega da duPolvo — vale tanto pro painel interno (MazyOS) quanto pra sites/LPs de cliente (Tipo A e Tipo B). Executar automaticamente ao final de toda entrega de página ou seção nova, sem precisar que o usuário peça:
 
 1. **Build** da página/seção
-2. **Skill baseline visual** — `frontend-design` ou `ui-ux-pro-max`, conforme o caso, antes de considerar o visual pronto
+2. **Skill baseline visual** — `frontend-design` antes de considerar o visual pronto (`ui-ux-pro-max` é consulta secundária/banco de referência, não baseline de QA pra web — texto da própria skill assume stack React Native/mobile; ver `projeto/CLAUDE.md`, Fase 3)
 3. **Verificação visual real** via Playwright + Chrome DevTools MCP:
    - Screenshot em desktop e mobile
    - Medir performance (LCP, jank, frame rate) se houver animação
@@ -155,7 +136,7 @@ Não é necessário listar o que foi lido nem confirmar a leitura. Apenas usar o
 
 Quando iniciar um novo projeto de cliente:
 
-1. Rodar `/novo-projeto` e responder as perguntas do cliente. **Etapa obrigatória, não opcional:** se a entrega envolve site, LP, redes sociais, branding ou qualquer peça visual, o comando pergunta qual dos 13 nichos catalogados em `cerebro/raw/nichos/` se aplica ao cliente e lê automaticamente as notas `status: done` desse nicho, trazendo um resumo de "Insights para o nicho" + "Processar para" como contexto antes da fase de design começar. Pular essa consulta significa desperdiçar pesquisa de mercado que já está processada e validada no Cérebro.
+1. Rodar `/novo-projeto` e responder as perguntas do cliente. **Etapa obrigatória, não opcional:** se a entrega envolve site, LP, redes sociais, branding ou qualquer peça visual, o comando pergunta qual dos 13 nichos catalogados em `cerebro/raw/nichos/` se aplica ao cliente e lê o `_sintese.md` desse nicho (Passo 1.3 do `novo-projeto/SKILL.md`, ver `cerebro/CLAUDE.md` seção 13.8) — a consolidação já processada das notas `status: done`, sem percorrer nota por nota. Se o nicho ainda não tiver `_sintese.md`, cai no comportamento antigo de ler as notas `done` individuais e avisa que vale gerar a síntese. O resumo de "Insights para o nicho" + "Processar para" (ou consolidado equivalente) vira contexto antes da fase de design começar. Pular essa consulta significa desperdiçar pesquisa de mercado que já está processada e validada no Cérebro.
 2. O briefing gerado fica em `clientes/<Nome>/briefing.md` — incluir no briefing o tipo do projeto (Tipo A: Astro / Tipo B: Next.js + Supabase) e o nicho de mercado identificado (com o resumo do Cérebro)
 3. **Se o projeto envolve site/sistema, `projeto/<Nome>/` já nasce pronto nesta etapa** — `/novo-projeto` copia `templates/starter-tipo-a/` ou `templates/starter-tipo-b/` pra dentro de `projeto/<Nome>/`, roda `npm install` e confirma que builda, antes mesmo de qualquer sessão de desenvolvimento começar. Não é opcional nem manual: projeto novo nunca começa do zero. Ver `templates/starter-tipo-a/README.md` / `templates/starter-tipo-b/README.md`.
 4. Comunicar o caminho do briefing pro Claude Code em `projeto/` (o projeto já existe e já builda — é continuação, não criação):
@@ -167,7 +148,7 @@ Quando iniciar um novo projeto de cliente:
    ```
 5. Desenvolvimento acontece dentro de `projeto/<Nome>/`
 6. Deploy conforme o tipo: Tipo A → Netlify ou Cloudflare Pages; Tipo B → Vercel + Supabase
-7. Quando pronto, mover a pasta `projeto/<Nome>/` pro Desktop
+7. Projeto finalizado continua em `projeto/<Nome>/` — nunca sai do controle de versão do MazyOS. Deploy (Netlify/Vercel) aponta direto pro subdiretório dentro da pasta, sem precisar mover nada pro Desktop.
 
 ---
 

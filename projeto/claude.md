@@ -315,3 +315,4 @@ Sempre que iniciar um projeto de landing page, ativar estas 5 skills na ordem:
 3. `.claude/skills/frontend-design/`
 4. `.claude/skills/hooked-ux/`
 5. `.claude/skills/cro-methodology/`
+6. Ao final, rodar o Pipeline de QA obrigatório do `MazyOS/CLAUDE.md` antes de considerar a LP entregável.
