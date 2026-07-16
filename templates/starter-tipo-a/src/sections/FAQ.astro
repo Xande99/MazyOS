@@ -1,0 +1,78 @@
+---
+/**
+ * FAQ — accordion de perguntas frequentes, tratando objeção antes do
+ * CTA final.
+ *
+ * Origem do padrão: cerebro/raw/nichos/_sintese-geral.md (13.9), item 5
+ * do "Wireframe-zero duPolvo" — FAQ/seção de objeção aparece como
+ * padrão regional em vários nichos (saude-estetica, psicologia,
+ * juridico-contabil) e entra no esqueleto mínimo por não ter nenhum
+ * nicho com objeção registrada contra o padrão, mesmo sem ainda atingir
+ * o corte formal de "universal" (4+ nichos contados).
+ *
+ * Accordion via <details>/<summary> nativo — a hierarquia de animação
+ * do projeto/claude.md diz CSS puro pra interação simples, nunca GSAP
+ * pra isso. Navegação por teclado e semântica de estado (aberto/
+ * fechado) vêm de graça do elemento nativo, sem JS.
+ */
+interface Props {
+  itens: { pergunta: string; resposta: string }[];
+  titulo?: string;
+}
+
+const { itens, titulo } = Astro.props;
+---
+
+<section class="container-du section-y">
+  {titulo && (
+    <h2 class="reveal text-3xl font-bold text-blue md:text-4xl">{titulo}</h2>
+  )}
+  <div class:list={["divide-y divide-line", titulo && "mt-10"]}>
+    {itens.map((item, i) => (
+      <details class="reveal group py-5" data-reveal-delay={(i * 0.1).toFixed(2)}>
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-bold text-blue">
+          {item.pergunta}
+          <span
+            aria-hidden="true"
+            class="flex-none text-2xl leading-none text-pink-ink transition-transform duration-300 group-open:rotate-45"
+          >
+            +
+          </span>
+        </summary>
+        <p class="faq-answer mt-4 text-[--du-text-body]">{item.resposta}</p>
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  /* Remove o marcador triangular nativo do <summary> (Safari/Firefox) — o ícone +/× já cobre o indicador visual */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary {
+    list-style: none;
+  }
+
+  .faq-answer {
+    animation: faq-fade-in var(--du-dur-base) var(--ease-out-expo);
+  }
+
+  @keyframes faq-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-answer {
+      animation: none;
+    }
+  }
+</style>

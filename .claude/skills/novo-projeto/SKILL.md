@@ -225,10 +225,13 @@ Se o Passo 1.2 rodou e a entrega envolve LP/site novo, incluir também esse lemb
 
 Antes de montar o design: rodar o kit mínimo de skills pra LP nova
 (storybrand-messaging → copywriting → frontend-design → hooked-ux →
-cro-methodology — regra completa em projeto/CLAUDE.md). Pra estrutura
-e animação, começar pelas seções prontas em
-projeto/duPolvoNovo/sections/ e o kit de animação em
-projeto/duPolvoNovo/motion-kit/ em vez de do zero.
+cro-methodology — regra completa em projeto/CLAUDE.md). Antes de criar
+qualquer seção do zero, checar primeiro se a biblioteca que já veio com
+o projeto (src/sections/ — nasceu do starter Tipo A, ver seu README.md)
+cobre a necessidade: AncoraConfianca, ProvaNumerica, TierPreco,
+GridOferta ou FAQ. Só depois, pra estrutura e animação adicionais,
+consultar projeto/duPolvoNovo/sections/ e o kit de animação em
+projeto/duPolvoNovo/motion-kit/.
 ```
 
 Se o Passo 1.3 rodou, incluir também o resumo do nicho antes desse lembrete de skills — é contexto que deveria informar as escolhas do kit acima, não só um anexo:

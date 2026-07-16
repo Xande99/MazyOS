@@ -1,0 +1,80 @@
+---
+/**
+ * AncoraConfianca — pessoa nomeada como rosto de confiança (variante
+ * "pessoa"), ou estatística de autoridade quando pessoa nomeada não é
+ * natural pro modelo de negócio (variante "numero").
+ *
+ * Origem do padrão: cerebro/raw/nichos/_sintese-geral.md (13.9),
+ * "Padrões universais" #1 — pessoa nomeada é o padrão mais transversal
+ * do Cérebro, presente com intensidade variável em 9/13 nichos (odonto,
+ * fitness-gym, saude-estetica, juridico-contabil, psicologia,
+ * food-delivery, pet-veterinario, infoprodutos, barbearia). A variante
+ * "numero" cobre a categoria "loja/comércio" da mesma síntese, onde a
+ * confiança tende a vir de prova numérica agregada em vez de rosto
+ * individual (nutri-suplement, pet-veterinario cluster ecommerce).
+ *
+ * Uso: variante="pessoa" pra clínica/consultório/prestador solo;
+ * variante="numero" pra loja/comércio/ecommerce. Ver README.md desta
+ * pasta pro critério completo de escolha.
+ */
+interface Props {
+  variante?: "pessoa" | "numero";
+  /** variante "pessoa" */
+  nome?: string;
+  cargo?: string;
+  foto?: string;
+  fotoAlt?: string;
+  fotoLargura?: number;
+  fotoAltura?: number;
+  anosExperiencia?: number;
+  /** variante "numero" */
+  numero?: string;
+  label?: string;
+}
+
+const {
+  variante = "pessoa",
+  nome,
+  cargo,
+  foto,
+  fotoAlt,
+  fotoLargura = 96,
+  fotoAltura = 96,
+  anosExperiencia,
+  numero,
+  label,
+} = Astro.props;
+---
+
+<section class="container-du section-y" aria-label="Confiança">
+  {variante === "pessoa" && nome && (
+    <div class="reveal flex flex-col items-center gap-4 rounded-lg bg-white p-8 text-center shadow-[--du-shadow-card] sm:flex-row sm:text-left">
+      {foto && (
+        <img
+          src={foto}
+          alt={fotoAlt ?? `Foto de ${nome}`}
+          width={fotoLargura}
+          height={fotoAltura}
+          loading="lazy"
+          class="h-24 w-24 flex-none rounded-full object-cover"
+        />
+      )}
+      <div>
+        <p class="font-display text-xl font-bold text-blue">{nome}</p>
+        {cargo && (
+          <p class="text-sm font-bold uppercase tracking-[0.1em] text-pink-ink">{cargo}</p>
+        )}
+        {typeof anosExperiencia === "number" && (
+          <p class="mt-2 text-[--du-text-body]">{anosExperiencia}+ anos de experiência</p>
+        )}
+      </div>
+    </div>
+  )}
+
+  {variante === "numero" && numero && (
+    <div class="reveal flex flex-col items-center gap-2 rounded-lg bg-white p-8 text-center shadow-[--du-shadow-card]">
+      <p class="font-display text-5xl font-extrabold text-pink-ink">{numero}</p>
+      {label && <p class="text-[--du-text-body]">{label}</p>}
+    </div>
+  )}
+</section>

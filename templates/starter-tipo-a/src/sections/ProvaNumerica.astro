@@ -1,0 +1,40 @@
+---
+/**
+ * ProvaNumerica — bloco de estatísticas de autoridade logo abaixo do
+ * hero (X anos, X clientes, X% satisfação).
+ *
+ * Origem do padrão: cerebro/raw/nichos/_sintese-geral.md (13.9),
+ * "Padrões universais" #2 — aparece em 5/13 nichos (juridico-contabil,
+ * empresa, psicologia, pet-veterinario, e automotivo com peso reduzido
+ * por amostra pequena, 7 notas). A posição é o que é universal — hero
+ * → prova numérica imediata, antes de qualquer outra seção — o
+ * conteúdo do número varia por nicho e não deve ser inventado.
+ */
+interface Props {
+  itens: { numero: string; label: string }[];
+  titulo?: string;
+}
+
+const { itens, titulo } = Astro.props;
+---
+
+<section class="container-du section-y" aria-label={titulo ?? "Números"}>
+  {titulo && (
+    <h2 class="reveal text-center text-3xl font-bold text-blue md:text-4xl">{titulo}</h2>
+  )}
+  <dl
+    class:list={[
+      "grid gap-6 text-center [grid-template-columns:repeat(auto-fit,minmax(140px,1fr))]",
+      titulo && "mt-10",
+    ]}
+  >
+    {itens.map((item, i) => (
+      <div class="reveal" data-reveal-delay={(i * 0.1).toFixed(2)}>
+        <dt class="font-display text-4xl font-extrabold text-pink-ink md:text-5xl">
+          {item.numero}
+        </dt>
+        <dd class="mt-2 text-sm text-[--du-text-body]">{item.label}</dd>
+      </div>
+    ))}
+  </dl>
+</section>

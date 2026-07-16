@@ -15,7 +15,7 @@ Starter pra landing page / site institucional / site de conteúdo, conforme a st
 
 1. **`astro.config.mjs`** → trocar `site: 'https://exemplo.duPolvo.com.br'` pelo domínio real assim que o cliente tiver um (canonical/OG dependem disso — sem `site` configurado, o build falha).
 2. **`src/pages/index.astro`** → substituir pelo conteúdo real do cliente (esse arquivo é só prova de que o starter builda limpo, não é uma LP pronta).
-3. **`src/sections/`** → pasta vazia de propósito — é onde entram as seções reutilizáveis conforme o projeto cresce (ver também `projeto/duPolvoNovo/sections/` como referência de biblioteca já existente).
+3. **`src/sections/`** → já nasce com 5 seções base (`AncoraConfianca`, `ProvaNumerica`, `TierPreco`, `GridOferta`, `FAQ`), derivadas dos padrões cross-nicho de `cerebro/raw/nichos/_sintese-geral.md` — ver `src/sections/README.md` pra quando usar cada uma antes de criar do zero (ver também `projeto/duPolvoNovo/sections/` como biblioteca complementar, específica do site institucional da própria duPolvo).
 4. **Identidade própria do cliente** (se não herdar a linha da duPolvo) → editar `src/styles/dupolvo-theme.css` com a paleta/tipografia do cliente, ou renomear/substituir o arquivo — ver Passo 1.2 do `/novo-projeto`.
 5. **Skills de animação extras** (`locomotive-scroll`, `lightweight-3d-effects`, etc.) → ativar conforme a LP pedir, seguindo o mapa em `CLAUDE.md` raiz do MazyOS. GSAP + ScrollTrigger já são a base; o resto é por cima.
 
@@ -35,7 +35,7 @@ npm run qa         # check + build (o que dá pra automatizar localmente; Lighth
 src/
   layouts/Layout.astro     — <head> completo, ClientRouter, import do global.css
   components/               — componentes pequenos e reutilizáveis
-  sections/                 — vazia — biblioteca de seções do projeto
+  sections/                 — 5 seções base (AncoraConfianca, ProvaNumerica, TierPreco, GridOferta, FAQ) — ver sections/README.md
   scripts/reveal.ts         — sistema de reveal (GSAP + matchMedia)
   styles/
     global.css               — @import tailwindcss + dupolvo-theme.css + base/utilitários
