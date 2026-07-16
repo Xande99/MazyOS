@@ -1,0 +1,139 @@
+/*
+ * duPolvo — Tailwind v4 theme preset
+ *
+ * Fonte de valores: projeto/duPolvoNovo/tokens/*.css (canônico) e
+ * identidade/design-guide.md (resumo humano). Se algum valor aqui
+ * divergir de lá, os tokens em duPolvoNovo têm precedência — atualize
+ * este arquivo pra bater, não o contrário.
+ *
+ * Uso: @import este arquivo depois de `@import "tailwindcss";` no
+ * global.css do projeto. Tudo dentro de @theme vira utilitário do
+ * Tailwind automaticamente (bg-cream, text-pink-ink, font-display,
+ * rounded-lg, ease-out-expo...). O bloco fora do @theme (spacing de
+ * seção, sombras, durações) fica como variável CSS solta, pra usar
+ * em componentes custom ou em valor arbitrário do Tailwind
+ * (ex: duration-[--du-dur-base]).
+ */
+
+@theme {
+  /* ---- Cores de marca ---- */
+  --color-cream: #F7F4F1;
+  --color-ink: #020E20;
+  --color-ink-2: #08182E;
+  --color-ink-3: #0E2440;
+  --color-pink: #FD4B90;
+  --color-pink-ink: #C81F66;   /* variante acessível — texto/ícone em fundo claro, fundo de botão preenchido com texto branco */
+  --color-pink-600: #E23A7C;
+  --color-pink-100: #FFE3EE;
+  --color-blue: #123047;
+  --color-blue-700: #0C2336;
+  --color-lime: #DFFF5A;
+  --color-lime-200: #F2FFC4;
+  --color-aqua: #81DFC0;
+  --color-aqua-200: #D8F6EC;
+  --color-line: #E5DFD8;
+
+  /* ---- Tipografia ---- */
+  --font-display: "Bricolage Grotesque Display", "Bricolage Grotesque", system-ui, sans-serif;
+  --font-sans: "Bricolage Grotesque", system-ui, sans-serif;
+
+  /* ---- Raio de borda ---- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* ---- Easing (usar em transition-timing-function via ease-*) ---- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/*
+ * Tokens sem namespace direto no Tailwind v4 — variáveis CSS soltas,
+ * usadas em CSS custom ou como valor arbitrário do Tailwind.
+ */
+:root {
+  /* Espaçamento (escala fixa 4px, distinta do multiplicador padrão do Tailwind) */
+  --du-sp-1: 4px;
+  --du-sp-2: 8px;
+  --du-sp-3: 12px;
+  --du-sp-4: 16px;
+  --du-sp-5: 24px;
+  --du-sp-6: 32px;
+  --du-sp-7: 48px;
+  --du-sp-8: 64px;
+  --du-sp-9: 96px;
+  --du-sp-10: 128px;
+
+  /* Ritmo de layout */
+  --du-section-y: clamp(72px, 9vw, 140px);
+  --du-container: 1200px;
+  --du-gutter: clamp(20px, 5vw, 48px);
+
+  /* Sombras */
+  --du-shadow-card: 0 1px 2px rgba(18,48,71,0.04), 0 8px 24px rgba(18,48,71,0.06);
+  --du-shadow-card-hover: 0 10px 18px rgba(18,48,71,0.08), 0 28px 56px rgba(18,48,71,0.16);
+  --du-shadow-pink: 0 12px 30px rgba(253,75,144,0.38);
+  --du-shadow-dark: 0 24px 60px rgba(0,0,0,0.5);
+
+  /* Durações de motion */
+  --du-dur-fast: 180ms;
+  --du-dur-base: 300ms;
+  --du-dur-slow: 400ms;
+  --du-dur-reveal: 760ms;
+  --du-reveal-y: 26px;
+
+  /* Foco */
+  --du-focus-ring: 0 0 0 3px rgba(253,75,144,0.35);
+
+  /* Texto semântico */
+  --du-text-primary: var(--color-blue);
+  --du-text-body: #45586A;
+  --du-text-muted: #5B6773;
+  --du-text-on-dark: #F4F8FF;
+  --du-text-body-dark: #A9B8CC;
+  --du-text-muted-dark: #6E7F95;
+}
+
+/* ---- Bricolage Grotesque — self-hosted, font-display: swap ---- */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/fonts/BricolageGrotesque_24pt-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/fonts/BricolageGrotesque_24pt-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bricolage Grotesque Display";
+  src: url("/fonts/BricolageGrotesque_36pt-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bricolage Grotesque Display";
+  src: url("/fonts/BricolageGrotesque_36pt-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bricolage Grotesque Display";
+  src: url("/fonts/BricolageGrotesque_36pt-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}

@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@import "./dupolvo-theme.css";
+
+@layer base {
+  body {
+    background: var(--color-cream);
+    color: var(--du-text-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--du-text-primary);
+    letter-spacing: var(--ls-h, -0.015em);
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--du-focus-ring);
+    border-radius: var(--radius-sm);
+  }
+}
+
+@layer components {
+  .container-du {
+    width: 100%;
+    max-width: var(--du-container);
+    margin-inline: auto;
+    padding-inline: var(--du-gutter);
+  }
+
+  .section-y {
+    padding-block: var(--du-section-y);
+  }
+}

@@ -13,6 +13,7 @@ Operação da agência. Aqui ficam todos os clientes, propostas, conteúdo e ent
 - `dados/` — arquivos a analisar (relatórios de cliente, exports)
 - `scripts/` — automações e scripts internos
 - `projeto/` — pasta de desenvolvimento dos sites e LPs dos clientes
+- `templates/` — starters de projeto (`starter-tipo-a/`, `starter-tipo-b/`, `tailwind-preset-dupolvo/`), catálogo de skills, perfis de `CLAUDE.md` e exemplos de identidade — todo material reutilizável entre projetos que não é específico de um cliente
 
 ## Pastas vinculadas
 
@@ -156,15 +157,17 @@ Quando iniciar um novo projeto de cliente:
 
 1. Rodar `/novo-projeto` e responder as perguntas do cliente. **Etapa obrigatória, não opcional:** se a entrega envolve site, LP, redes sociais, branding ou qualquer peça visual, o comando pergunta qual dos 13 nichos catalogados em `cerebro/raw/nichos/` se aplica ao cliente e lê automaticamente as notas `status: done` desse nicho, trazendo um resumo de "Insights para o nicho" + "Processar para" como contexto antes da fase de design começar. Pular essa consulta significa desperdiçar pesquisa de mercado que já está processada e validada no Cérebro.
 2. O briefing gerado fica em `clientes/<Nome>/briefing.md` — incluir no briefing o tipo do projeto (Tipo A: Astro / Tipo B: Next.js + Supabase) e o nicho de mercado identificado (com o resumo do Cérebro)
-3. Comunicar o caminho do briefing pro Claude Code em `projeto/`:
+3. **Se o projeto envolve site/sistema, `projeto/<Nome>/` já nasce pronto nesta etapa** — `/novo-projeto` copia `templates/starter-tipo-a/` ou `templates/starter-tipo-b/` pra dentro de `projeto/<Nome>/`, roda `npm install` e confirma que builda, antes mesmo de qualquer sessão de desenvolvimento começar. Não é opcional nem manual: projeto novo nunca começa do zero. Ver `templates/starter-tipo-a/README.md` / `templates/starter-tipo-b/README.md`.
+4. Comunicar o caminho do briefing pro Claude Code em `projeto/` (o projeto já existe e já builda — é continuação, não criação):
    ```
    Lê o briefing em C:\Users\Xande\Desktop\MazyOS\clientes\<Nome>\briefing.md,
    consulta o cérebro em C:\Users\Xande\Desktop\cerebro
-   e cria a estrutura do site.
+   e continua o desenvolvimento em projeto/<Nome>/ — o projeto já nasceu
+   do starter Tipo [A|B] (build confirmado), não recriar do zero.
    ```
-4. Desenvolvimento acontece dentro de `projeto/<Nome>/`
-5. Deploy conforme o tipo: Tipo A → Netlify ou Cloudflare Pages; Tipo B → Vercel + Supabase
-6. Quando pronto, mover a pasta `projeto/<Nome>/` pro Desktop
+5. Desenvolvimento acontece dentro de `projeto/<Nome>/`
+6. Deploy conforme o tipo: Tipo A → Netlify ou Cloudflare Pages; Tipo B → Vercel + Supabase
+7. Quando pronto, mover a pasta `projeto/<Nome>/` pro Desktop
 
 ---
 

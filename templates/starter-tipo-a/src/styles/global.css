@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@import "./dupolvo-theme.css";
+
+/* ---- Base ---- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-cream);
+    color: var(--du-text-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--du-text-primary);
+    letter-spacing: var(--ls-h, -0.015em);
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--du-focus-ring);
+    border-radius: var(--radius-sm);
+  }
+}
+
+/* ---- Layout helpers (ritmo de seção/container fixo da duPolvo, fora da escala padrão do Tailwind) ---- */
+@layer components {
+  .container-du {
+    width: 100%;
+    max-width: var(--du-container);
+    margin-inline: auto;
+    padding-inline: var(--du-gutter);
+  }
+
+  .section-y {
+    padding-block: var(--du-section-y);
+  }
+
+  /* Estado inicial do elemento antes do reveal — some via reveal.ts se JS estiver ativo */
+  .reveal {
+    opacity: 0;
+    transform: translateY(var(--du-reveal-y));
+  }
+
+  /* Sem JS (ou reduced motion tratado no próprio reveal.ts): garantir visibilidade */
+  .no-js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- prefers-reduced-motion: fallback CSS puro, além do tratamento em JS no reveal.ts ---- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

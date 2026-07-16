@@ -41,6 +41,11 @@ Stack: **Next.js (App Router) + TypeScript + Tailwind + Supabase/Postgres** (+ M
 ## Regra de ouro
 Nunca usar Next.js para site de conteúdo (peso de JS desnecessário) nem Astro para SaaS (falta de primitivas full-stack). Se o projeto mistura os dois (site público + área logada), separar: site em Astro, app em Next.js.
 
+## Projeto novo nasce do starter, nunca do zero
+Todo projeto dentro de `projeto/<Nome>/` começa como uma cópia de `templates/starter-tipo-a/` (Tipo A) ou `templates/starter-tipo-b/` (Tipo B) — isso já acontece automaticamente no Passo 3.5 do comando `/novo-projeto`, antes da sessão de desenvolvimento nem começar. Os starters já vêm com Tailwind + tokens de marca da duPolvo (`identidade/design-guide.md`), TypeScript strict, GSAP com View Transitions (Tipo A) ou Motion + Supabase configurado (Tipo B), e build confirmado. Ver `templates/starter-tipo-a/README.md` / `templates/starter-tipo-b/README.md` pro que já vem pronto e o que falta configurar por projeto.
+
+Se encontrar uma pasta em `projeto/<Nome>/` que não parece ter nascido do starter (sem `dupolvo-theme.css`, sem os scripts `qa`/`check` no `package.json`), não presumir que está errada — pode ser projeto legado de antes dos starters existirem. Perguntar antes de reestruturar.
+
 Use estritamente a escala nativa do Tailwind de:
 - Espaçamento
 - Tipografia

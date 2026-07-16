@@ -136,6 +136,24 @@ Se não houver nota status: done nesse nicho ainda: "Nicho: [nome] — sem pesqu
 Se o cliente não se encaixa em nenhum nicho catalogado: "Nicho de mercado: fora da taxonomia atual do Cérebro."]
 ```
 
+### Passo 3.5 — Inicializar o projeto de desenvolvimento a partir do starter (só se o Passo 1.1 rodou)
+
+Todo projeto de desenvolvimento novo **nasce do starter correspondente, nunca do zero**. Os starters vivem em `templates/starter-tipo-a/` (Astro) e `templates/starter-tipo-b/` (Next.js) — já buildam limpo, já têm os tokens de marca da duPolvo aplicados, TypeScript strict, GSAP (Tipo A) ou Motion + Supabase (Tipo B) configurados. Ver `templates/starter-tipo-a/README.md` e `templates/starter-tipo-b/README.md` pra detalhe completo do que vem pronto.
+
+1. Copiar o starter certo pra `projeto/<Nome>/`:
+   ```
+   Tipo A → copiar templates/starter-tipo-a/  → projeto/<Nome>/
+   Tipo B → copiar templates/starter-tipo-b/  → projeto/<Nome>/
+   ```
+   Não copiar `node_modules/` (não existe no starter, de propósito) nem `package-lock.json` se for gerar um novo — copiar como está e deixar o `npm install` do passo seguinte gerar/atualizar o lockfile.
+2. Rodar `npm install` dentro de `projeto/<Nome>/`.
+3. **Tipo A:** se o domínio do cliente já for conhecido, atualizar `site` em `astro.config.mjs` (o starter vem com um placeholder — build falha sem isso configurado, é intencional pra não esquecer).
+4. **Tipo B:** copiar `.env.example` pra `.env.local` dentro do projeto (não preencher os valores ainda — isso depende do Supabase já ter sido criado, ver checklist consultado no Passo 1.1).
+5. Se o Passo 1.2 identificou identidade própria do cliente (não herda a linha da duPolvo): já substituir os valores em `src/styles/dupolvo-theme.css` (Tipo A) ou `app/dupolvo-theme.css` (Tipo B) pelos coletados na entrevista — ou deixar marcado como pendência explícita no briefing se ainda não tiver hex/fonte definitivos.
+6. **Confirmar que builda** antes de considerar o passo concluído: `npm run build` (Tipo A) ou `npm run qa` (Tipo B), dentro de `projeto/<Nome>/`. Starter que não builda no projeto do cliente é pior que não ter starter — não pular esta checagem.
+
+Se a entrega não envolve site/sistema (Passo 1.1 não rodou), pular este passo inteiro.
+
 ### Passo 4 — Conteúdo do `CLAUDE.md` do projeto
 
 Template:
@@ -190,10 +208,11 @@ Pasta criada: [caminho]
 ✓ Subpastas: [lista]
 ```
 
-Se o Passo 1.1 rodou, incluir também:
+Se o Passo 1.1 rodou (e portanto o Passo 3.5 também), incluir também:
 
 ```
 ✓ Tipo técnico: [A | B] — stack: [Astro | Next.js + Supabase]
+✓ Projeto iniciado a partir de templates/starter-tipo-[a|b]/ em projeto/<Nome>/ — build confirmado (npm run build/qa)
 ✓ Skills de animação ativas: [lista, ex: gsap-scrolltrigger, locomotive-scroll]
 ✓ MCPs em uso: Context7 (docs atualizadas), Playwright (verificação visual)
 ✓ Checklist Supabase: [aplicável — já consultado, pendências: X | não aplicável]
@@ -220,7 +239,16 @@ Se o Passo 1.3 rodou, incluir também o resumo do nicho antes desse lembrete de 
 [resumo condensado de Insights para o nicho + Processar para, gerado no Passo 1.3]
 ```
 
-E mostrar o comando pronto pra colar na sessão do Claude Code dentro de `projeto/`:
+E mostrar o comando pronto pra colar na sessão do Claude Code dentro de `projeto/`. Se o Passo 3.5 rodou, o projeto já existe e já builda — o comando é pra continuar a partir dali, não recriar:
+
+```
+Lê o briefing em C:\Users\Xande\Desktop\MazyOS\clientes\<Nome>\briefing.md,
+consulta o cérebro em C:\Users\Xande\Desktop\cerebro
+e continua o desenvolvimento em projeto/<Nome>/ — o projeto já nasceu
+do starter Tipo [A|B] (build confirmado), não recriar do zero.
+```
+
+Se por algum motivo o Passo 3.5 não rodou (entrega sem site/sistema, ou Passo 1.1 não identificou tipo), usar a versão antiga do comando:
 
 ```
 Lê o briefing em C:\Users\Xande\Desktop\MazyOS\clientes\<Nome>\briefing.md,
@@ -239,4 +267,6 @@ Quando for trabalhar nesse projeto, abre o terminal já dentro da pasta — assi
 - Nome de pasta: usar o nome como o usuário falou, sem normalizar agressivamente (manter acentos, espaços viram hífen, mas o nome reconhecível)
 - Não criar subpastas que não foram pedidas ("pra organizar melhor"). Só o que foi mencionado nas entregas
 - Não pular o Passo 1.1 quando a entrega envolve site/sistema — sem o tipo definido, o Claude Code em `projeto/` não sabe qual stack aplicar
+- Não pular o Passo 3.5 quando o Passo 1.1 rodou — projeto de desenvolvimento novo nasce do starter (`templates/starter-tipo-a/` ou `templates/starter-tipo-b/`), nunca do zero. Se os starters não existirem por algum motivo, avisar o usuário em vez de criar a estrutura manualmente do zero sem avisar
+- Se `npm install` ou o build de verificação (`npm run build`/`npm run qa`) falhar no Passo 3.5, não seguir em frente escondendo o erro — mostrar o erro pro usuário e resolver antes de considerar o projeto inicializado
 - Se o cliente/projeto já existe (pasta com mesmo nome), avisar e perguntar se é pra adicionar dentro ou criar com sufixo
