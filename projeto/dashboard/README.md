@@ -2,7 +2,7 @@
 
 Painel interno da duPolvo Studio — CRM, Kanban, tarefas, calendário, notas, estoque/financeiro (produtos, fornecedores, livro de preços, orçamentos, ordens de venda/compra, faturas) e cofre de acesso num lugar só, sincronizado em tempo real pros 4 sócios.
 
-Plano completo de fases e arquitetura: `C:\Users\Angel\.claude\plans\clever-scribbling-newt.md`. Todas as 6 fases do plano original (0 a 5) estão implementadas e verificadas.
+Plano completo de fases e arquitetura: `C:\Users\Xande\.claude\plans\clever-scribbling-newt.md`. Todas as 6 fases do plano original (0 a 5) estão implementadas e verificadas.
 
 ## Stack
 
