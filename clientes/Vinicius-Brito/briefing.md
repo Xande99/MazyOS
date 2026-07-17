@@ -65,11 +65,11 @@ Disponíveis no Instagram do Vinicius — coletar prints ou textos antes de mont
 - Fundo escuro recomendado: `#0A0A0A` (inspirado na referência)
 
 **Foto do cliente:**
-`C:\Users\Xande\OneDrive\Área de Trabalho\Vinicius Cliente.jpg`
+`C:\Users\Xande\Desktop\Vinicius Cliente.jpg`
 → Jovem, postura confiante, braços cruzados, ambiente de academia
 
 **Referência de site:**
-`C:\Users\Xande\OneDrive\Área de Trabalho\nichos\fitness-gym\screencapture-behance-net-gallery-250952657-BOXARENA-Landing-Page-2026-06-29-11_00_41.png`
+`C:\Users\Xande\Desktop\nichos\fitness-gym\screencapture-behance-net-gallery-250952657-BOXARENA-Landing-Page-2026-06-29-11_00_41.png`
 → Estilo: fundo escuro, hero com foto de atleta, tipografia bold, cards de plano, seção de coach, CTA em destaque
 → Adaptar: trocar laranja por azul `#0034B8`, manter impacto visual
 
