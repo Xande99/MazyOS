@@ -111,6 +111,33 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
 .btn--lg{padding:17px 30px;font-size:var(--fs-body)}
 
 /* ============================================================
+   INTRO SPLASH
+   Entrada "por tentáculo": corpo (fill) escala/aparece, depois as
+   9 ventosas (fill aqua) entram em stagger tipo bolha, um pulse de
+   assentamento fecha a composição e a saída é uma cortina dupla
+   (2 painéis com translateX se afastando) revelando a hero.
+   100% transform/opacity — sem clip-path, sem filter, sem stroke.
+   ============================================================ */
+html.no-intro .intro{display:none}
+.intro{position:fixed;inset:0;z-index:9999;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  animation:introFailsafe 0s 4.2s forwards}
+.intro-lock{overflow:hidden}
+.intro__panel{position:absolute;top:0;bottom:0;width:50%;background:var(--du-ink);
+  will-change:transform;backface-visibility:hidden}
+.intro__panel--l{left:0}
+.intro__panel--r{right:0}
+.intro__logo{position:relative;z-index:1;width:clamp(150px,24vw,300px);
+  aspect-ratio:1350/1080;overflow:visible;will-change:transform,opacity}
+.intro__body,.intro__spot{transform-box:fill-box;transform-origin:50% 50%;opacity:0}
+.intro__body{fill:var(--du-pink);transform:scale(.85)}
+.intro__spot{fill:var(--du-aqua);transform:scale(.4)}
+@media(max-width:760px){
+  .intro__logo{width:clamp(120px,42vw,210px)}
+}
+@keyframes introFailsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
+
+/* ============================================================
    HEADER
    ============================================================ */
 .header{position:fixed;inset:0 0 auto 0;z-index:100;transition:background var(--dur) var(--ease),
@@ -167,6 +194,9 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
   background:radial-gradient(circle at 42% 38%,#0d2138,#061327 70%);
   filter:blur(2px);animation:blobMorph 14s ease-in-out infinite;
   will-change:transform;backface-visibility:hidden}
+.hero__dup{position:absolute;z-index:2;width:clamp(200px,30vw,340px);aspect-ratio:965/902;
+  filter:drop-shadow(0 22px 44px rgba(2,14,32,.5));pointer-events:none}
+.hero__dup img{width:100%;height:100%;object-fit:contain;display:block}
 .hero__chip{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:8px;
   background:rgba(255,255,255,.96);color:var(--du-blue);font-weight:700;font-size:13px;
   padding:9px 14px;border-radius:var(--r-pill);box-shadow:0 12px 30px rgba(0,0,0,.3);
@@ -289,7 +319,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
   background:var(--du-pink);transition:width var(--dur-slow) var(--ease)}
 .proc-item:hover::before{width:100%}
 .proc-item__n{font-family:var(--font-display);font-weight:800;font-size:2.4rem;
-  color:var(--du-aqua);line-height:1;margin-bottom:14px;-webkit-text-stroke:1px var(--du-blue)}
+  color:#1c8f6e;line-height:1;margin-bottom:14px;-webkit-text-stroke:1px var(--du-blue)}
 .proc-item h3{font-size:var(--fs-h3);margin-bottom:8px}
 .proc-item p{font-size:var(--fs-small);color:var(--text-muted)}
 
@@ -339,7 +369,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
 .diff-row__ic{flex:none;width:40px;height:40px;border-radius:11px;background:rgba(129,223,192,.14);
   color:var(--du-aqua);display:grid;place-items:center}
 .diff-row__ic .lucide{width:20px;height:20px}
-.diff-row h4{color:#fff;font-size:1.06rem;margin-bottom:3px}
+.diff-row h3{color:#fff;font-size:1.06rem;margin-bottom:3px}
 .diff-row p{font-size:var(--fs-small);color:var(--text-body-dark)}
 
 /* ============================================================
@@ -387,7 +417,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
   display:grid;place-items:center;color:var(--text-body-dark);transition:all var(--dur) var(--ease)}
 .socials a:hover{background:var(--du-pink);color:#fff;transform:translateY(-3px)}
 .socials .lucide{width:18px;height:18px}
-.footer__col h5{color:#fff;font-size:var(--fs-small);font-weight:700;margin-bottom:16px;
+.footer__col h3{color:#fff;font-size:var(--fs-small);font-weight:700;margin-bottom:16px;
   text-transform:uppercase;letter-spacing:.06em}
 .footer__col a{display:block;font-size:var(--fs-small);padding:7px 0;color:var(--text-body-dark);
   transition:color var(--dur) var(--ease)}
@@ -410,6 +440,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
    ============================================================ */
 @keyframes wordIn{to{opacity:1;transform:translateY(0) rotate(0)}}
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes dupFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 /* border-radius animado causa repaint — substituído por transform puro */
 @keyframes blobMorph{
   0%,100%{transform:scale(1,1) rotate(0deg)}
@@ -422,6 +453,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
    RESPONSIVE
    ============================================================ */
 @media(max-width:1024px){
+  .hero__dup{display:none}
   .prob__grid,.serv__grid,.steps{grid-template-columns:repeat(2,1fr);gap:18px}
   .steps::before{display:none}
   .proc__grid{grid-template-columns:repeat(2,1fr);gap:30px}
@@ -484,6 +516,15 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
 .hero__chip.c3.hero-in{animation:floaty 5s   .8s  ease-in-out infinite}
 .hero__chip.c4.hero-in{animation:floaty 3.8s .6s  ease-in-out infinite}
 
+/* — Dup: entrada elegante (scale+fade), depois flutuação contínua —
+   mesma técnica dos chips: transição cuida da entrada, e a animação
+   de flutuação só começa (animation-delay) exatamente quando a
+   transição termina, pra não ter salto no handoff. */
+.hero__dup{animation:none;opacity:0;transform:translateY(26px) scale(.9);
+  transition:opacity 700ms var(--ease),transform 700ms var(--ease)}
+.hero__dup.hero-in{opacity:1;transform:none;
+  animation:dupFloat 5.5s .7s ease-in-out infinite}
+
 /* — Processo: connector line grows on reveal — */
 .steps::before{transform:scaleX(0);transform-origin:left;
   transition:transform 600ms 400ms var(--ease)}
@@ -533,7 +574,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
 /* — Reduced motion extras — */
 @media(prefers-reduced-motion:reduce){
   .hero .eyebrow,.hero p.lead,.hero__ctas,.hero__proof,
-  .hero__chip,.cta__card h2 .word,.cta__ctas .btn{
+  .hero__chip,.hero__dup,.cta__card h2 .word,.cta__ctas .btn{
     opacity:1!important;transform:none!important;animation:none!important}
 }
 

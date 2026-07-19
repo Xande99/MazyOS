@@ -59,6 +59,7 @@
     var ctas    = document.querySelector('.hero__ctas');
     var proof   = document.querySelector('.hero__proof');
     var chips   = document.querySelectorAll('.hero__chip');
+    var dup     = document.querySelectorAll('.hero__dup');
 
     if (reduce) {
       [eyebrow, lead, ctas, proof].forEach(function (el) {
@@ -66,6 +67,7 @@
       });
       words.forEach(function (w) { w.classList.add('in'); });
       chips.forEach(function (c) { c.classList.add('hero-in'); });
+      dup.forEach(function (d) { d.classList.add('hero-in'); });
       return;
     }
 
@@ -89,10 +91,61 @@
     /* proof */
     setTimeout(function () { if (proof) proof.classList.add('hero-in'); }, afterWords + 260);
 
+    /* Dup: aparece primeiro — o "corpo" se monta antes dos chips (seus braços) */
+    dup.forEach(function (d) {
+      setTimeout(function () { d.classList.add('hero-in'); }, 380);
+    });
+
     /* chips stagger */
     chips.forEach(function (chip, i) {
       setTimeout(function () { chip.classList.add('hero-in'); }, 540 + i * 150);
     });
+  }
+
+  /* ─── Intro splash: GSAP orquestra a entrada por tentáculo e a saída
+     em cortina dupla. Se o GSAP não carregar (CDN fora do ar) ou os
+     elementos não existirem, esconde a intro na hora e segue pro hero
+     sem animação — nunca trava esperando uma lib que não veio. Um
+     setTimeout de segurança (4.2s) garante que a intro some mesmo se
+     a timeline do GSAP travar por qualquer motivo. ─── */
+  function runIntro(done) {
+    var introEl = document.getElementById('intro');
+    if (!introEl || document.documentElement.classList.contains('no-intro')) { done(); return; }
+
+    var body   = introEl.querySelector('.intro__body');
+    var spots  = introEl.querySelectorAll('.intro__spot');
+    var logo   = introEl.querySelector('.intro__logo');
+    var panelL = introEl.querySelector('.intro__panel--l');
+    var panelR = introEl.querySelector('.intro__panel--r');
+
+    if (!window.gsap || !body || !spots.length || !logo || !panelL || !panelR) {
+      introEl.style.display = 'none';
+      done();
+      return;
+    }
+
+    var finished = false;
+    document.body.classList.add('intro-lock');
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+      clearTimeout(failsafe);
+      introEl.style.display = 'none';
+      introEl.setAttribute('inert', '');
+      document.body.classList.remove('intro-lock');
+      done();
+    }
+
+    var failsafe = setTimeout(finish, 4200);
+
+    gsap.timeline({ onComplete: finish })
+      .to(body,   { opacity: 1, scale: 1, duration: .5, ease: 'power3.out' }, .1)
+      .to(spots,  { opacity: 1, scale: 1, duration: .35, ease: 'back.out(2)', stagger: .06 }, .6)
+      .to(logo,   { scale: 1.03, duration: .12, ease: 'power1.inOut', yoyo: true, repeat: 1 }, 1.3)
+      .to(logo,   { opacity: 0, scale: 1.08, duration: .25, ease: 'power2.in' }, 1.8)
+      .to(panelL, { xPercent: -100, duration: .6, ease: 'power3.inOut' }, 2.05)
+      .to(panelR, { xPercent: 100, duration: .6, ease: 'power3.inOut' }, 2.05);
   }
 
   /* ─── IntersectionObserver: reveal + stagger + counters + CTA ─── */
@@ -239,7 +292,7 @@
   }, 3200);
 
   /* ─── Boot ─── */
-  heroEntrance();
+  runIntro(heroEntrance);
 })();
 
 /* ─── Solução: linha de progresso das etapas (GSAP + ScrollTrigger) ───
