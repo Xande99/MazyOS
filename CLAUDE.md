@@ -52,6 +52,7 @@ Evitar: alavancar, ecossistema, jornada, entregar valor, metodologia ágil, mind
 
 - Cliente novo → criar pasta `clientes/<Nome>/` com briefing, estratégia e subpastas conforme as entregas contratadas
 - Projeto de desenvolvimento novo → classificar no briefing como **Tipo A** (LP/site institucional → Astro) ou **Tipo B** (sistema/SaaS/área logada → Next.js + Supabase), conforme a regra de stack do `projeto/CLAUDE.md`. Registrar o tipo no briefing.
+- Nicho de mercado identificado (Passo 1.3 do `/novo-projeto`) → resolve tipografia automaticamente via `cerebro/raw/nichos/<nicho>/_tipografia.md`: usa o par Principal por padrão, só troca pro par Alternativa se o `briefing.md` indicar explicitamente um estilo divergente do padrão do nicho. Fallback Manrope + Inter quando o nicho não corresponde a nenhuma pasta em `raw/nichos/`. Preenche os tokens `--font-display`/`--font-body` do contrato (`_memoria/tokens-contract.md`, enforced via stylelint) — nunca criar `--font-heading` nem token novo. Não se aplica a clientes que herdam a linha visual da duPolvo (mantêm Bricolage Grotesque fixo).
 - Proposta nova → `propostas/<cliente>-<data>.html` antes de fechar
 - Casos de sucesso ficam em `clientes/<Nome>/caso.md` (reuso em pitches)
 - Toda peça visual consulta `identidade/design-guide.md` antes de criar

@@ -17,3 +17,11 @@ Achado real na validação (dois `theme.css` fake radicalmente diferentes, via P
 **Cobertura conhecida:** hoje o starter-tipo-b não usa CSS Modules nem `styled-jsx` — só Tailwind utilities em `className` e os 2 `.css` reais (`globals.css`, `dupolvo-theme.css`). O glob `**/*.css` já cobriria `.module.css` se algum aparecer, mas `styled-jsx` (`<style jsx>` dentro de `.tsx`) não é coberto — exigiria um parser dedicado, não instalado por falta de uso atual que justifique. Registrar isso se `styled-jsx` for adotado depois.
 
 Achado à parte, não resolvido nesta entrada: `npm audit` no starter-tipo-b acusa 2 vulnerabilidades moderadas no `postcss` interno do próprio `next` (não introduzidas pelo stylelint) — a única correção automática (`npm audit fix --force`) faz downgrade de Next pra `9.3.3`, inaceitável. Decisão de como tratar isso fica pendente.
+
+## 2026-07-20 — Nem toda fonte tem pacote `-variable` no Fontsource
+
+Fontsource não garante versão variável pra toda fonte do Google Fonts — depende de a fonte de origem ter eixo variável publicado. Ex: Bebas Neue só tem um peso (400) e `npm view @fontsource-variable/bebas-neue` retorna 404 — só existe `@fontsource/bebas-neue` (estático). Já Space Grotesk tem eixo de peso completo e `@fontsource-variable/space-grotesk` existe normalmente.
+
+Regra pra qualquer automação de instalação de fonte (não é específico de nicho): sempre rodar `npm view @fontsource-variable/<fonte>` antes de assumir que o pacote variável existe. Se não existir, cair pro `@fontsource/<fonte>` estático, instalando só os arquivos de peso efetivamente usados no projeto (cada peso é uma entrada separada no pacote) — nunca a família completa, pra não comprometer o Lighthouse Performance.
+
+Validado durante a implementação de tipografia por nicho do `/novo-projeto` ([[tokens-contract]], ver `CLAUDE.md` seção "Regras do sistema"): barbearia/Bebas Neue expôs o caso sem variável, nutri-suplement/Space Grotesk confirmou o caminho variável funcionando normalmente. Os dois builds passaram com Lighthouse Performance ≥90.
