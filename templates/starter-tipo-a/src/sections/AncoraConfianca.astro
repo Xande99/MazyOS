@@ -48,7 +48,7 @@ const {
 
 <section class="container-du section-y" aria-label="Confiança">
   {variante === "pessoa" && nome && (
-    <div class="reveal flex flex-col items-center gap-4 rounded-lg bg-white p-8 text-center shadow-[--du-shadow-card] sm:flex-row sm:text-left">
+    <div class="reveal flex flex-col items-center gap-4 rounded-lg bg-surface-alt p-8 text-center shadow-sm sm:flex-row sm:text-left">
       {foto && (
         <img
           src={foto}
@@ -60,21 +60,21 @@ const {
         />
       )}
       <div>
-        <p class="font-display text-xl font-bold text-blue">{nome}</p>
+        <p class="font-display text-xl font-bold text-text">{nome}</p>
         {cargo && (
-          <p class="text-sm font-bold uppercase tracking-[0.1em] text-pink-ink">{cargo}</p>
+          <p class="text-sm font-bold uppercase tracking-[0.1em] text-brand">{cargo}</p>
         )}
         {typeof anosExperiencia === "number" && (
-          <p class="mt-2 text-[--du-text-body]">{anosExperiencia}+ anos de experiência</p>
+          <p class="mt-2 text-text-muted">{anosExperiencia}+ anos de experiência</p>
         )}
       </div>
     </div>
   )}
 
   {variante === "numero" && numero && (
-    <div class="reveal flex flex-col items-center gap-2 rounded-lg bg-white p-8 text-center shadow-[--du-shadow-card]">
-      <p class="font-display text-5xl font-extrabold text-pink-ink">{numero}</p>
-      {label && <p class="text-[--du-text-body]">{label}</p>}
+    <div class="reveal flex flex-col items-center gap-2 rounded-lg bg-surface-alt p-8 text-center shadow-sm">
+      <p class="font-display text-5xl font-extrabold text-brand">{numero}</p>
+      {label && <p class="text-text-muted">{label}</p>}
     </div>
   )}
 </section>
