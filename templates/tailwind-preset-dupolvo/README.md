@@ -1,6 +1,23 @@
 # tailwind-preset-dupolvo
 
-Tokens de marca da duPolvo em formato Tailwind v4 (CSS-first, `@theme`) — usado pelos dois starters (`templates/starter-tipo-a/` e `templates/starter-tipo-b/`) pra não redigitar cor/fonte/raio em cada projeto novo.
+Dois arquivos com papéis diferentes:
+
+- **`dupolvo-theme.css`** — tokens de marca da duPolvo (primitivos + camada
+  semântica do contrato) em formato Tailwind v4 (CSS-first, `@theme`) —
+  usado pelos dois starters (`templates/starter-tipo-a/` e
+  `templates/starter-tipo-b/`) pra não redigitar cor/fonte/raio em cada
+  projeto novo. É o tema que um projeto usa quando o cliente **herda a
+  linha visual da duPolvo** (Passo 1.2 do `/novo-projeto`).
+- **`theme.base.css`** — template em branco (primitivos placeholder) que
+  o `/novo-projeto` copia como `theme.css` pra dentro de `projeto/<Nome>/`
+  quando o cliente **tem marca própria**, preenchendo os primitivos a
+  partir do `briefing.md` (ver `_memoria/tokens-contract.md`).
+
+Os dois seguem os mesmos nomes de token SEMÂNTICOS do contrato
+(`--color-brand`, `--color-surface`, `--space-section-y`...) — só os
+primitivos por trás mudam. É isso que permite a biblioteca de seções
+(`src/sections/`) funcionar com qualquer um dos dois sem nenhuma
+alteração de código.
 
 ## Por que é uma cópia vendorizada, não um import ao vivo
 
