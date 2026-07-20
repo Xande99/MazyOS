@@ -155,7 +155,7 @@ Todo projeto de desenvolvimento novo **nasce do starter correspondente, nunca do
    3. Trocar o `@import "./dupolvo-theme.css";` por `@import "./theme.css";` em `src/styles/global.css` (Tipo A) ou `app/globals.css` (Tipo B).
    4. Se algum hex/fonte ainda não estiver definitivo, preencher com o placeholder do `theme.base.css` e marcar como pendência explícita no briefing — nunca inventar cor final.
    Se o Passo 1.2 registrou "herda a linha visual da duPolvo", pular este item — o starter já builda com `dupolvo-theme.css` (compatível com o contrato desde a Fase 2 do rollout do design system).
-6. **Confirmar que builda** antes de considerar o passo concluído: `npm run qa`, dentro de `projeto/<Nome>/`. No Tipo A isso já roda `stylelint` (lint de tokens, ver `.claude/skills/qa-visual-pre-entrega/SKILL.md`) junto do typecheck/build — Tipo B ainda não tem o lint de tokens configurado (pendente, fora do escopo do rollout inicial do design system). Starter que não builda no projeto do cliente é pior que não ter starter — não pular esta checagem.
+6. **Confirmar que builda** antes de considerar o passo concluído: `npm run qa`, dentro de `projeto/<Nome>/`. Tipo A e Tipo B já rodam `stylelint` (lint de tokens, ver `.claude/skills/qa-visual-pre-entrega/SKILL.md`) junto do typecheck/build — o Tipo B ainda não cobre `styled-jsx` (`<style jsx>`), só CSS Modules/`.css` normal, por não haver uso atual desse padrão no starter. Starter que não builda no projeto do cliente é pior que não ter starter — não pular esta checagem.
 
 Se a entrega não envolve site/sistema (Passo 1.1 não rodou), pular este passo inteiro.
 
