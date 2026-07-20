@@ -68,6 +68,20 @@ Qualquer resultado fora da paleta precisa de uma decisão explícita: ou é um
 hex esquecido que devia ser um token (corrigir), ou é intencional (documentar
 por quê — normalmente porque é a cor de um cliente específico).
 
+**c) Lint de tokens em tempo de build** (projetos Tipo A/B nascidos do starter,
+com design system aplicado — ver `_memoria/tokens-contract.md`):
+
+```bash
+cd projeto/<Nome>
+npm run qa   # já roda check + lint:css (stylelint) + build
+```
+
+`lint:css` barra hex/rgb/hsl/oklch literal e `font-family` solta em qualquer
+CSS/`<style>` de `.astro` fora de `theme*.css` (config em `.stylelintrc.json`
+do starter). Complementa o `check-tokens.js` do item (b): este aqui pega no
+código-fonte antes do build, aquele audita a cor computada depois de
+renderizado — os dois cobrem ângulos diferentes, rodar os dois.
+
 ### 2. Manual — o que os automatizados acima não pegam
 
 - [ ] **Responsividade real**: testar em mobile, tablet e desktop de verdade
