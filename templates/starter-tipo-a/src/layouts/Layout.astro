@@ -7,9 +7,11 @@ interface Props {
   description: string;
   /** Caminho relativo em public/ pra imagem de compartilhamento (og:image). Opcional. */
   ogImage?: string;
+  /** Marca a página como noindex/nofollow — usar em rotas internas (ex: /styleguide) que não devem aparecer em busca. */
+  noindex?: boolean;
 }
 
-const { title, description, ogImage } = Astro.props;
+const { title, description, ogImage, noindex } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -21,6 +23,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Preload da fonte de display — evita layout shift no maior texto acima da dobra (LCP) -->
     <link
