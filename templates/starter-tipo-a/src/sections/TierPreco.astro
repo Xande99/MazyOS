@@ -31,7 +31,7 @@ const { planos, titulo } = Astro.props;
 
 <section class="container-du section-y" aria-label={titulo ?? "Planos"}>
   {titulo && (
-    <h2 class="reveal text-center text-3xl font-bold text-blue md:text-4xl">{titulo}</h2>
+    <h2 class="reveal text-center text-3xl font-bold text-text md:text-4xl">{titulo}</h2>
   )}
   <div
     class:list={[
@@ -44,13 +44,13 @@ const { planos, titulo } = Astro.props;
         class:list={[
           "reveal flex flex-col gap-6 rounded-lg p-8",
           plano.destaque
-            ? "bg-blue text-white shadow-[--du-shadow-dark] md:-translate-y-4"
-            : "bg-white text-[--du-text-body] shadow-[--du-shadow-card]",
+            ? "bg-surface-inverse text-text-inverse shadow-lg md:-translate-y-4"
+            : "bg-surface text-text-muted shadow-sm",
         ]}
         data-reveal-delay={(i * 0.1).toFixed(2)}
       >
         {plano.destaque && (
-          <p class="w-fit rounded-pill bg-lime px-3 py-1 text-xs font-bold uppercase tracking-[0.1em] text-blue">
+          <p class="w-fit rounded-full bg-brand px-3 py-1 text-xs font-bold uppercase tracking-[0.1em] text-brand-contrast">
             {plano.badge ?? "Recomendado"}
           </p>
         )}
@@ -59,7 +59,7 @@ const { planos, titulo } = Astro.props;
           <h3
             class:list={[
               "font-display text-xl font-bold",
-              plano.destaque ? "text-white" : "text-blue",
+              plano.destaque ? "text-text-inverse" : "text-text",
             ]}
           >
             {plano.nome}
@@ -68,7 +68,7 @@ const { planos, titulo } = Astro.props;
             <p
               class:list={[
                 "mt-1 text-sm",
-                plano.destaque ? "text-[--du-text-body-dark]" : "text-[--du-text-muted]",
+                plano.destaque ? "text-text-inverse opacity-80" : "text-text-muted",
               ]}
             >
               {plano.descricao}
@@ -95,10 +95,10 @@ const { planos, titulo } = Astro.props;
         <a
           href={plano.cta.href}
           class:list={[
-            "rounded-pill px-6 py-3 text-center font-bold transition-transform duration-300 hover:-translate-y-0.5",
+            "rounded-full px-6 py-3 text-center font-bold transition-transform duration-300 hover:-translate-y-0.5",
             plano.destaque
-              ? "bg-pink-ink text-white"
-              : "border border-aqua text-blue hover:bg-aqua-200",
+              ? "bg-brand text-brand-contrast"
+              : "border border-border text-text hover:bg-surface-alt",
           ]}
           aria-label={`${plano.cta.label} — plano ${plano.nome}`}
         >

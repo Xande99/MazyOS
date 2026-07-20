@@ -27,7 +27,7 @@ const { itens, titulo } = Astro.props;
 
 <section class="container-du section-y" aria-label={titulo ?? "O que oferecemos"}>
   {titulo && (
-    <h2 class="reveal text-3xl font-bold text-blue md:text-4xl">{titulo}</h2>
+    <h2 class="reveal text-3xl font-bold text-text md:text-4xl">{titulo}</h2>
   )}
   <div
     class:list={[
@@ -37,7 +37,7 @@ const { itens, titulo } = Astro.props;
   >
     {itens.map((item, i) => (
       <article
-        class="reveal flex flex-col overflow-hidden rounded-lg bg-white shadow-[--du-shadow-card] transition-shadow duration-300 hover:shadow-[--du-shadow-card-hover]"
+        class="reveal flex flex-col overflow-hidden rounded-lg bg-surface-alt shadow-sm transition-shadow duration-300 hover:shadow-md"
         data-reveal-delay={(i * 0.1).toFixed(2)}
       >
         {item.imagem && (
@@ -51,12 +51,12 @@ const { itens, titulo } = Astro.props;
           />
         )}
         <div class="flex flex-1 flex-col gap-2 p-6">
-          <h3 class="font-display text-xl font-bold text-blue">{item.titulo}</h3>
-          <p class="flex-1 text-[--du-text-body]">{item.descricao}</p>
+          <h3 class="font-display text-xl font-bold text-text">{item.titulo}</h3>
+          <p class="flex-1 text-text-muted">{item.descricao}</p>
           {item.cta && (
             <a
               href={item.cta.href}
-              class="mt-2 inline-flex w-fit items-center gap-1 font-bold text-pink-ink transition-colors duration-300 hover:text-pink-600"
+              class="mt-2 inline-flex w-fit items-center gap-1 font-bold text-brand transition-colors duration-300 hover:opacity-80"
               aria-label={`${item.cta.label} — ${item.titulo}`}
             >
               {item.cta.label} →

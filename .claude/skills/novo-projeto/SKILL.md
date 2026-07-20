@@ -54,8 +54,8 @@ Perguntar:
 
 > "Esse cliente já tem identidade visual (cores, tipografia, referências) ou é pra criar em cima da linha visual da duPolvo?"
 
-- **Se já tem:** pedir ali mesmo os essenciais — cores principais (hex se souber), fontes, 1-2 referências ou prints. Vai pro `briefing.md`, seção "Identidade visual" (template no Passo 3).
-- **Se não tem / é pra herdar da duPolvo:** registrar "Identidade: herda a linha visual da duPolvo" no briefing. O projeto deve consumir `identidade/design-guide.md` + os tokens em `projeto/duPolvoNovo/tokens/` — nunca redigitar valores de cor/tipografia à mão num CSS novo. Essa cópia manual foi a causa da maior parte das inconsistências visuais encontradas na auditoria de front-end de 2026-07-09 (tokens divergindo entre projetos, bug de contraste replicado em 2 lugares).
+- **Se já tem:** pedir ali mesmo os essenciais — cores principais (hex se souber), fontes, 1-2 referências ou prints. Vai pro `briefing.md`, seção "Identidade visual" (template no Passo 3). Esses dados alimentam a geração do `theme.css` no Passo 3.5 (design system, ver `_memoria/tokens-contract.md`) — não é só texto de referência, é input direto de uma etapa automática.
+- **Se não tem / é pra herdar da duPolvo:** registrar "Identidade: herda a linha visual da duPolvo" no briefing. O projeto deve consumir `identidade/design-guide.md` + `templates/tailwind-preset-dupolvo/dupolvo-theme.css` — nunca redigitar valores de cor/tipografia à mão num CSS novo. Essa cópia manual foi a causa da maior parte das inconsistências visuais encontradas na auditoria de front-end de 2026-07-09 (tokens divergindo entre projetos, bug de contraste replicado em 2 lugares). `dupolvo-theme.css` já cumpre o contrato de tokens semânticos (Fase 2 do rollout do design system) — nenhuma ação extra necessária no Passo 3.5 além do que o starter já traz.
 
 Não pular esse passo achando que "herda automaticamente" é suficiente — sem essa pergunta feita explicitamente, a captura de identidade acaba não acontecendo (foi o que aconteceu com o Ribas Suplementos: nasceu sem nenhuma cor de marca).
 
@@ -149,8 +149,13 @@ Todo projeto de desenvolvimento novo **nasce do starter correspondente, nunca do
 2. Rodar `npm install` dentro de `projeto/<Nome>/`.
 3. **Tipo A:** se o domínio do cliente já for conhecido, atualizar `site` em `astro.config.mjs` (o starter vem com um placeholder — build falha sem isso configurado, é intencional pra não esquecer).
 4. **Tipo B:** copiar `.env.example` pra `.env.local` dentro do projeto (não preencher os valores ainda — isso depende do Supabase já ter sido criado, ver checklist consultado no Passo 1.1).
-5. Se o Passo 1.2 identificou identidade própria do cliente (não herda a linha da duPolvo): já substituir os valores em `src/styles/dupolvo-theme.css` (Tipo A) ou `app/dupolvo-theme.css` (Tipo B) pelos coletados na entrevista — ou deixar marcado como pendência explícita no briefing se ainda não tiver hex/fonte definitivos.
-6. **Confirmar que builda** antes de considerar o passo concluído: `npm run build` (Tipo A) ou `npm run qa` (Tipo B), dentro de `projeto/<Nome>/`. Starter que não builda no projeto do cliente é pior que não ter starter — não pular esta checagem.
+5. **Se o Passo 1.2 identificou identidade própria do cliente** (não herda a linha da duPolvo) — gerar o `theme.css` do projeto a partir do design system (`_memoria/tokens-contract.md`), em vez de editar `dupolvo-theme.css`:
+   1. Copiar `templates/tailwind-preset-dupolvo/theme.base.css` para `src/styles/theme.css` (Tipo A) ou `app/theme.css` (Tipo B).
+   2. Preencher a seção PRIMITIVOS: a partir da cor principal do cliente (hex coletado no Passo 1.2), gerar a escala `--color-brand-50` a `--color-brand-950` em oklch — mesmo hue/chroma da cor original, variando só a luminosidade em 11 degraus (≈0.97 no 50 até ≈0.15 no 950, cor original pousando perto do 500/600). Gerar `--color-neutral-*` como uma escala neutra (chroma baixo, ~0.002–0.01) no mesmo hue de fundo. Trocar `--font-display`/`--font-body` pelas fontes do cliente (ou manter Bricolage Grotesque se ele não tiver preferência). O próprio placeholder já em `theme.base.css` segue esse padrão de escala — usar como referência de como distribuir os 11 degraus.
+   3. Trocar o `@import "./dupolvo-theme.css";` por `@import "./theme.css";` em `src/styles/global.css` (Tipo A) ou `app/globals.css` (Tipo B).
+   4. Se algum hex/fonte ainda não estiver definitivo, preencher com o placeholder do `theme.base.css` e marcar como pendência explícita no briefing — nunca inventar cor final.
+   Se o Passo 1.2 registrou "herda a linha visual da duPolvo", pular este item — o starter já builda com `dupolvo-theme.css` (compatível com o contrato desde a Fase 2 do rollout do design system).
+6. **Confirmar que builda** antes de considerar o passo concluído: `npm run qa`, dentro de `projeto/<Nome>/`. Tipo A e Tipo B já rodam `stylelint` (lint de tokens, ver `.claude/skills/qa-visual-pre-entrega/SKILL.md`) junto do typecheck/build — o Tipo B ainda não cobre `styled-jsx` (`<style jsx>`), só CSS Modules/`.css` normal, por não haver uso atual desse padrão no starter. Starter que não builda no projeto do cliente é pior que não ter starter — não pular esta checagem.
 
 Se a entrega não envolve site/sistema (Passo 1.1 não rodou), pular este passo inteiro.
 

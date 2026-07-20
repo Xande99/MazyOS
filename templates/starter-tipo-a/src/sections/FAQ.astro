@@ -25,21 +25,21 @@ const { itens, titulo } = Astro.props;
 
 <section class="container-du section-y">
   {titulo && (
-    <h2 class="reveal text-3xl font-bold text-blue md:text-4xl">{titulo}</h2>
+    <h2 class="reveal text-3xl font-bold text-text md:text-4xl">{titulo}</h2>
   )}
-  <div class:list={["divide-y divide-line", titulo && "mt-10"]}>
+  <div class:list={["divide-y divide-border", titulo && "mt-10"]}>
     {itens.map((item, i) => (
       <details class="reveal group py-5" data-reveal-delay={(i * 0.1).toFixed(2)}>
-        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-bold text-blue">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-bold text-text">
           {item.pergunta}
           <span
             aria-hidden="true"
-            class="flex-none text-2xl leading-none text-pink-ink transition-transform duration-300 group-open:rotate-45"
+            class="flex-none text-2xl leading-none text-brand transition-transform duration-300 group-open:rotate-45"
           >
             +
           </span>
         </summary>
-        <p class="faq-answer mt-4 text-[--du-text-body]">{item.resposta}</p>
+        <p class="faq-answer mt-4 text-text-muted">{item.resposta}</p>
       </details>
     ))}
   </div>
@@ -56,7 +56,7 @@ const { itens, titulo } = Astro.props;
   }
 
   .faq-answer {
-    animation: faq-fade-in var(--du-dur-base) var(--ease-out-expo);
+    animation: faq-fade-in var(--duration-base) var(--ease-out-expo);
   }
 
   @keyframes faq-fade-in {

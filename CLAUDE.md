@@ -86,6 +86,7 @@ Valendo pra qualquer projeto (LP, site, sistema, dashboard) — comportamento au
 4. Padrão de qualidade é nível referência (Awwwards, godly.website): tipografia intencional, espaçamento preciso, micro-interações, hierarquia visual forte. "Funciona" não é suficiente. Se uma entrega estiver visualmente genérica, apontar isso proativamente e propor o upgrade.
 5. Animação é deliberada, não decorativa — cada movimento revela, guia o olhar ou conta a história do scroll. Evitar fade genérico espalhado; preferir um momento orquestrado de impacto.
 6. Performance e acessibilidade não são negociáveis: `prefers-reduced-motion` sempre implementado, animar só `transform`/`opacity` (regra que já existe em `projeto/CLAUDE.md`, reforçada aqui pro nível de ambição subir).
+7. **Todo estilo em componentes/seções usa exclusivamente os tokens semânticos definidos em `_memoria/tokens-contract.md`** (`--color-brand`, `--color-surface`, `--space-section-y`...) — nunca hex, px mágico, nome de fonte solto ou primitivo da escala (`--color-brand-500`) direto no componente. Valores brutos só existem dentro de `theme.css`/`dupolvo-theme.css`/`theme.base.css`, nunca fora deles. Vale pra qualquer projeto nascido dos starters (Tipo A e Tipo B) — é o que permite trocar a marca de um cliente editando um arquivo só. Enforcement automático via `stylelint` (`npm run lint:css`, ver `.claude/skills/qa-visual-pre-entrega/SKILL.md`) nos dois starters — no Tipo B ainda não cobre `styled-jsx` (`<style jsx>`), só CSS normal/Modules, por não haver uso atual desse padrão.
 
 ---
 

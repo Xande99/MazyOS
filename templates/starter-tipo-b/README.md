@@ -10,6 +10,7 @@ Starter pra sistema / SaaS / dashboard / área autenticada, conforme a stack ofi
 - **Supabase configurado** — `lib/supabase/client.ts` (Client Components), `lib/supabase/server.ts` (Server Components/Actions, via `next/headers`), `proxy.ts` (renovação de sessão a cada navegação — é o antigo `middleware.ts`; Next.js 16 renomeou o convention pra `proxy`, ver [nextjs.org/docs/messages/middleware-to-proxy](https://nextjs.org/docs/messages/middleware-to-proxy)). Padrão de variáveis de ambiente segue `_memoria/checklist-novo-projeto-supabase.md`.
 - **`.env.example`** com as 3 variáveis do checklist — **nunca** commitar `.env.local` real (`.gitignore` já bloqueia, exceto o próprio `.env.example`).
 - `.gitignore` correto (`node_modules/`, `.next/`, `.env*` exceto `.env.example`).
+- **Lint de tokens** (`stylelint` + `stylelint-declaration-strict-value`, config em `.stylelintrc.json`) — barra hex/rgb/hsl/oklch literal e `font-family` solta em qualquer `.css` do projeto (inclui `.module.css`, se algum for criado), exceto dentro de `theme*.css`/`dupolvo-theme.css`. Paridade com o starter-tipo-a (`_memoria/tokens-contract.md`). **Cobertura conhecida:** hoje o projeto não usa CSS Modules nem `styled-jsx` — só Tailwind utilities em `className` e os 2 arquivos `.css` reais. Se `styled-jsx` (`<style jsx>`) for adotado depois, este lint **não** cobre esses blocos automaticamente — precisa de um parser dedicado (nenhum foi instalado, por não haver uso atual a justificar).
 
 ## O que configurar por projeto
 
@@ -28,7 +29,8 @@ npm run dev
 npm run build
 npm run typecheck   # tsc --noEmit
 npm run lint
-npm run qa          # typecheck + lint + build (o que dá pra automatizar localmente; Lighthouse/Playwright/a11y ficam pro pipeline de QA manual)
+npm run lint:css    # stylelint — tokens semânticos, ver _memoria/tokens-contract.md
+npm run qa          # typecheck + lint + lint:css + build (o que dá pra automatizar localmente; Lighthouse/Playwright/a11y ficam pro pipeline de QA manual)
 ```
 
 ## Estrutura

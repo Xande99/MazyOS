@@ -20,7 +20,7 @@ const { itens, titulo } = Astro.props;
 
 <section class="container-du section-y" aria-label={titulo ?? "Números"}>
   {titulo && (
-    <h2 class="reveal text-center text-3xl font-bold text-blue md:text-4xl">{titulo}</h2>
+    <h2 class="reveal text-center text-3xl font-bold text-text md:text-4xl">{titulo}</h2>
   )}
   <dl
     class:list={[
@@ -30,10 +30,10 @@ const { itens, titulo } = Astro.props;
   >
     {itens.map((item, i) => (
       <div class="reveal" data-reveal-delay={(i * 0.1).toFixed(2)}>
-        <dt class="font-display text-4xl font-extrabold text-pink-ink md:text-5xl">
+        <dt class="font-display text-4xl font-extrabold text-brand md:text-5xl">
           {item.numero}
         </dt>
-        <dd class="mt-2 text-sm text-[--du-text-body]">{item.label}</dd>
+        <dd class="mt-2 text-sm text-text-muted">{item.label}</dd>
       </div>
     ))}
   </dl>

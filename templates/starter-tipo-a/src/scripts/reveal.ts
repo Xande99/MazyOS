@@ -1,5 +1,7 @@
 /**
- * Sistema .reveal — fade + slide-up ao entrar no viewport, via GSAP ScrollTrigger.
+ * Sistema .reveal — fade + slide-up ao entrar no viewport, via o preset
+ * `reveal()` de `src/sections/motion.ts` (GSAP ScrollTrigger, lendo
+ * --duration-slow/--ease-out-expo do theme.css do projeto).
  *
  * Uso: adicionar a classe `reveal` em qualquer elemento de seção.
  * Delay manual opcional: `data-reveal-delay="0.15"` (segundos).
@@ -15,12 +17,9 @@
  */
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CustomEase } from "gsap/CustomEase";
+import { reveal } from "../sections/motion";
 
-gsap.registerPlugin(ScrollTrigger, CustomEase);
-
-// Easing assinatura da duPolvo (--ease-out-expo em identidade/design-guide.md)
-CustomEase.create("duEaseOut", "0.16, 1, 0.3, 1");
+gsap.registerPlugin(ScrollTrigger);
 
 function initReveal() {
   const mm = gsap.matchMedia();
@@ -30,23 +29,7 @@ function initReveal() {
 
     items.forEach((el) => {
       const delay = Number(el.dataset.revealDelay ?? 0);
-
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 26 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.76,
-          delay,
-          ease: "duEaseOut",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        },
-      );
+      reveal(el, { delay });
     });
 
     // cleanup ao trocar de página via View Transitions

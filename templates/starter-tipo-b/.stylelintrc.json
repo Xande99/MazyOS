@@ -1,0 +1,18 @@
+{
+  "ignoreFiles": [
+    ".next/**",
+    "node_modules/**",
+    "**/dupolvo-theme.css",
+    "**/theme.base.css",
+    "**/theme.css"
+  ],
+  "plugins": ["stylelint-declaration-strict-value"],
+  "rules": {
+    "color-no-hex": true,
+    "function-disallowed-list": ["rgb", "rgba", "hsl", "hsla", "oklch", "oklab", "lab", "lch", "color"],
+    "scale-unlimited/declaration-strict-value": [
+      ["font-family"],
+      { "ignoreValues": ["inherit", "initial", "unset"] }
+    ]
+  }
+}
