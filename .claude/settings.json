@@ -1,7 +1,42 @@
 {
   "permissions": {
     "allow": [
-      "Edit(saidas/outros/arsenal-skills.html)"
+      "Edit(saidas/outros/arsenal-skills.html)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git branch*)",
+      "Bash(git show*)",
+      "Bash(git add*)",
+      "Bash(git commit -m *)",
+      "Bash(npm run *)",
+      "Bash(npm install)",
+      "Bash(npm ci)",
+      "WebSearch",
+      "Skill",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_network_requests",
+      "mcp__playwright__browser_close",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_resize",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__lighthouse_audit",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.local)",
+      "Read(**/.env.*.local)",
+      "Read(**/.env.production)",
+      "Read(**/.env.development)",
+      "Read(**/.env.test)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)"
     ]
   },
   "hooks": {
@@ -43,6 +78,19 @@
             "statusMessage": "Classificando skills novas no arsenal...",
             "if": "Edit(**/SKILL.md)",
             "prompt": "Arquivo: saidas/outros/arsenal-skills.html (relativo à raiz do projeto). Leia esse arquivo.\n\nPASSO 1 — classificar nos setores fixos. Dentro da section com id=\"s-novas\" (título \"Novas skills (não classificadas)\"), verifique se há algum <div class=\"skill-row\">. Se essa section não existir ou estiver vazia, não faça nada e termine. Se houver uma ou mais linhas ali, para CADA uma: leia o nome (skill-name) e a descrição (skill-desc) e decida, com base no conteúdo, qual das sections abaixo é o melhor encaixe (escolha só uma por skill, a que fizer mais sentido pelo assunto/função da skill, não pelo nome):\n\ns-frontend — Front-end & UI/UX Design\ns-arquitetura — Arquitetura & Engenharia de Software\ns-qualidade — Debugging, Testes & Verificação\ns-copy — Copywriting & Mensagem de Marca\ns-posicionamento — Posicionamento & Estratégia de Mercado\ns-discovery — Product Discovery & Validação de Cliente\ns-growth — Growth, Retenção & Engajamento\ns-vendas — Vendas & Negociação\ns-gestao — Gestão de Equipe & Organização\ns-ads — Marketing, Ads, SEO & Conteúdo — Operação de Agência\ns-automacao — Automação & Operação Interna (MazyOS)\ns-planejamento — Planejamento & Execução de Projeto\ns-review — Revisão de Código & CI\ns-agentes — Orquestração de Agentes & Exploração de Código\ns-memoria — Memória, Conhecimento & Relatórios\ns-meta — Meta: Criação & Governança de Skills\n\nSe genuinamente nenhuma dessas 16 fizer sentido pra uma skill, deixe ela onde está (dentro de s-novas) por enquanto e siga pra próxima do passo 1.\n\nPra cada skill que você conseguiu classificar no passo 1: remova o <div class=\"skill-row\">...</div> inteiro de dentro de s-novas e adicione um equivalente (mesmo markup, pode remover o atributo data-skill) ao final da <div class=\"skills\"> da section escolhida.\n\nPASSO 2 — usar setor 'custom' já existente. ANTES de pensar em criar qualquer coisa nova, verifique se já existe alguma section 'custom' no arquivo (qualquer <section class=\"sector\" id=\"...\"> que não seja um dos 16 ids fixos listados acima nem \"s-novas\" — ou seja, uma section criada por você em execuções anteriores). Pra CADA skill que sobrou em s-novas depois do passo 1: se o tema dela combinar claramente com alguma section custom já existente, mova ela pra lá imediatamente (não precisa esperar juntar 3 — se já existe o setor certo, usa direto).\n\nPASSO 3 — criar setor novo só se justificar. Depois do passo 2, veja quantas <div class=\"skill-row\"> ainda restam dentro de s-novas (as que não encaixaram em nenhum dos 16 fixos nem em nenhuma custom existente).\n\n- Se restarem MENOS de 3, não faça mais nada — deixe elas em s-novas, aguardando mais contexto ou classificação manual. NÃO crie section nova pra 1 ou 2 skills sozinhas.\n- Se restarem 3 OU MAIS E elas compartilharem um tema comum claro (mesmo assunto/função, que genuinamente não existia no catálogo), crie uma section nova: escolha um id em kebab-case prefixado com 's-' que não colida com nenhum id já existente no arquivo, e um título (h2) claro em português descrevendo o tema comum. Insira essa nova <section class=\"sector\" id=\"...\">...</section> imediatamente ANTES da section id=\"s-novas\" (s-novas deve continuar sendo sempre a última section da página). Use o mesmo markup das outras sections: sector-head com h2 + span class=\"sector-count\", depois uma div class=\"skills\" com os skill-row dentro. Mova as skills qualificadas pra ela, removendo-as de s-novas.\n- Se restarem 3+ mas SEM tema comum claro entre elas (assuntos bem diferentes umas das outras), não crie setor nenhum — deixe todas em s-novas mesmo. Na dúvida sobre o tema ser genuinamente claro, não crie nada.\n\nAo final dos dois passos, atualize o número dentro de <span class=\"sector-count\"> de TODAS as sections que mudaram (contando quantos <div class=\"skill-row\"> tem ali dentro; use singular 'skill' se for 1, plural 'skills' caso contrário) — as sections de destino e s-novas. NÃO mexa nos contadores do topo da página (id=\"visibleCount\" e o número em class=\"subtitle\"), o total de linhas não muda, só a distribuição entre sections. Se s-novas ficar sem nenhuma linha depois de mover tudo, pode deixá-la vazia (não precisa remover a section). Edite o arquivo diretamente. Não é necessário reportar nada de volta, só faça a edição."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \".claude/hooks/bloquear-acoes-perigosas.js\"",
+            "timeout": 5,
+            "statusMessage": "Verificando comando..."
           }
         ]
       }
