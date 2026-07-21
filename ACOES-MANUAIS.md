@@ -6,6 +6,7 @@ Gerado pela FASE 0 da auditoria de segurança (2026-07-20). Nenhum destes itens 
 
 - [ ] **Rotacionar a service role key do Supabase** de `projeto/dashboard` e de `projeto/Ribas Suplementos` — por precaução de higiene (não porque vazaram; estão corretamente protegidas hoje, mas nunca foram rotacionadas). Painel: Supabase → Settings → API Keys → Secret keys.
 - [ ] **Ribas Suplementos: criar o projeto Supabase** (ainda não existe/linkado) — sem isso, o RLS descrito nas migrations não está aplicado em lugar nenhum. Seguir `_memoria/checklist-novo-projeto-supabase.md`.
+  - [ ] **Depois de provisionado:** criar tabela + trigger de rate limit pro checkout público (`criarPedido`, `checkout/actions.ts`) — registra tentativas por IP/e-mail, rejeita acima de N pedidos em X minutos. É o passo mais robusto (mitiga bot com IP rotativo, não só script simples), mas depende do Supabase existir. Até lá, a mitigação em produção é só honeypot + delay mínimo (Fase 2.3, sem infra), que fica permanente mesmo depois — a tabela é camada adicional, não substituição.
 
 ## Prioridade média (configuração de painel Supabase, quando o projeto existir/estiver ativo)
 

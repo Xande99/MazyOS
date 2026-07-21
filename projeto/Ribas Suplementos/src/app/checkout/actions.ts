@@ -7,9 +7,25 @@ type ResultadoCheckout =
   | { sucesso: true; pedidoId: string }
   | { sucesso: false; erro: string };
 
+// Proteção anti-spam leve, sem dependência nova nem infra: honeypot (campo
+// invisível que só bot preenche) + delay mínimo desde o carregamento da
+// página (submit mais rápido que isso indica script, não humano digitando).
+// Não pega bot direcionado com IP rotativo — isso fica pro rate limit via
+// Supabase (tabela + trigger), listado em ACOES-MANUAIS.md pra quando o
+// projeto Supabase do Ribas existir.
+const DELAY_MINIMO_MS = 3000;
+
 export async function criarPedido(
   input: CheckoutInput,
+  protecaoAntiSpam: { honeypot: string; carregadoEm: number },
 ): Promise<ResultadoCheckout> {
+  if (protecaoAntiSpam.honeypot.length > 0) {
+    return { sucesso: false, erro: "Não foi possível processar seu pedido. Tente novamente." };
+  }
+  if (Date.now() - protecaoAntiSpam.carregadoEm < DELAY_MINIMO_MS) {
+    return { sucesso: false, erro: "Não foi possível processar seu pedido. Tente novamente." };
+  }
+
   const analisado = checkoutSchema.safeParse(input);
   if (!analisado.success) {
     return { sucesso: false, erro: analisado.error.issues[0].message };

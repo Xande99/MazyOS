@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useCarrinho } from "@/lib/cart/cart-context";
 import { formatarPreco } from "@/lib/utils/currency";
@@ -11,6 +11,12 @@ export function CheckoutForm() {
   const { itens, totalCentavos, limpar } = useCarrinho();
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+  // Date.now() não pode rodar durante o render (regra de pureza do React) —
+  // marcado no efeito de montagem, roda 1x logo depois do 1º paint.
+  const carregadoEm = useRef(0);
+  useEffect(() => {
+    carregadoEm.current = Date.now();
+  }, []);
 
   async function handleSubmit(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
@@ -19,25 +25,31 @@ export function CheckoutForm() {
 
     const dados = new FormData(evento.currentTarget);
 
-    const resultado = await criarPedido({
-      nomeCliente: String(dados.get("nomeCliente") ?? ""),
-      emailCliente: String(dados.get("emailCliente") ?? ""),
-      telefoneCliente: String(dados.get("telefoneCliente") ?? ""),
-      endereco: {
-        rua: String(dados.get("rua") ?? ""),
-        numero: String(dados.get("numero") ?? ""),
-        complemento: String(dados.get("complemento") ?? ""),
-        bairro: String(dados.get("bairro") ?? ""),
-        cidade: String(dados.get("cidade") ?? ""),
-        uf: String(dados.get("uf") ?? ""),
-        cep: String(dados.get("cep") ?? ""),
+    const resultado = await criarPedido(
+      {
+        nomeCliente: String(dados.get("nomeCliente") ?? ""),
+        emailCliente: String(dados.get("emailCliente") ?? ""),
+        telefoneCliente: String(dados.get("telefoneCliente") ?? ""),
+        endereco: {
+          rua: String(dados.get("rua") ?? ""),
+          numero: String(dados.get("numero") ?? ""),
+          complemento: String(dados.get("complemento") ?? ""),
+          bairro: String(dados.get("bairro") ?? ""),
+          cidade: String(dados.get("cidade") ?? ""),
+          uf: String(dados.get("uf") ?? ""),
+          cep: String(dados.get("cep") ?? ""),
+        },
+        itens: itens.map((item) => ({
+          produtoId: item.produtoId,
+          varianteId: item.varianteId,
+          quantidade: item.quantidade,
+        })),
       },
-      itens: itens.map((item) => ({
-        produtoId: item.produtoId,
-        varianteId: item.varianteId,
-        quantidade: item.quantidade,
-      })),
-    });
+      {
+        honeypot: String(dados.get("site") ?? ""),
+        carregadoEm: carregadoEm.current,
+      },
+    );
 
     setEnviando(false);
 
@@ -52,6 +64,16 @@ export function CheckoutForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+      {/* honeypot anti-spam: invisível pra humano, bot de formulário costuma preencher tudo */}
+      <input
+        type="text"
+        name="site"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] h-0 w-0 overflow-hidden opacity-0"
+      />
+
       <fieldset className="flex flex-col gap-4">
         <legend className="mb-1 text-base font-semibold text-zinc-950 dark:text-zinc-50">
           Seus dados
