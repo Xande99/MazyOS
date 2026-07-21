@@ -15,7 +15,9 @@ Gerado pela FASE 0 da auditoria de segurança (2026-07-20). Nenhum destes itens 
   4. [ ] Criar tabela + trigger de rate limit pro checkout público (`criarPedido`) — registra tentativas por IP/e-mail, rejeita acima de N pedidos em X minutos. Mitiga bot com IP rotativo, o que o honeypot+delay (Fase 2.3, já em produção) não cobre — camada adicional, não substitui o que já existe.
   5. [ ] Configuração de painel: senha mínima 12 caracteres (Settings → Authentication → Policies), ativar "Leaked password protection" (HaveIBeenPwned, mesmo menu), confirmação de e-mail obrigatória no signup, rate limits de auth (login/signup/reset), desabilitar introspecção de schema do PostgREST em produção, revisar CORS (Settings → API) restringindo aos domínios reais.
 
-## Rotina recorrente (a criar no dashboard MazyOS ou lembrete seu)
+## Rotina recorrente
+
+Movido pro dashboard MazyOS em 2026-07-21 (Fase 5, item 5 — "Herança Automática") — projeto **"Segurança"** em Tarefas, visível pros 4 sócios, 4 itens com descrição curta explicando o porquê de cada um. **Sem recorrência automática**: `todo_items` é checklist simples, sem motor de repetição — quando alguém marcar como feito, fica marcado, ninguém reabre sozinho no próximo ciclo. Reabrir/recriar quando vencer o intervalo é manual. Lista aqui só pra referência rápida (a fonte de verdade agora é o dashboard, não este arquivo):
 
 - [ ] Rotação de chaves Supabase/GitHub a cada 90 dias, ou imediatamente se houver suspeita de exposição
 - [ ] Revisão mensal de dependências via `/deps-review`
