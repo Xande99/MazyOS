@@ -6,27 +6,28 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deps:audit": "npm audit --audit-level=high"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.12.0",
-    "@supabase/supabase-js": "^2.110.1",
-    "motion": "^12.42.2",
+    "@supabase/ssr": "0.12.0",
+    "@supabase/supabase-js": "2.110.1",
+    "motion": "12.42.2",
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "server-only": "^0.0.1",
-    "zod": "^4.4.3"
+    "server-only": "0.0.1",
+    "zod": "4.4.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
+    "@tailwindcss/postcss": "4.3.2",
+    "@types/node": "20.19.43",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.4",
     "eslint-config-next": "16.2.10",
-    "supabase": "^2.109.1",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "supabase": "2.109.1",
+    "tailwindcss": "4.3.2",
+    "typescript": "5.9.3"
   }
 }
