@@ -23,6 +23,10 @@ Gerado pela FASE 0 da auditoria de segurança (2026-07-20). Nenhum destes itens 
 - [ ] Re-teste de RLS a cada mudança de schema (rodar `security/rls-tests.sql`, a criar na Fase 3.3)
 - [ ] Verificação mensal de novas CVEs dos frameworks em uso (Next.js, Astro)
 
+## Pendência separada — fora do escopo desta frente
+
+- [ ] **`projeto/curriculo_digital/index.html` carrega CDN de terceiro sem SRI** (mesmo achado 🟠 Alto do `duPolvoNovo`, corrigido na Fase 2.2) — não tratado junto porque é um repositório git próprio, com status de organização dentro do MazyOS ainda pendente (ver `CLAUDE.md` raiz, seção "Pendências conhecidas"). Resolver quando essa decisão de organização for tomada, ou separadamente se o repo for tratado como projeto ativo antes disso.
+
 ## Observação — sem achado crítico de segredo
 
 A varredura completa do repositório (arquivos, configs e histórico git inteiro) não encontrou nenhum segredo commitado ou exposto fora do `.gitignore`. Os únicos valores sensíveis reais (`SUPABASE_SERVICE_ROLE_KEY` em dois `.env.local`) estão corretamente protegidos hoje. A rotação acima é recomendação preventiva, não resposta a um incidente.
