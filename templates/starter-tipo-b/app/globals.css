@@ -5,7 +5,7 @@
   body {
     background: var(--color-cream);
     color: var(--du-text-body);
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
   }
 
