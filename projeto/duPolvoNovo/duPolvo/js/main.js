@@ -102,21 +102,23 @@
     });
   }
 
-  /* ─── Intro splash: a logo surge inteira (fade + scale, como uma
-     peça só — sem desenhar por tentáculo), depois GSAP orquestra a
-     saída como 1 cortina única subindo. Se o GSAP não carregar (CDN
-     fora do ar) ou os elementos não existirem, esconde a intro na hora
-     e segue pro hero sem animação — nunca trava esperando uma lib que
-     não veio. Um setTimeout de segurança (4.2s) garante que a intro
-     some mesmo se a timeline do GSAP travar por qualquer motivo. ─── */
+  /* ─── Intro splash: GSAP orquestra a entrada por tentáculo e a saída
+     em cortina dupla. Se o GSAP não carregar (CDN fora do ar) ou os
+     elementos não existirem, esconde a intro na hora e segue pro hero
+     sem animação — nunca trava esperando uma lib que não veio. Um
+     setTimeout de segurança (4.2s) garante que a intro some mesmo se
+     a timeline do GSAP travar por qualquer motivo. ─── */
   function runIntro(done) {
     var introEl = document.getElementById('intro');
     if (!introEl || document.documentElement.classList.contains('no-intro')) { done(); return; }
 
-    var logo  = introEl.querySelector('.intro__logo');
-    var panel = introEl.querySelector('.intro__panel');
+    var body   = introEl.querySelector('.intro__body');
+    var spots  = introEl.querySelectorAll('.intro__spot');
+    var logo   = introEl.querySelector('.intro__logo');
+    var panelL = introEl.querySelector('.intro__panel--l');
+    var panelR = introEl.querySelector('.intro__panel--r');
 
-    if (!window.gsap || !logo || !panel) {
+    if (!window.gsap || !body || !spots.length || !logo || !panelL || !panelR) {
       introEl.style.display = 'none';
       done();
       return;
@@ -138,8 +140,12 @@
     var failsafe = setTimeout(finish, 4200);
 
     gsap.timeline({ onComplete: finish })
-      .to(logo,  { opacity: 1, scale: 1, duration: .55, ease: 'power3.out' }, .1)
-      .to(panel, { yPercent: -100, duration: .6, ease: 'power3.inOut' }, 1.4);
+      .to(body,   { opacity: 1, scale: 1, duration: .5, ease: 'power3.out' }, .1)
+      .to(spots,  { opacity: 1, scale: 1, duration: .35, ease: 'back.out(2)', stagger: .06 }, .6)
+      .to(logo,   { scale: 1.03, duration: .12, ease: 'power1.inOut', yoyo: true, repeat: 1 }, 1.3)
+      .to(logo,   { opacity: 0, scale: 1.08, duration: .25, ease: 'power2.in' }, 1.8)
+      .to(panelL, { xPercent: -100, duration: .6, ease: 'power3.inOut' }, 2.05)
+      .to(panelR, { xPercent: 100, duration: .6, ease: 'power3.inOut' }, 2.05);
   }
 
   /* ─── IntersectionObserver: reveal + stagger + counters + CTA ─── */
