@@ -9,26 +9,27 @@
     "lint": "eslint",
     "lint:css": "stylelint \"**/*.css\" --ignore-path .gitignore",
     "typecheck": "tsc --noEmit",
-    "qa": "npm run typecheck && npm run lint && npm run lint:css && npm run build"
+    "qa": "npm run typecheck && npm run lint && npm run lint:css && npm run build",
+    "deps:audit": "npm audit --audit-level=high"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.12.3",
-    "@supabase/supabase-js": "^2.110.6",
-    "motion": "^12.42.2",
+    "@supabase/ssr": "0.12.3",
+    "@supabase/supabase-js": "2.110.6",
+    "motion": "12.42.2",
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
+    "@tailwindcss/postcss": "4.3.2",
+    "@types/node": "20.19.43",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.5",
     "eslint-config-next": "16.2.10",
-    "stylelint": "^17.14.1",
-    "stylelint-declaration-strict-value": "^1.11.1",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "stylelint": "17.14.1",
+    "stylelint-declaration-strict-value": "1.11.1",
+    "tailwindcss": "4.3.2",
+    "typescript": "5.9.3"
   }
 }
