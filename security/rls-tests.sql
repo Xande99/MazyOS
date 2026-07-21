@@ -95,9 +95,12 @@ set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-000000000099", 
 select count(*) as deve_ser_zero from pedidos where id = :'id';
 reset role;
 
--- Caso 3: dono autenticado enxerga só os próprios (depende do fix do bug
--- cliente_user_id — hoje o insert do checkout nunca preenche essa coluna,
--- então nenhum pedido de cliente logado aparece aqui até o fix + reteste)
+-- Caso 3: dono autenticado enxerga só os próprios. O insert do checkout
+-- (checkout/actions.ts) já foi corrigido em 2026-07-20 pra preencher
+-- cliente_user_id quando o cliente está logado (antes ficava sempre null,
+-- então nenhum pedido de cliente logado nunca aparecia aqui) — mas o fix
+-- ainda não foi verificado contra um banco de verdade (sem projeto Supabase
+-- do Ribas ainda). Rodar este caso assim que o projeto existir.
 -- Trocar <DONO_USER_ID> por um usuário real depois que a fixture existir.
 set role authenticated;
 set local request.jwt.claims = '{"sub": "<DONO_USER_ID>", "role": "authenticated"}';

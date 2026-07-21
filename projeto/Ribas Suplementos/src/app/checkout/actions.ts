@@ -36,6 +36,12 @@ export async function criarPedido(
 
   const supabase = await createClient();
 
+  // getUser() (não getSession()) valida contra o servidor — não confia só
+  // no cookie. null = convidado, checkout continua funcionando normalmente.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   // Preço e nome nunca vêm do client — sempre recalculados a partir do
   // banco, pra não confiar em valor manipulado no localStorage/devtools.
   const produtoIds = [...new Set(itens.map((i) => i.produtoId))];
@@ -91,6 +97,7 @@ export async function criarPedido(
   const { data: pedido, error: erroPedido } = await supabase
     .from("pedidos")
     .insert({
+      cliente_user_id: user?.id ?? null,
       nome_cliente: nomeCliente,
       email_cliente: emailCliente,
       telefone_cliente: telefoneCliente,
