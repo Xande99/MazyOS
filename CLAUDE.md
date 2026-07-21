@@ -109,6 +109,7 @@ Comportamento automático em qualquer pasta do MazyOS, sem precisar pedir. O che
 
 Este é o carimbo de qualidade de qualquer entrega da duPolvo — vale tanto pro painel interno (MazyOS) quanto pra sites/LPs de cliente (Tipo A e Tipo B). Executar automaticamente ao final de toda entrega de página ou seção nova, sem precisar que o usuário peça:
 
+0. **Segurança** (gate bloqueante, adicionado na Fase 5 da auditoria de 2026-07-20) — headers de segurança presentes na resposta real (`curl -I`), `deps:audit` sem alta/crítica sem justificativa, nenhum script de terceiro via CDN sem self-host, nenhum segredo no bundle client. Detalhe completo em `.claude/skills/qa-visual-pre-entrega/SKILL.md`, seção 0.
 1. **Build** da página/seção
 2. **Skill baseline visual** — `frontend-design` antes de considerar o visual pronto (`ui-ux-pro-max` é consulta secundária/banco de referência, não baseline de QA pra web — texto da própria skill assume stack React Native/mobile; ver `projeto/CLAUDE.md`, Fase 3)
 3. **Verificação visual real** via Playwright + Chrome DevTools MCP:
@@ -122,9 +123,9 @@ Este é o carimbo de qualidade de qualquer entrega da duPolvo — vale tanto pro
    - Best Practices ≥ 95
    - SEO ≥ 95
 
-Só reportar a entrega como "pronta" se os 4 números baterem com o threshold. Se algum não bater, corrigir antes de avisar que terminou — nunca entregar e perguntar depois.
+Só reportar a entrega como "pronta" se o gate de segurança (item 0) passar **e** os 4 números baterem com o threshold. Se algum não bater, corrigir antes de avisar que terminou — nunca entregar e perguntar depois.
 
-Essa sequência roda pra qualquer página/seção nova, tanto Tipo A (Astro) quanto Tipo B (Next.js). Sem skill de QA visual encontrada localmente → seguir esses 6 passos manualmente com as ferramentas MCP disponíveis.
+Essa sequência roda pra qualquer página/seção nova, tanto Tipo A (Astro) quanto Tipo B (Next.js). Sem skill de QA visual encontrada localmente → seguir esses 7 passos manualmente com as ferramentas MCP disponíveis.
 
 ---
 

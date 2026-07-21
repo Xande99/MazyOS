@@ -21,6 +21,30 @@ não depois.
 
 ## Workflow
 
+### 0. Segurança — bloqueante, roda antes de qualquer outro item
+
+Achados da auditoria de segurança do MazyOS (2026-07-20): nenhum projeto
+tinha header de segurança configurado, e o único achado 🟠 Alto foi CDN de
+terceiro sem self-host em produção. Esses dois viraram gate obrigatório —
+não são "nice to have" no meio de uma lista de itens manuais.
+
+- [ ] **Headers de segurança presentes na resposta real** (não só no código):
+      `curl -I <url>` — confirmar `X-Content-Type-Options`, `X-Frame-Options`,
+      `Referrer-Policy`, `Permissions-Policy`, `Strict-Transport-Security`.
+      Ausente = não é "pronto pra entregar", nem com justificativa — corrigir
+      antes (herdado do starter desde a Fase 5 da auditoria; se faltar, o
+      projeto não nasceu do starter ou o header foi removido em algum ponto,
+      investigar o porquê).
+- [ ] **`npm run deps:audit`** sem vulnerabilidade alta/crítica sem justificativa
+      registrada — mesmo critério do `/deps-review`.
+- [ ] **Nenhum script de terceiro carregado via CDN sem `integrity`/self-host**
+      — grep rápido por `<script src="https://` no HTML final; se achar,
+      resolver como foi feito pro `duPolvoNovo` (vendorizar via `npm pack`),
+      não só adicionar `integrity` (mitiga só parte do risco).
+- [ ] **Nenhum segredo no bundle client** — grep básico por padrões óbvios
+      (`SERVICE_ROLE`, `sk_live`, chave de 40+ caracteres) no output do build
+      voltado pro client (`dist/`/`.next/static/`), não no server-side.
+
 ### 1. Automatizado — rodar sempre que houver uma URL (local ou publicada)
 
 **a) Lighthouse** (performance, acessibilidade, boas práticas, SEO):

@@ -11,6 +11,23 @@ Starter pra sistema / SaaS / dashboard / área autenticada, conforme a stack ofi
 - **`.env.example`** com as 3 variáveis do checklist — **nunca** commitar `.env.local` real (`.gitignore` já bloqueia, exceto o próprio `.env.example`).
 - `.gitignore` correto (`node_modules/`, `.next/`, `.env*` exceto `.env.example`).
 - **Lint de tokens** (`stylelint` + `stylelint-declaration-strict-value`, config em `.stylelintrc.json`) — barra hex/rgb/hsl/oklch literal e `font-family` solta em qualquer `.css` do projeto (inclui `.module.css`, se algum for criado), exceto dentro de `theme*.css`/`dupolvo-theme.css`. Paridade com o starter-tipo-a (`_memoria/tokens-contract.md`). **Cobertura conhecida:** hoje o projeto não usa CSS Modules nem `styled-jsx` — só Tailwind utilities em `className` e os 2 arquivos `.css` reais. Se `styled-jsx` (`<style jsx>`) for adotado depois, este lint **não** cobre esses blocos automaticamente — precisa de um parser dedicado (nenhum foi instalado, por não haver uso atual a justificar).
+- **Headers de segurança** (`next.config.ts`, `headers()`) — `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, `Strict-Transport-Security` em todas as rotas. CSP fica de fora de propósito — precisa de tuning por projeto (scripts/rotas variam), não dá pra herdar um valor genérico com segurança.
+- **`zod`** já como dependência — convenção do projeto (ver `projeto/claude.md`, "Segurança") é toda Server Action validar o input com Zod antes de tocar o Supabase, mesmo que o client já valide:
+  ```ts
+  "use server";
+  import { z } from "zod";
+
+  const schema = z.object({
+    nome: z.string().trim().min(1).max(200),
+    email: z.email(),
+  });
+
+  export async function minhaAction(input: unknown) {
+    const dados = schema.parse(input); // lança antes de qualquer query
+    // ...
+  }
+  ```
+  Exemplos reais no repo: `projeto/dashboard/src/app/(app)/cofre/actions.ts` e `projeto/Ribas Suplementos/src/app/checkout/actions.ts`.
 
 ## O que configurar por projeto
 

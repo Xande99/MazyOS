@@ -138,7 +138,7 @@ Se o cliente não se encaixa em nenhum nicho catalogado: "Nicho de mercado: fora
 
 ### Passo 3.5 — Inicializar o projeto de desenvolvimento a partir do starter (só se o Passo 1.1 rodou)
 
-Todo projeto de desenvolvimento novo **nasce do starter correspondente, nunca do zero**. Os starters vivem em `templates/starter-tipo-a/` (Astro) e `templates/starter-tipo-b/` (Next.js) — já buildam limpo, já têm os tokens de marca da duPolvo aplicados, TypeScript strict, GSAP (Tipo A) ou Motion + Supabase (Tipo B) configurados. Ver `templates/starter-tipo-a/README.md` e `templates/starter-tipo-b/README.md` pra detalhe completo do que vem pronto.
+Todo projeto de desenvolvimento novo **nasce do starter correspondente, nunca do zero**. Os starters vivem em `templates/starter-tipo-a/` (Astro) e `templates/starter-tipo-b/` (Next.js) — já buildam limpo, já têm os tokens de marca da duPolvo aplicados, TypeScript strict, GSAP (Tipo A) ou Motion + Supabase (Tipo B) configurados, **e já nascem com a postura de segurança da auditoria (Fase 5 — Herança Automática): deps pinadas em versão exata, `.npmrc` com `ignore-scripts=true`, headers de segurança (`netlify.toml`/`next.config.ts`), `zod` já instalado no Tipo B**. Isso não é algo a configurar depois — já vem pronto, só confirmar no resumo do Passo 5. Ver `templates/starter-tipo-a/README.md` e `templates/starter-tipo-b/README.md` pra detalhe completo do que vem pronto.
 
 1. Copiar o starter certo pra `projeto/<Nome>/`:
    ```
@@ -221,6 +221,7 @@ Se o Passo 1.1 rodou (e portanto o Passo 3.5 também), incluir também:
 ✓ Skills de animação ativas: [lista, ex: gsap-scrolltrigger, locomotive-scroll]
 ✓ MCPs em uso: Context7 (docs atualizadas), Playwright (verificação visual)
 ✓ Checklist Supabase: [aplicável — já consultado, pendências: X | não aplicável]
+✓ Segurança herdada do starter: deps pinadas, ignore-scripts, headers de segurança (Tipo A: netlify.toml / Tipo B: next.config.ts)[, zod já instalado — Tipo B]
 ```
 
 Se o Passo 1.2 rodou e a entrega envolve LP/site novo, incluir também esse lembrete (não deixar implícito no "herda da raiz" do CLAUDE.md — na prática isso não é suficiente pra garantir que a identidade seja de fato aplicada):
