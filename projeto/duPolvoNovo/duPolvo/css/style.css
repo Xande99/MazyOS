@@ -65,6 +65,29 @@ a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-height:1.04;letter-spacing:var(--ls-h);font-weight:800}
 ::selection{background:var(--du-pink);color:#fff}
+
+/* ============================================================
+   LINKS — TEXTO CORRIDO
+   O reset acima (a{color:inherit;text-decoration:none}) é o que nav,
+   botões (.btn) e ícones usam. Aqui é só o link "solto" dentro de
+   texto corrido (parágrafo, FAQ, blog) — precisa se identificar como
+   link, sem cair no azul/roxo padrão do navegador. --link-color e
+   --link-hover trocam de tom em fundo escuro (mesmo padrão de custom
+   property por variante já usado em .btn).
+   ============================================================ */
+:root{--link-color:var(--du-pink-ink);--link-hover:var(--du-pink-600)}
+.hero,.dark,.cta,.on-dark{--link-color:var(--du-aqua);--link-hover:var(--du-lime)}
+p a,.faq-a__inner a,.post__body a,.prose a,.text-link{
+  color:var(--link-color);font-weight:500;text-decoration:underline;
+  text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:currentColor;
+  transition:color .2s ease,text-decoration-color .2s ease}
+p a:hover,.faq-a__inner a:hover,.post__body a:hover,.prose a:hover,.text-link:hover{
+  color:var(--link-hover)}
+p a:visited,.faq-a__inner a:visited,.post__body a:visited,.prose a:visited,.text-link:visited{
+  color:var(--link-color)}
+p a:focus-visible,.faq-a__inner a:focus-visible,.post__body a:focus-visible,.prose a:focus-visible,.text-link:focus-visible{
+  outline:2px solid var(--link-color);outline-offset:2px;border-radius:2px}
+
 .container{max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
 .section{padding-block:var(--section-y);position:relative}
 .eyebrow{
@@ -112,26 +135,23 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--text-primary);line-heigh
 
 /* ============================================================
    INTRO SPLASH
-   Entrada "por tentáculo": corpo (fill) escala/aparece, depois as
-   9 ventosas (fill aqua) entram em stagger tipo bolha, um pulse de
-   assentamento fecha a composição e a saída é uma cortina dupla
-   (2 painéis com translateX se afastando) revelando a hero.
+   A logo surge inteira (fade + scale, como uma peça só — sem desenhar
+   por tentáculo) grudada na cortina: quando a cortina sobe, a logo
+   sobe junto (logo é filha do painel, não elemento irmão).
    100% transform/opacity — sem clip-path, sem filter, sem stroke.
    ============================================================ */
 html.no-intro .intro{display:none}
 .intro{position:fixed;inset:0;z-index:9999;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
   animation:introFailsafe 0s 4.2s forwards}
 .intro-lock{overflow:hidden}
-.intro__panel{position:absolute;top:0;bottom:0;width:50%;background:var(--du-ink);
+.intro__panel{position:absolute;inset:0;background:var(--du-ink);
+  display:flex;align-items:center;justify-content:center;
   will-change:transform;backface-visibility:hidden}
-.intro__panel--l{left:0}
-.intro__panel--r{right:0}
 .intro__logo{position:relative;z-index:1;width:clamp(150px,24vw,300px);
-  aspect-ratio:1350/1080;overflow:visible;will-change:transform,opacity}
-.intro__body,.intro__spot{transform-box:fill-box;transform-origin:50% 50%;opacity:0}
-.intro__body{fill:var(--du-pink);transform:scale(.85)}
-.intro__spot{fill:var(--du-aqua);transform:scale(.4)}
+  aspect-ratio:1350/1080;overflow:visible;opacity:0;transform:scale(.85);
+  will-change:transform,opacity}
+.intro__body{fill:var(--du-pink)}
+.intro__spot{fill:var(--du-aqua)}
 @media(max-width:760px){
   .intro__logo{width:clamp(120px,42vw,210px)}
 }
@@ -190,10 +210,6 @@ html.no-intro .intro{display:none}
 .stars{display:flex;gap:3px;color:var(--du-lime)}
 .stars .lucide{width:16px;height:16px;fill:currentColor}
 .hero__media{position:relative;display:grid;place-items:center;min-height:440px}
-.hero__blob{position:absolute;width:104%;aspect-ratio:1;border-radius:48% 52% 56% 44%/52% 46% 54% 48%;
-  background:radial-gradient(circle at 42% 38%,#0d2138,#061327 70%);
-  filter:blur(2px);animation:blobMorph 14s ease-in-out infinite;
-  will-change:transform;backface-visibility:hidden}
 .hero__dup{position:absolute;z-index:2;width:clamp(200px,30vw,340px);aspect-ratio:965/902;
   filter:drop-shadow(0 22px 44px rgba(2,14,32,.5));pointer-events:none}
 .hero__dup img{width:100%;height:100%;object-fit:contain;display:block}
@@ -441,12 +457,6 @@ html.no-intro .intro{display:none}
 @keyframes wordIn{to{opacity:1;transform:translateY(0) rotate(0)}}
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
 @keyframes dupFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-/* border-radius animado causa repaint — substituído por transform puro */
-@keyframes blobMorph{
-  0%,100%{transform:scale(1,1) rotate(0deg)}
-  25%{transform:scale(1.05,.95) rotate(4deg)}
-  50%{transform:scale(.96,1.06) rotate(-2deg)}
-  75%{transform:scale(1.04,.96) rotate(6deg)}}
 @keyframes scrollX{to{transform:translateX(-50%)}}
 
 /* ============================================================
