@@ -21,6 +21,7 @@ Operação da agência. Aqui ficam todos os clientes, propostas, conteúdo e ent
 |---|---|---|
 | `projeto/` | `C:\Users\Xande\Desktop\MazyOS\projeto\` | Desenvolvimento dos sites e LPs (stack e regras técnicas no `projeto/CLAUDE.md`) |
 | `cerebro/` | `C:\Users\Xande\Desktop\cerebro\` | Base de conhecimento (nichos: fluxo raw→done ativo; wiki de AI Engineering: protocolo de ingest próprio — ver `cerebro/CLAUDE.md`) |
+| `duPolvo Vault` | `C:\Users\Xande\Desktop\duPolvo-vault\` (também em `github.com/Xande99/dupolvo-vault`) | Repositório de componentes/seções/técnicas de animação prontas (GSAP + tokens de marca) — consultar antes de criar qualquer seção com animação (hero, menu, transição, card, background, efeito de texto). Detalhe de estrutura em `_memoria/licoes-tecnicas.md` |
 
 **Estrutura de `cerebro/raw/nichos/`:** uma subpasta por nicho (automotivo, barbearia, empresa, fitness-gym, food-delivery, imoveis, infoprodutos, juridico-contabil, nutri-suplement, odonto, pet-veterinario, psicologia, saude-estetica). Clip novo segue `_clipper-template.md` (campo `nichos:`, plural) e vai direto pra subpasta do nicho certo — nunca solto na raiz.
 

@@ -58,6 +58,8 @@ Evite valores arbitrários desnecessários.
 # ANIMAÇÃO
 # ==========================================
 
+**Antes de implementar do zero**, consultar o duPolvo Vault (`C:\Users\Xande\Desktop\duPolvo-vault`, também em `github.com/Xande99/dupolvo-vault`) — repositório de componentes/seções/técnicas de animação prontas (GSAP + tokens de marca), organizado por categoria (`text-effects`, `transitions`, `heros`, `menus`, `cards`, `backgrounds`, `buttons`, `sections`). Cada componente tem `demo.html` isolado e `NOTES.md` com origem, customização e pegadinhas. Vale pra qualquer seção com animação (hero, menu, transição, card, background, efeito de texto) — mais uma fonte de referência, junto com a síntese de nicho do Cérebro.
+
 Hierarquia de escolha (sempre a opção mais leve que resolve):
 
 1. **CSS puro** (transitions/keyframes) — hover, focus, micro-interações, transições simples. Roda na thread do compositor, não bloqueia JS. Nunca instalar lib pra animar hover de botão.
