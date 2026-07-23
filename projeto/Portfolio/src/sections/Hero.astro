@@ -1,30 +1,28 @@
 ---
 /**
- * Hero — abertura do portfólio. Vídeo de fundo full-screen é decisão
- * fechada do usuário (ver docs/superpowers/specs/2026-07-23-portfolio-
- * vitrine-design.md) — não trocar por imagem estática mesmo que pese
- * no Lighthouse; ajustar peso/condicional se a medição em Task 6 pedir.
+ * Hero — abertura do portfólio. Fundo animado via shader WebGL (Three.js),
+ * renderizado localmente — substitui o vídeo hotlinked de Cloudinary de
+ * terceiro (ver docs/superpowers/specs/2026-07-23-portfolio-vitrine-design.md,
+ * seção "Task 7"; motivo completo em .claude/decisions.md).
  *
- * Em prefers-reduced-motion, o <video> não é exibido — cai num
- * gradiente estático com os mesmos tokens de cor (--color-brand +
- * --color-surface-inverse via color-mix), sem precisar extrair um
- * frame/poster do vídeo externo.
+ * Em prefers-reduced-motion, o shader nem chega a inicializar — cai direto
+ * no gradiente estático (.hero-fallback), reaproveitado sem alteração do
+ * design original do vídeo.
+ *
+ * Mitigação de performance (Task 7, Step 7 — decisão com dado medido, ver
+ * .claude/decisions.md): abaixo do breakpoint `md` (767px), o shader também
+ * não inicializa — mesmo fallback estático, e o import() dinâmico garante
+ * que o chunk do Three.js nem é baixado nesse caso. Lighthouse mobile mediu
+ * Performance 83 (abaixo do threshold ≥90) com o shader ativo em toda
+ * largura, causado pelo bundle do Three.js bloqueando a main thread
+ * (bootup-time 1.6s, TBT 400ms) sob CPU throttling mobile — não pelo custo
+ * de GPU por frame do fragment shader. Resultado pós-mitigação: 97
+ * (bootup-time 0.5s, TBT 140ms).
  */
-const VIDEO_SRC =
-  "https://res.cloudinary.com/dfonotyfb/video/upload/v1775585556/dds3_1_rqhg7x.mp4";
 ---
 
 <section id="hero" class="relative flex min-h-screen items-center overflow-hidden bg-surface-inverse">
-  <video
-    class="hero-video absolute inset-0 z-0 h-full w-full object-cover"
-    autoplay
-    loop
-    muted
-    playsinline
-    aria-hidden="true"
-  >
-    <source src={VIDEO_SRC} type="video/mp4" />
-  </video>
+  <canvas class="hero-shader absolute inset-0 z-0 h-full w-full" aria-hidden="true"></canvas>
 
   <div class="hero-fallback absolute inset-0 z-0" aria-hidden="true"></div>
 
@@ -53,7 +51,7 @@ const VIDEO_SRC =
   <button
     type="button"
     class="hero-toggle absolute bottom-6 right-6 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-text-inverse/30 text-text-inverse transition-colors duration-300 hover:bg-surface-inverse/60"
-    aria-label="Pausar vídeo de fundo"
+    aria-label="Pausar animação de fundo"
     aria-pressed="false"
   >
     <svg class="icon-pause h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -85,7 +83,7 @@ const VIDEO_SRC =
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-video {
+    .hero-shader {
       display: none;
     }
 
@@ -98,18 +96,23 @@ const VIDEO_SRC =
     }
   }
 
-  /* Fallback forçado por JS quando o <video> falha por erro real de
-     rede/carregamento (ex: origem externa fora do ar) — mesmo tratamento
+  /* Fallback forçado por JS quando o WebGL falha ao inicializar (ex:
+     contexto indisponível), ou quando o shader é deliberadamente
+     desligado em telas pequenas por mitigação de performance medida
+     (Task 7, Step 7 — ver .claude/decisions.md) — mesmo tratamento
      visual do prefers-reduced-motion, sem depender de media query. */
-  #hero.hero-video-error .hero-video {
+  #hero.hero-shader-error .hero-shader,
+  #hero.hero-shader-mobile-off .hero-shader {
     display: none;
   }
 
-  #hero.hero-video-error .hero-fallback {
+  #hero.hero-shader-error .hero-fallback,
+  #hero.hero-shader-mobile-off .hero-fallback {
     display: block;
   }
 
-  #hero.hero-video-error .hero-toggle {
+  #hero.hero-shader-error .hero-toggle,
+  #hero.hero-shader-mobile-off .hero-toggle {
     display: none;
   }
 </style>
@@ -117,68 +120,48 @@ const VIDEO_SRC =
 <script>
   const hero = document.querySelector<HTMLElement>("#hero");
   const toggle = document.querySelector<HTMLButtonElement>(".hero-toggle");
-  const video = document.querySelector<HTMLVideoElement>(".hero-video");
+  const canvas = document.querySelector<HTMLCanvasElement>(".hero-shader");
 
-  // Erro real de rede/carregamento do vídeo (ex: origem externa fora do
-  // ar, como o 401 do Cloudinary visto em sandbox na Task 2) — força o
-  // mesmo fallback visual do prefers-reduced-motion via classe no <section>,
-  // já que a media query só cobre a preferência do usuário, não falhas.
-  //
-  // O <video> não tem `src` direto, só um <source> filho — quando essa
-  // fonte falha (algoritmo de "resource selection" chega ao fim sem
-  // candidato válido), o evento `error` é disparado no próprio <source>,
-  // não no <video>, e esse evento NÃO faz bubbling. Por isso o listener
-  // vai na fase de captura (terceiro argumento `true`) do <video>, que
-  // intercepta o evento a caminho do alvo mesmo sem bubbling.
-  //
-  // Isso sozinho não é suficiente: o <video autoplay> começa a carregar
-  // durante o parse do HTML, e o `error` pode disparar antes desse script
-  // (module, portanto deferred) executar — confirmado na prática (o
-  // listener pegou o erro numa recarga e não pegou em outra, mesma
-  // página). Por isso dois reforços: 1) checar o estado do vídeo
-  // imediatamente ao rodar o script (`networkState`/`error` já setados
-  // se a falha foi rápida demais); 2) um timeout de segurança que aplica
-  // o fallback se o vídeo simplesmente nunca chegar a tocar de fato.
-  function applyVideoFallback() {
-    hero?.classList.add("hero-video-error");
-  }
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Mitigação de performance medida (Task 7, Step 7 — ver .claude/decisions.md):
+  // abaixo do breakpoint `md` (767px, mesmo usado no h1 logo acima) o shader
+  // nem é baixado. `import()` dinâmico (não estático) garante que o chunk do
+  // Three.js só é requisitado quando o shader de fato vai rodar.
+  const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
 
-  function videoAlreadyFailed(el: HTMLVideoElement) {
-    return el.error !== null || el.networkState === el.NETWORK_NO_SOURCE;
-  }
+  async function setup() {
+    if (!canvas || prefersReducedMotion || isMobileViewport) {
+      if (isMobileViewport && !prefersReducedMotion) {
+        hero?.classList.add("hero-shader-mobile-off");
+      }
+      return;
+    }
 
-  if (video) {
-    if (videoAlreadyFailed(video)) {
-      applyVideoFallback();
-    } else {
-      video.addEventListener("error", applyVideoFallback, true);
+    try {
+      const { initShaderBackground } = await import("../scripts/shader-background");
+      const shader = initShaderBackground(canvas);
 
-      // Rede lenta/CDN travado sem chegar a disparar `error`: se em poucos
-      // segundos o vídeo ainda não tiver dados suficientes pra tocar,
-      // assume-se falha e cai no mesmo fallback visual.
-      const safetyTimeout = setTimeout(() => {
-        if (video.readyState < video.HAVE_CURRENT_DATA) {
-          applyVideoFallback();
+      toggle?.addEventListener("click", () => {
+        const wasPaused = shader.isPaused();
+
+        if (wasPaused) {
+          shader.resume();
+        } else {
+          shader.pause();
         }
-      }, 4000);
 
-      video.addEventListener("playing", () => clearTimeout(safetyTimeout), { once: true });
+        toggle.setAttribute("aria-pressed", String(!wasPaused));
+        toggle.setAttribute(
+          "aria-label",
+          wasPaused ? "Pausar animação de fundo" : "Tocar animação de fundo",
+        );
+        toggle.querySelector(".icon-pause")?.classList.toggle("hidden", !wasPaused);
+        toggle.querySelector(".icon-play")?.classList.toggle("hidden", wasPaused);
+      });
+    } catch {
+      hero?.classList.add("hero-shader-error");
     }
   }
 
-  toggle?.addEventListener("click", () => {
-    if (!video) return;
-    const wasPlaying = !video.paused;
-
-    if (wasPlaying) {
-      video.pause();
-    } else {
-      video.play();
-    }
-
-    toggle.setAttribute("aria-pressed", String(wasPlaying));
-    toggle.setAttribute("aria-label", wasPlaying ? "Tocar vídeo de fundo" : "Pausar vídeo de fundo");
-    toggle.querySelector(".icon-pause")?.classList.toggle("hidden", wasPlaying);
-    toggle.querySelector(".icon-play")?.classList.toggle("hidden", !wasPlaying);
-  });
+  setup();
 </script>
