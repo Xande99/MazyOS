@@ -1,0 +1,51 @@
+---
+const WHATSAPP = "5512978145247"; // (12) 97814-5247 em formato internacional pro link wa.me
+const INSTAGRAM_URL = "https://www.instagram.com/ale.drj_/";
+const EMAIL = "alexandre.resendedj@hotmail.com";
+---
+
+<section id="contato" class="relative overflow-hidden bg-surface-inverse py-[var(--space-section-y-lg)]">
+  <p
+    class="pointer-events-none absolute -top-4 left-0 select-none font-display text-7xl font-extrabold uppercase text-text-inverse/8 md:text-9xl"
+    aria-hidden="true"
+  >
+    Contato
+  </p>
+  <div class="container-du relative">
+    <h2 class="reveal font-display text-3xl font-bold text-text-inverse md:text-4xl">
+      Vamos conversar sobre o seu projeto.
+    </h2>
+    <ul class="mt-8 flex flex-col gap-4 text-lg md:flex-row md:gap-10">
+      <li>
+        <a
+          href={`https://wa.me/${WHATSAPP}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="reveal font-bold text-text-inverse underline decoration-brand decoration-2 underline-offset-4 transition-colors duration-300 hover:text-brand"
+        >
+          WhatsApp
+        </a>
+      </li>
+      <li>
+        <a
+          href={INSTAGRAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="reveal font-bold text-text-inverse underline decoration-brand decoration-2 underline-offset-4 transition-colors duration-300 hover:text-brand"
+          data-reveal-delay="0.1"
+        >
+          Instagram
+        </a>
+      </li>
+      <li>
+        <a
+          href={`mailto:${EMAIL}`}
+          class="reveal font-bold text-text-inverse underline decoration-brand decoration-2 underline-offset-4 transition-colors duration-300 hover:text-brand"
+          data-reveal-delay="0.2"
+        >
+          {EMAIL}
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
