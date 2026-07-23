@@ -16,7 +16,7 @@
 - Componentes só referenciam tokens SEMÂNTICOS do `_memoria/tokens-contract.md` (`--color-brand`, `--color-surface`, `--color-text-inverse`...) — nunca primitivos (`--color-brand-500` etc.) nem hex/px soltos. **Exceção documentada** (já registrada em `MazyOS/projetos/Portfolio/CLAUDE.md`): pills/badges (skills e tags de projeto) usam `bg-brand-50`/`text-brand` — não existe semântico dedicado a "fundo de badge" no contrato.
 - Motion: só anima `transform`/`opacity`; tudo que usa GSAP passa por `gsap.matchMedia()` respeitando `prefers-reduced-motion` (sistema `.reveal` já existe, não recriar).
 - Tipografia: só Fira Sans (`--font-display` e `--font-body` já apontam pra ela em `theme.css`) — nunca outra família em componente.
-- **O vídeo de fundo do Hero é decisão fechada** (Cloudinary, `https://res.cloudinary.com/dfonotyfb/video/upload/v1775585556/dds3_1_rqhg7x.mp4`) — não trocar por imagem estática. Em `prefers-reduced-motion: reduce`, o vídeo some via CSS e um gradiente estático (mesmos tokens de cor) aparece no lugar; um botão pausar/tocar sempre visível fora do modo reduced-motion (WCAG 2.2.2 — autoplay >5s exige controle de pausa).
+- ~~O vídeo de fundo do Hero é decisão fechada (Cloudinary)~~ — **[SUBSTITUÍDO 2026-07-23, Task 7]** trocado por shader WebGL local (Three.js, `src/scripts/shader-background.ts`, TypeScript vanilla — sem ilha React), removendo a dependência de rede/conta de terceiro. Em `prefers-reduced-motion: reduce`, o shader não inicializa e um gradiente estático (mesmos tokens de cor, mesmo elemento `.hero-fallback` de antes) aparece no lugar; um botão pausar/tocar sempre visível fora do modo reduced-motion (WCAG 2.2.2 — conteúdo animado >5s exige controle de pausa).
 - Grid de projetos: content collection, filtra só `status: "entregue"`. Cresce por novo arquivo `.md`, sem tocar em código.
 - Skills a ativar durante a implementação visual (Task 6, polimento): `storybrand-messaging`, `copywriting`, `frontend-design`, `web-typography`, `refactoring-ui`/`ux-heuristics`, `microinteractions`. **Não usar** `hooked-ux` nem `cro-methodology` (removidas do escopo pelo usuário).
 - **Commits: nunca automáticos.** Cada task termina com build/QA verificado (`npm run check`/`npm run build`/screenshot), não com `git commit` — só commitar quando o usuário pedir explicitamente (política da sessão).
@@ -602,6 +602,394 @@ Depois que os 4 thresholds baterem e a auditoria de acessibilidade estiver limpa
 - [ ] **Step 9: Parar o dev/preview server**
 
 Encerrar qualquer processo `astro dev`/`astro preview` deixado rodando em background.
+
+---
+
+---
+
+### Task 7: Shader WebGL local no lugar do vídeo do Hero (adendo pós-lançamento)
+
+Pedido pelo usuário depois do QA final da Task 6, motivado pela pendência de confiabilidade/licenciamento do vídeo hotlinked de Cloudinary de terceiro. Ver `docs/superpowers/specs/2026-07-23-portfolio-vitrine-design.md`, seção "Task 7", pro raciocínio completo.
+
+**Files:**
+- Create: `src/scripts/shader-background.ts`
+- Modify: `src/sections/Hero.astro` (troca `<video>` por `<canvas>`, remove tratamento de erro de vídeo, adiciona `<script>` de inicialização do shader)
+- Modify: `package.json` (adiciona `three` + `@types/three`, versões pinadas exatas)
+
+**Interfaces:**
+- Produces: `initShaderBackground(canvas: HTMLCanvasElement): ShaderBackground`, onde `ShaderBackground = { pause(): void; resume(): void; isPaused(): boolean; destroy(): void }`. Consumido só por `Hero.astro`.
+
+- [ ] **Step 1: Instalar as dependências**
+
+```bash
+npm install --save-exact three@0.185.1
+npm install --save-exact -D @types/three@0.185.1
+```
+
+Verificar que ambas entram pinadas exatas (sem `^`/`~`) em `package.json`.
+
+- [ ] **Step 2: Criar o módulo do shader**
+
+Criar `src/scripts/shader-background.ts`:
+
+```ts
+/**
+ * Shader de fundo animado do Hero (Three.js/WebGL) — substitui o vídeo
+ * hotlinked de Cloudinary de terceiro por uma animação renderizada
+ * localmente, sem dependência de rede. TypeScript vanilla (sem React),
+ * mesmo padrão de src/scripts/reveal.ts — não há estado reativo aqui, só
+ * setup imperativo de WebGL, então uma ilha React não se justifica
+ * (ver .claude/decisions.md).
+ */
+import {
+  Scene,
+  OrthographicCamera,
+  WebGLRenderer,
+  ShaderMaterial,
+  PlaneGeometry,
+  Mesh,
+  Vector2,
+} from "three";
+
+const VERTEX_SHADER = `
+  void main() {
+    gl_Position = vec4(position, 1.0);
+  }
+`;
+
+const FRAGMENT_SHADER = `
+  uniform float iTime;
+  uniform vec2 iResolution;
+
+  #define NUM_OCTAVES 3
+
+  float rand(vec2 n) {
+    return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+  }
+
+  float noise(vec2 p) {
+    vec2 ip = floor(p);
+    vec2 u = fract(p);
+    u = u * u * (3.0 - 2.0 * u);
+
+    float res = mix(
+      mix(rand(ip), rand(ip + vec2(1.0, 0.0)), u.x),
+      mix(rand(ip + vec2(0.0, 1.0)), rand(ip + vec2(1.0, 1.0)), u.x), u.y);
+    return res * res;
+  }
+
+  float fbm(vec2 x) {
+    float v = 0.0;
+    float a = 0.3;
+    vec2 shift = vec2(100);
+    mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
+    for (int i = 0; i < NUM_OCTAVES; ++i) {
+      v += a * noise(x);
+      x = rot * x * 2.0 + shift;
+      a *= 0.4;
+    }
+    return v;
+  }
+
+  void main() {
+    vec2 shake = vec2(sin(iTime * 1.2) * 0.005, cos(iTime * 2.1) * 0.005);
+    vec2 p = ((gl_FragCoord.xy + shake * iResolution.xy) - iResolution.xy * 0.5) / iResolution.y * mat2(6.0, -4.0, 4.0, 6.0);
+    vec2 v;
+    vec4 o = vec4(0.0);
+
+    float f = 2.0 + fbm(p + vec2(iTime * 5.0, 0.0)) * 0.5;
+
+    for (float i = 0.0; i < 35.0; i++) {
+      v = p + cos(i * i + (iTime + p.x * 0.08) * 0.025 + i * vec2(13.0, 11.0)) * 3.5 + vec2(sin(iTime * 3.0 + i) * 0.003, cos(iTime * 3.5 - i) * 0.003);
+      float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 35.0));
+      vec4 auroraColors = vec4(
+        0.1 + 0.3 * sin(i * 0.2 + iTime * 0.4),
+        0.3 + 0.5 * cos(i * 0.3 + iTime * 0.5),
+        0.7 + 0.3 * sin(i * 0.4 + iTime * 0.3),
+        1.0
+      );
+      vec4 currentContribution = auroraColors * exp(sin(i * i + iTime * 0.8)) / length(max(v, vec2(v.x * f * 0.015, v.y * 1.5)));
+      float thinnessFactor = smoothstep(0.0, 1.0, i / 35.0) * 0.6;
+      o += currentContribution * (1.0 + tailNoise * 0.8) * thinnessFactor;
+    }
+
+    o = tanh(pow(o / 100.0, vec4(1.6)));
+    gl_FragColor = o * 1.5;
+  }
+`;
+
+export interface ShaderBackground {
+  pause: () => void;
+  resume: () => void;
+  isPaused: () => boolean;
+  destroy: () => void;
+}
+
+/**
+ * Inicializa o shader no canvas informado. Lança (throw) se o navegador não
+ * conseguir criar um contexto WebGL — quem chama deve envolver em try/catch
+ * e cair no fallback estático (.hero-fallback) nesse caso.
+ *
+ * Retorna controles de pause/resume/destroy:
+ * - pause()/resume() só param/retomam o loop de requestAnimationFrame
+ *   (WCAG 2.2.2 — conteúdo animado >5s precisa de controle de pausa).
+ * - destroy() libera os recursos de GPU (geometry/material/renderer) —
+ *   chamar se o canvas sair do DOM (ex: navegação via View Transitions).
+ */
+export function initShaderBackground(canvas: HTMLCanvasElement): ShaderBackground {
+  const scene = new Scene();
+  const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const renderer = new WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  const getSize = (): [number, number] => {
+    const rect = canvas.parentElement?.getBoundingClientRect();
+    return [rect?.width || window.innerWidth, rect?.height || window.innerHeight];
+  };
+
+  const [initialWidth, initialHeight] = getSize();
+  renderer.setSize(initialWidth, initialHeight);
+
+  const material = new ShaderMaterial({
+    uniforms: {
+      iTime: { value: 0 },
+      iResolution: { value: new Vector2(initialWidth, initialHeight) },
+    },
+    vertexShader: VERTEX_SHADER,
+    fragmentShader: FRAGMENT_SHADER,
+  });
+
+  const geometry = new PlaneGeometry(2, 2);
+  const mesh = new Mesh(geometry, material);
+  scene.add(mesh);
+
+  let frameId: number | null = null;
+  let paused = false;
+
+  const tick = () => {
+    material.uniforms.iTime.value += 0.016;
+    renderer.render(scene, camera);
+    frameId = requestAnimationFrame(tick);
+  };
+
+  const start = () => {
+    if (frameId === null) {
+      paused = false;
+      tick();
+    }
+  };
+
+  const pause = () => {
+    if (frameId !== null) {
+      cancelAnimationFrame(frameId);
+      frameId = null;
+    }
+    paused = true;
+  };
+
+  const handleResize = () => {
+    const [width, height] = getSize();
+    renderer.setSize(width, height);
+    material.uniforms.iResolution.value.set(width, height);
+  };
+  window.addEventListener("resize", handleResize);
+
+  const destroy = () => {
+    pause();
+    window.removeEventListener("resize", handleResize);
+    geometry.dispose();
+    material.dispose();
+    renderer.dispose();
+  };
+
+  start();
+
+  return { pause, resume: start, isPaused: () => paused, destroy };
+}
+```
+
+- [ ] **Step 3: Reescrever `Hero.astro`**
+
+Substituir todo o conteúdo de `src/sections/Hero.astro`:
+
+```astro
+---
+/**
+ * Hero — abertura do portfólio. Fundo animado via shader WebGL (Three.js),
+ * renderizado localmente — substitui o vídeo hotlinked de Cloudinary de
+ * terceiro (ver docs/superpowers/specs/2026-07-23-portfolio-vitrine-design.md,
+ * seção "Task 7"; motivo completo em .claude/decisions.md).
+ *
+ * Em prefers-reduced-motion, o shader nem chega a inicializar — cai direto
+ * no gradiente estático (.hero-fallback), reaproveitado sem alteração do
+ * design original do vídeo.
+ */
+---
+
+<section id="hero" class="relative flex min-h-screen items-center overflow-hidden bg-surface-inverse">
+  <canvas class="hero-shader absolute inset-0 z-0 h-full w-full" aria-hidden="true"></canvas>
+
+  <div class="hero-fallback absolute inset-0 z-0" aria-hidden="true"></div>
+
+  <div class="hero-overlay absolute inset-0 z-10" aria-hidden="true"></div>
+
+  <div class="container-du relative z-20">
+    <p class="reveal mb-4 font-body text-xs font-bold uppercase tracking-[0.18em] text-brand">
+      Portfólio
+    </p>
+    <h1 class="reveal font-display text-5xl leading-[0.96] font-bold text-text-inverse md:text-6xl">
+      Sites fora do óbvio,<br /> prontos pra converter.
+    </h1>
+    <p class="reveal mt-6 max-w-prose text-lg text-text-inverse/80" data-reveal-delay="0.1">
+      Eu sou o Xande. Projeto e desenvolvo sites e landing pages — dá uma olhada no que já fiz.
+    </p>
+    <div class="reveal mt-8" data-reveal-delay="0.2">
+      <a
+        href="#projetos"
+        class="inline-flex rounded-full bg-brand px-6 py-3 font-body font-bold text-brand-contrast transition-transform duration-300 hover:-translate-y-0.5"
+      >
+        Ver projetos
+      </a>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="hero-toggle absolute bottom-6 right-6 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-text-inverse/30 text-text-inverse transition-colors duration-300 hover:bg-surface-inverse/60"
+    aria-label="Pausar animação de fundo"
+    aria-pressed="false"
+  >
+    <svg class="icon-pause h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <rect x="6" y="5" width="4" height="14"></rect>
+      <rect x="14" y="5" width="4" height="14"></rect>
+    </svg>
+    <svg class="icon-play hidden h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <polygon points="7,4 20,12 7,20"></polygon>
+    </svg>
+  </button>
+</section>
+
+<style>
+  .hero-fallback {
+    display: none;
+    background: linear-gradient(
+      160deg,
+      color-mix(in oklch, var(--color-brand) 35%, var(--color-surface-inverse)),
+      var(--color-surface-inverse)
+    );
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--color-surface-inverse) 15%, transparent),
+      color-mix(in oklch, var(--color-surface-inverse) 80%, transparent)
+    );
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-shader {
+      display: none;
+    }
+
+    .hero-fallback {
+      display: block;
+    }
+
+    .hero-toggle {
+      display: none;
+    }
+  }
+
+  /* Fallback forçado por JS quando o WebGL falha ao inicializar (ex:
+     contexto indisponível) — mesmo tratamento visual do
+     prefers-reduced-motion, sem depender de media query. */
+  #hero.hero-shader-error .hero-shader {
+    display: none;
+  }
+
+  #hero.hero-shader-error .hero-fallback {
+    display: block;
+  }
+
+  #hero.hero-shader-error .hero-toggle {
+    display: none;
+  }
+</style>
+
+<script>
+  import { initShaderBackground } from "../scripts/shader-background";
+
+  const hero = document.querySelector<HTMLElement>("#hero");
+  const toggle = document.querySelector<HTMLButtonElement>(".hero-toggle");
+  const canvas = document.querySelector<HTMLCanvasElement>(".hero-shader");
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (canvas && !prefersReducedMotion) {
+    try {
+      const shader = initShaderBackground(canvas);
+
+      toggle?.addEventListener("click", () => {
+        const wasPaused = shader.isPaused();
+
+        if (wasPaused) {
+          shader.resume();
+        } else {
+          shader.pause();
+        }
+
+        toggle.setAttribute("aria-pressed", String(!wasPaused));
+        toggle.setAttribute(
+          "aria-label",
+          wasPaused ? "Pausar animação de fundo" : "Tocar animação de fundo",
+        );
+        toggle.querySelector(".icon-pause")?.classList.toggle("hidden", !wasPaused);
+        toggle.querySelector(".icon-play")?.classList.toggle("hidden", wasPaused);
+      });
+    } catch {
+      hero?.classList.add("hero-shader-error");
+    }
+  }
+</script>
+```
+
+- [ ] **Step 4: Verificar build**
+
+```bash
+npm run check && npm run build
+```
+Esperado: `0 errors`, build completo. Se `check` reclamar de tipos do `three`, confirmar que `@types/three` instalou na mesma versão de `three`.
+
+- [ ] **Step 5: Conferir visualmente (shader ativo)**
+
+```bash
+npm run dev
+```
+Playwright MCP: `browser_navigate` pra `http://localhost:4321/`, `browser_take_screenshot` (a animação em si não aparece em screenshot estático, mas confirmar que a seção renderiza sem tela preta/quebrada e sem erro no console via `browser_console_messages`). Testar o botão pausar/tocar: `browser_click` no `.hero-toggle`, confirmar troca de `aria-pressed`/ícone.
+
+- [ ] **Step 6: Conferir o fallback de `prefers-reduced-motion`**
+
+Emular `prefers-reduced-motion: reduce` (via `mcp__chrome-devtools__emulate` ou equivalente), recarregar, confirmar: `<canvas class="hero-shader">` não aparece (nunca inicializado), `.hero-fallback` (gradiente) visível, `.hero-toggle` ausente.
+
+- [ ] **Step 7: Remedir o Lighthouse (thresholds do MazyOS)**
+
+```bash
+npm run build && npm run preview
+```
+Lighthouse via `mcp__chrome-devtools__lighthouse_audit` (ou equivalente). Thresholds: Performance ≥ 90, Accessibility = 100, Best Practices ≥ 95, SEO ≥ 95. **Comparar com o baseline da Task 6** (Performance 100 desktop / 99 mobile, medido ainda com o vídeo) — o shader WebGL contínuo tem custo de CPU/GPU diferente do vídeo, pode alterar o número. Se cair abaixo do threshold, mitigar (nessa ordem): reduzir o número de octaves/iterações do fragment shader (`NUM_OCTAVES`, o loop de 35 iterações), limitar `setPixelRatio` a 1 em vez de 2, ou desabilitar o shader em telas pequenas (mobile) caindo no fallback estático — decisão tomada com dado medido, não a priori. Documentar o resultado e qualquer ajuste em `docs/superpowers/specs/2026-07-23-portfolio-vitrine-design.md` (seção Performance) e em `MazyOS/projetos/Portfolio/briefing.md` (Pendências).
+
+- [ ] **Step 8: Auditoria de acessibilidade**
+
+`mcp-accessibility-scanner` (`scan_page`) na home com o dev server no ar. Esperado: 0 violações (mesmo resultado da Task 6, já que o `.hero-overlay`/contraste de texto não mudou).
+
+- [ ] **Step 9: Atualizar `.claude/decisions.md`**
+
+Registrar a troca vídeo → shader: decisão, motivo (remover dependência de conta de terceiro/Cloudinary), alternativas descartadas (self-host do vídeo original — descartada por ainda exigir hospedagem/banda de terceiro pra um asset que não é do usuário; ilha React — descartada por não haver estado reativo real, ver Global Constraints), impacto (bundle ganha peso de `three`, precisa monitorar Performance; remove qualquer risco de licenciamento/uptime do vídeo).
+
+- [ ] **Step 10: Parar dev/preview server e revisar arquivos não utilizados**
+
+Confirmar que não sobrou nenhuma referência a `VIDEO_SRC`/Cloudinary em `Hero.astro` ou em qualquer outro arquivo do projeto (`grep -r "cloudinary" src/`).
 
 ---
 

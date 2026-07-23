@@ -52,7 +52,7 @@ HTML, CSS, JavaScript, TypeScript, Astro, Next.js, Tailwind CSS, GSAP, Motion, F
 
 Cada seção é um `.astro` independente, consumindo só tokens semânticos do `theme.css`.
 
-1. **`Hero.astro`** — vídeo de fundo full-screen (Cloudinary, cinematográfico/escuro), foco só em Xande como marca pessoal (sem menção à duPolvo Studio), headline direta (sem clichê de agência — "fora do óbvio" como tom de voz), CTA pra seção de projetos. Poster estático de fallback (frame do vídeo) pra quando `prefers-reduced-motion` estiver ativo ou o vídeo não carregar. Botão pausar/tocar discreto (WCAG 2.2.2 — conteúdo autoplay >5s precisa de controle de pausa).
+1. **`Hero.astro`** — **[ATUALIZADO 2026-07-23, Task 7]** fundo animado full-screen via shader WebGL (Three.js, renderizado localmente — ver seção "Task 7" abaixo), foco só em Xande como marca pessoal (sem menção à duPolvo Studio), headline direta (sem clichê de agência — "fora do óbvio" como tom de voz), CTA pra seção de projetos. Fallback estático (gradiente de marca, reaproveitado do design original do vídeo) pra quando `prefers-reduced-motion` estiver ativo ou o WebGL falhar ao inicializar. Botão pausar/tocar discreto (WCAG 2.2.2 — conteúdo animado >5s precisa de controle de pausa).
 2. **`ProjetosGrid.astro`** — grid responsivo (1 col mobile, 2-3 desktop) de cards: screenshot, título, descrição curta, tags (pills), botão "Ver site" ou "Em breve" (desabilitado, sem link morto).
 3. **`Skills.astro`** — pills com fundo `--color-brand-50`, texto `--color-brand`, lendo de `src/data/skills.ts`.
 4. **`Contato.astro`** — fundo escuro (`--color-surface-inverse`), big type "CONTATO" translúcido de fundo (mesmo padrão do currículo original), 3 canais: WhatsApp (`(12) 97814-5247`), Instagram (`@ale.drj_`), e-mail (`alexandre.resendedj@hotmail.com`).
@@ -77,20 +77,21 @@ A cópia final (headline do hero, descrição do projeto, microcopy dos botões)
 - Card de projeto sem `url` → botão "Em breve" desabilitado (`aria-disabled`, sem `href`), nunca link quebrado.
 - Screenshot com `width`/`height` explícitos via `astro:assets` (evita CLS), `loading="lazy"` (abaixo da dobra), `eager`/`fetchpriority="high"` só na imagem do hero se houver.
 - Hover em card: elevação leve + zoom sutil no screenshot — só `transform`/`opacity`.
-- Vídeo do hero: fallback pra poster estático se falhar o carregamento (`<video>` com `poster="..."`) e se `prefers-reduced-motion: reduce`.
+- Fundo do hero (shader WebGL, Task 7): fallback pro gradiente estático (`.hero-fallback`) se `WebGLRenderer` falhar ao inicializar (try/catch síncrono) e se `prefers-reduced-motion: reduce` (nesse caso o shader nem chega a ser inicializado).
 - Grid vazio (0 projetos `entregue`): não deve acontecer no lançamento (1 item real), mas o componente não quebra se a collection ficar vazia — trata como array vazio, sem placeholder textual necessário agora (YAGNI; revisitar se o caso real aparecer).
 
 ## Motion e acessibilidade
 
 - Reveal on scroll já herdado do starter (`.reveal` + GSAP `ScrollTrigger`, `gsap.matchMedia()`).
-- Vídeo do hero: autoplay + muted + loop + `playsinline`; pausa automática/poster estático se `prefers-reduced-motion: reduce`; controle manual de pausar/tocar sempre visível (não só condicional a reduced motion).
-- Contraste: texto sobre vídeo precisa de overlay escuro (gradiente) suficiente pra manter contraste AA mesmo em frames mais claros do vídeo.
+- Fundo do hero (Task 7): shader WebGL só inicializa se `prefers-reduced-motion: no-preference` — sob reduced motion, nem tenta criar o `WebGLRenderer`, cai direto no gradiente estático via CSS. Controle manual de pausar/tocar sempre visível quando o shader está ativo (não só condicional a reduced motion) — pausa/retoma o loop de `requestAnimationFrame`, não destrói o contexto WebGL.
+- Contraste: texto sobre o shader precisa de overlay escuro (gradiente, `.hero-overlay`, reaproveitado do design do vídeo) suficiente pra manter contraste AA mesmo nas cores mais claras que a animação gera.
 - `alt` descritivo nos screenshots de projeto.
 
 ## Performance
 
-- Vídeo do hero fica — decisão confirmada, não é negociável trocar por imagem estática. Mas a sequência de implementação mede o Lighthouse cedo (assim que o Hero com vídeo estiver de pé, antes de polir as demais seções) pra decidir se precisa de ajuste de peso/condicional (comprimir vídeo de origem, poster como LCP element, autoplay condicional por conexão) — decisão tomada com dado medido, não a priori, mas o vídeo em si está fora de discussão.
-- **Medido na Task 6 (QA final, 2026-07-23):** Lighthouse via `npx lighthouse` contra `npm run preview` — Performance 100 (desktop) / 99 (mobile emulado, throttling padrão), LCP 0.4s (desktop) / 1.8s (mobile), CLS 0, TBT 0ms (desktop) / 40ms (mobile). Elemento de LCP confirmado via `lcp-breakdown-insight`: é o `<h1>` do Hero (`body > section#hero > div.container-du > h1.reveal`), não o `<video>` — nenhum ajuste de peso/condicional foi necessário. Ressalva: neste sandbox de desenvolvimento o vídeo do Cloudinary retorna 401 (mesmo bloqueio de rede já visto na Task 2), então a medição reflete o cenário "vídeo falha e cai no fallback" — o vídeo carregando de verdade em produção não deve piorar o LCP (é `aria-hidden`, decorativo, fora do texto candidato a LCP), mas vale re-medir em produção real assim que o deploy for pra Netlify/Cloudflare Pages com acesso de rede normal.
+- **[SUBSTITUÍDO 2026-07-23, Task 7]** O vídeo de fundo (Cloudinary, hotlinked de conta de terceiro) foi substituído por um shader WebGL (Three.js) renderizado localmente — remove de vez a pendência de confiabilidade/licenciamento de depender de um bucket que não é do usuário. Ver `.claude/decisions.md` pra motivo completo e alternativas descartadas.
+- Trade-off aceito: WebGL contínuo (Three.js) tem custo de CPU/GPU e adiciona peso de bundle (biblioteca `three`) que o vídeo não tinha — precisa ser medido via Lighthouse com o shader ativo antes de fechar a task, mesma disciplina de "medir, não estimar" já usada com o vídeo.
+- **Medido na Task 6 (QA final, 2026-07-23, ainda com vídeo):** Lighthouse via `npx lighthouse` contra `npm run preview` — Performance 100 (desktop) / 99 (mobile emulado, throttling padrão), LCP 0.4s (desktop) / 1.8s (mobile), CLS 0, TBT 0ms (desktop) / 40ms (mobile). Elemento de LCP era o `<h1>` do Hero, não o `<video>`. **Baseline pré-Task 7** — re-medir depois da troca pro shader (Task 7 já inclui essa medição nos próprios critérios de conclusão).
 
 ## SEO
 
@@ -106,3 +107,21 @@ Pipeline padrão do `MazyOS/CLAUDE.md`: gate de segurança → build → Playwri
 - Domínio ainda não definido (`astro.config.mjs` com placeholder).
 - Screenshot do Vinicius Brito precisa ser capturado (Playwright) antes da implementação do card.
 - Projetos futuros (Cozinha e Tal, Ribas Suplementos etc.) entram como novo arquivo em `src/content/projetos/` conforme forem tendo o screenshot capturado — não bloqueia o lançamento com 1 item só.
+- ~~Vídeo do hero hotlinked de Cloudinary de terceiro~~ — **resolvido na Task 7** (substituído por shader WebGL local).
+
+## Task 7 — Shader WebGL local no lugar do vídeo do Hero
+
+Adendo pós-lançamento (2026-07-23), pedido pelo usuário depois do QA final: trocar o vídeo de fundo (Cloudinary, conta de terceiro — pendência de confiabilidade/licenciamento levantada no resumo da Task 6) por uma animação de fundo em shader WebGL (Three.js), renderizada 100% localmente, sem dependência de rede externa.
+
+**Arquitetura:** TypeScript vanilla (`src/scripts/shader-background.ts`), não ilha React — o componente original fornecido pelo usuário usava React só como wrapper de `useEffect` em torno de setup imperativo de Three.js, sem nenhum estado reativo real. Isso não justifica adicionar `@astrojs/react` + runtime do React a um projeto Astro que segue "zero JS por padrão, ilha só quando há interatividade real" (`projeto/CLAUDE.md`). Decisão confirmada com o usuário (ver `.claude/decisions.md`) — mesmo padrão já usado no botão de pausar/tocar do próprio Hero (`<script>` vanilla).
+
+**O que muda em `Hero.astro`:**
+- `<video>` + `<source>` → `<canvas class="hero-shader">`.
+- `.hero-fallback` (gradiente estático) e `.hero-overlay` (contraste) são **reaproveitados sem alteração** — o design visual de fallback já existia e serve igualmente bem pro caso do shader.
+- Botão pausar/tocar: mesmo elemento, lógica retargeted pra pausar/retomar o loop de `requestAnimationFrame` do shader em vez de `video.play()/pause()`.
+- Toda a complexidade de tratamento de erro de vídeo (listener em fase de captura + timeout de 4s, ver Task 6) é removida — substituída por um `try/catch` síncrono ao criar o `WebGLRenderer` (falha de criação de contexto WebGL é síncrona, não precisa de timeout).
+- `prefers-reduced-motion: reduce` → o shader nem chega a inicializar (script verifica `matchMedia` antes de chamar `initShaderBackground`), fallback CSS já cuida do resto.
+
+**Dependências novas:** `three` (pinada exata, versão publicada há mais de 72h) + `@types/three` (dev, mesma versão). Sem `@astrojs/react`, `react`, `react-dom`.
+
+**Critério de conclusão:** thresholds de QA do `MazyOS/CLAUDE.md` continuam valendo (Performance ≥ 90, Accessibility = 100, Best Practices ≥ 95, SEO ≥ 95) — remedidos depois da troca, já que WebGL contínuo é uma carga de performance diferente do vídeo (ver seção Performance acima).
