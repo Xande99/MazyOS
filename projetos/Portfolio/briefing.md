@@ -43,7 +43,7 @@ Identidade própria (não herda a linha da duPolvo).
 
 **Referências de acabamento** (nível, não layout literal): russellnumo.nl, marimba.design, nainibansal.com
 
-**Hero — pedido específico:** vídeo de fundo full-screen (cinemático, escuro), via `<video autoplay loop muted playsinline>`, fonte: Cloudinary (`https://res.cloudinary.com/dfonotyfb/video/upload/v1775585556/dds3_1_rqhg7x.mp4`). Avaliar peso/performance do vídeo externo antes de entregar (Core Web Vitals, LCP) — self-host ou compressão adicional se necessário.
+**Hero — pedido específico (atualizado 2026-07-23, Task 7):** o vídeo de fundo full-screen original (Cloudinary de terceiro) foi substituído por um shader WebGL (Three.js) renderizado localmente — ver "Pendências" e `.claude/decisions.md` do projeto pro raciocínio completo.
 
 ## Nicho de mercado (Cérebro)
 Não se aplica — portfólio pessoal, fora da taxonomia de nichos de cliente do Cérebro.
@@ -51,7 +51,8 @@ Não se aplica — portfólio pessoal, fora da taxonomia de nichos de cliente do
 ## Pendências
 - Domínio ainda não definido (`astro.config.mjs` está com placeholder `https://portfolio.exemplo.com.br`)
 - `curriculo_digital/` (HTML/CSS/JS vanilla, mesma paleta) é um projeto separado — não migrado nem relacionado a este.
-- QA rodado em 2026-07-23 (Task 6, montagem final): Performance 100 (desktop) / 99 (mobile), Accessibility 100, Best Practices 96, SEO 100 — vídeo do Hero sem impacto no LCP, elemento de LCP é o `<h1>` (confirmado via `lcp-breakdown-insight` do Lighthouse). Ressalva: neste ambiente de desenvolvimento o vídeo do Cloudinary retorna 401 (bloqueio de rede do sandbox, mesmo achado da Task 2) — a medição reflete o cenário de fallback, não o vídeo carregando de verdade; vale re-medir após deploy real. Best Practices 96 tem 1 audit reprovado (`errors-in-console`) só por causa desse mesmo 401 — não é falha de código, e 96 já está acima do threshold (≥95).
+- ~~Vídeo do Hero é hotlinked de um Cloudinary de terceiro (risco de confiabilidade/licenciamento)~~ — **resolvida em 2026-07-23 (Task 7)**: vídeo substituído por shader WebGL (Three.js) renderizado localmente, sem dependência de rede/conta de terceiro. Ver `.claude/decisions.md` do projeto pro raciocínio completo.
+- QA re-medido em 2026-07-23 (Task 7, shader no lugar do vídeo, `npm run build && npm run preview` + `npx lighthouse`): Performance 100 (desktop) / 97 (mobile), Accessibility 100/100, Best Practices 100/100, SEO 100/100. Todos acima do threshold (Performance ≥90, Accessibility=100, Best Practices≥95, SEO≥95). Mobile caiu pra 83 na primeira medição com o shader ativo em qualquer largura (bundle do Three.js ~500KB bloqueando a main thread sob CPU throttling — bootup-time 1.6s, TBT 400ms); mitigação aplicada: shader desabilitado abaixo do breakpoint `md` (767px) via `import()` dinâmico (chunk nem é baixado nesse caso), caindo no mesmo fallback estático do `prefers-reduced-motion`. Pós-mitigação: bootup-time 0.5s, TBT 140ms, Performance mobile 97. `mcp-accessibility-scanner` (`scan_page`, tags WCAG 2.2 AA): 0 violações — as 2 únicas ocorrências vistas com o conjunto de tags AAA (`color-contrast-enhanced`) são pré-existentes, em elementos decorativos fora do Hero (watermarks "Projetos"/"Contato"), já documentadas e aceitas no nível AA na Task 6.
 
 ## Decisões
 - 2026-07-23: `astro` atualizado de `7.0.9` para `7.1.3` (patch de segurança, corrige XSS refletido via View Transitions) mesmo com a release tendo pouco mais de 68h — risco aceito conscientemente por ser patch oficial do próprio time do Astro (não é dependência nova/desconhecida) e por o bug afetar exatamente o recurso (View Transitions) que este projeto usa. `npm audit`: 0 vulnerabilidades depois da atualização.
