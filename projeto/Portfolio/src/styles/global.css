@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@import "@fontsource/fira-sans/400.css";
+@import "@fontsource/fira-sans/500.css";
+@import "@fontsource/fira-sans/700.css";
+@import "./theme.css";
+
+/* ---- Base ---- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--color-text);
+    letter-spacing: var(--ls-h, -0.015em);
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-brand);
+    border-radius: var(--radius-sm);
+  }
+}
+
+/* ---- Layout helpers (ritmo de seção/container consumindo os tokens semânticos do contrato) ---- */
+@layer components {
+  .container-du {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--space-container-x);
+  }
+
+  .section-y {
+    padding-block: var(--space-section-y);
+  }
+
+  /* Estado inicial do elemento antes do reveal — some via reveal.ts se JS estiver ativo */
+  .reveal {
+    opacity: 0;
+    transform: translateY(var(--du-reveal-y));
+  }
+
+  /* Sem JS (ou reduced motion tratado no próprio reveal.ts): garantir visibilidade */
+  .no-js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- prefers-reduced-motion: fallback CSS puro, além do tratamento em JS no reveal.ts ---- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

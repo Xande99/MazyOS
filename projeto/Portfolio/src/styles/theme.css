@@ -1,0 +1,133 @@
+/*
+ * duPolvo — theme.base.css (template de scaffolding, Tailwind v4)
+ *
+ * Este arquivo NÃO é a marca da duPolvo (isso é `dupolvo-theme.css`, nesta
+ * mesma pasta). É o template em branco que o `/novo-projeto` copia como
+ * `theme.css` para dentro de `projeto/<Nome>/` e preenche a seção
+ * PRIMITIVOS com a marca real do cliente, extraída do `briefing.md`
+ * (Fase 6 do rollout do design system, ver `_memoria/tokens-contract.md`).
+ *
+ * Nomes de token são normativos e não podem mudar — ver o contrato.
+ * Componentes/seções da biblioteca (`src/sections/`) só podem referenciar
+ * os tokens SEMÂNTICOS abaixo — nunca os primitivos direto, nunca hex/px
+ * soltos. O lint de tokens (Fase 5) barra isso.
+ *
+ * Tailwind: os dois starters (Tipo A e Tipo B) rodam Tailwind v4
+ * CSS-first (sem tailwind.config.js) — confirmado em package.json dos
+ * dois (`tailwindcss": "^4.3.2"` e `"^4"`). Não existe nenhum projeto em
+ * v3 nos templates atuais, então este arquivo não traz uma variante
+ * `:root{}` + config JS — se um projeto legado em v3 aparecer, criar a
+ * variante compatível nessa hora, não antes (evita código morto sem uso).
+ *
+ * Uso: `@import "./theme.css";` depois de `@import "tailwindcss";` no
+ * global.css (Tipo A) ou globals.css (Tipo B) do projeto do cliente.
+ */
+
+@import "tailwindcss";
+
+@theme {
+  /* ============================================================
+   * PRIMITIVOS — Portfolio (Xande / duPolvo)
+   * Escala de 11 degraus gerada a partir da cor de marca do briefing:
+   * #5500FF ≈ oklch(0.489 0.296 280) — brand-600 é o valor exato da
+   * marca, os demais degraus interpolam L/C mantendo o hue 280.
+   * ============================================================ */
+  --color-brand-50: oklch(0.97 0.03 280);
+  --color-brand-100: oklch(0.93 0.06 280);
+  --color-brand-200: oklch(0.87 0.10 280);
+  --color-brand-300: oklch(0.79 0.15 280);
+  --color-brand-400: oklch(0.70 0.20 280);
+  --color-brand-500: oklch(0.60 0.25 280);
+  --color-brand-600: oklch(0.489 0.296 280);
+  --color-brand-700: oklch(0.40 0.26 280);
+  --color-brand-800: oklch(0.31 0.21 280);
+  --color-brand-900: oklch(0.23 0.15 280);
+  --color-brand-950: oklch(0.16 0.09 280);
+
+  /* Neutros — ancorados nos hex exatos do briefing (achromatic, C 0):
+     100 = #f5f5f5 (gray-light), 400 = #a3a3a3 (gray-mid),
+     600 = #525252 (gray-dark), 900 = #141414 (dark). */
+  --color-neutral-50: oklch(0.985 0 0);
+  --color-neutral-100: oklch(0.970 0 0);
+  --color-neutral-200: oklch(0.90 0 0);
+  --color-neutral-300: oklch(0.82 0 0);
+  --color-neutral-400: oklch(0.7156 0 0);
+  --color-neutral-500: oklch(0.58 0 0);
+  --color-neutral-600: oklch(0.438 0 0);
+  --color-neutral-700: oklch(0.32 0 0);
+  --color-neutral-800: oklch(0.25 0 0);
+  --color-neutral-900: oklch(0.1912 0 0);
+  --color-neutral-950: oklch(0.10 0 0);
+
+  --font-display: "Fira Sans", system-ui, sans-serif;
+  --font-body: "Fira Sans", system-ui, sans-serif;
+
+  /* ============================================================
+   * SEMÂNTICOS — geralmente fixo
+   * O que os componentes de fato consomem (bg-brand, text-text,
+   * bg-surface...). Só reapontar se o cliente pedir uma hierarquia
+   * fora do padrão — o nome nunca muda, só o var() de destino.
+   * ============================================================ */
+  --color-brand: var(--color-brand-600);
+  --color-brand-contrast: oklch(1 0 0);
+  --color-surface: oklch(1 0 0);
+  --color-surface-alt: var(--color-neutral-100);
+  --color-surface-inverse: var(--color-neutral-900);
+  --color-text: oklch(0 0 0);
+  --color-text-muted: var(--color-neutral-600);
+  --color-text-inverse: oklch(1 0 0);
+  --color-border: var(--color-neutral-200);
+  --color-success: oklch(0.6 0.15 145);
+  --color-error: oklch(0.55 0.2 25);
+
+  /* Tipografia */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-hero: clamp(2.5rem, 5vw + 1rem, 5rem);
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Raio e sombra */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.08), 0 16px 40px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.12), 0 32px 72px rgba(0, 0, 0, 0.16);
+
+  /* Motion (assinatura de easing — ver Fase 4/motion.ts para os presets GSAP) */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/*
+ * Tokens sem namespace de utilitário no Tailwind v4 — variáveis CSS
+ * soltas, consumidas via var() em CSS custom ou como valor arbitrário
+ * do Tailwind (ex: `duration-[--duration-base]`). Mesmo padrão já usado
+ * em `dupolvo-theme.css` para --du-sp-*, --du-section-y etc.
+ */
+:root {
+  /* Espaçamento */
+  --space-section-y: clamp(72px, 9vw, 140px);
+  --space-section-y-lg: clamp(96px, 12vw, 180px);
+  --space-container-x: clamp(20px, 5vw, 48px);
+  --space-gap-grid: 24px;
+
+  /* Motion — durações */
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 600ms;
+
+  /* Layout */
+  --container-max: 1280px;
+}

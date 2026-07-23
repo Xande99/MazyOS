@@ -1,0 +1,122 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import heroImage from "../assets/hero.svg";
+---
+
+<Layout
+  title="duPolvo Studio — Starter Tipo A"
+  description="Página de exemplo do starter Astro da duPolvo: tokens de marca, View Transitions e o sistema de reveal com GSAP ScrollTrigger já configurados."
+>
+  <header class="container-du flex items-center justify-between py-6">
+    <a href="/" class="font-display text-lg font-extrabold text-blue">duPolvo</a>
+    <nav aria-label="Navegação principal">
+      <a
+        href="#sobre"
+        class="rounded-pill bg-pink-ink px-5 py-2 font-sans text-sm font-bold text-white transition-colors duration-300 hover:bg-pink-600"
+      >
+        Fale com a gente
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="container-du section-y grid items-center gap-12 md:grid-cols-2">
+      <div class="reveal">
+        <p class="mb-4 font-sans text-xs font-bold uppercase tracking-[0.18em] text-pink-ink">
+          Starter Tipo A · Astro
+        </p>
+        <h1 class="text-5xl leading-[0.96] font-extrabold text-blue md:text-6xl">
+          Fora do óbvio, <span class="text-pink-ink">desde o primeiro deploy</span>.
+        </h1>
+        <p class="mt-6 max-w-prose text-lg text-[--du-text-body]">
+          Essa página existe só pra provar que o starter builda limpo: tokens de marca aplicados,
+          fonte Bricolage Grotesque carregando sem layout shift, e o sistema de reveal rodando
+          com <code>prefers-reduced-motion</code> respeitado.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a
+            href="#sobre"
+            class="rounded-pill bg-pink-ink px-6 py-3 font-sans font-bold text-white shadow-[--du-shadow-pink] transition-transform duration-300 hover:-translate-y-0.5"
+          >
+            Ver estrutura
+          </a>
+          <a
+            href="#tokens"
+            class="rounded-pill border border-aqua px-6 py-3 font-sans font-bold text-blue transition-colors duration-300 hover:bg-aqua-200"
+          >
+            Ver tokens
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal" data-reveal-delay="0.15">
+        <Image
+          src={heroImage}
+          alt="Composição gráfica de exemplo em amarelo-limão, rosa e verde-água sobre fundo azul-marinho, ilustrando a paleta de marca da duPolvo"
+          width={1200}
+          height={800}
+          loading="eager"
+          fetchpriority="high"
+          class="w-full rounded-xl"
+        />
+      </div>
+    </section>
+
+    <section id="sobre" class="bg-ink py-[--du-section-y]">
+      <div class="container-du">
+        <h2 class="reveal text-3xl font-bold text-[--du-text-on-dark] md:text-4xl">
+          O que já vem pronto
+        </h2>
+        <div class="mt-10 grid gap-6 md:grid-cols-3">
+          <article class="reveal rounded-lg bg-[--color-ink-2] p-6" data-reveal-delay="0">
+            <h3 class="text-xl font-bold text-[--du-text-on-dark]">Tokens de marca</h3>
+            <p class="mt-2 text-[--du-text-body-dark]">
+              Cor, tipografia, raio e easing vêm de <code>dupolvo-theme.css</code>, gerado a
+              partir de <code>identidade/design-guide.md</code>.
+            </p>
+          </article>
+          <article class="reveal rounded-lg bg-[--color-ink-2] p-6" data-reveal-delay="0.1">
+            <h3 class="text-xl font-bold text-[--du-text-on-dark]">View Transitions</h3>
+            <p class="mt-2 text-[--du-text-body-dark]">
+              <code>ClientRouter</code> ativo no layout — navegação entre páginas já morfa
+              elementos com <code>transition:name</code> sem configuração extra.
+            </p>
+          </article>
+          <article class="reveal rounded-lg bg-[--color-ink-2] p-6" data-reveal-delay="0.2">
+            <h3 class="text-xl font-bold text-[--du-text-on-dark]">Reveal com GSAP</h3>
+            <p class="mt-2 text-[--du-text-body-dark]">
+              Classe <code>.reveal</code> + <code>ScrollTrigger</code>, envolto em
+              <code>gsap.matchMedia()</code> — desativa sozinho com reduced motion.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="tokens" class="container-du section-y">
+      <h2 class="reveal text-3xl font-bold text-blue md:text-4xl">Paleta</h2>
+      <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
+        {
+          [
+            { name: "cream", cls: "bg-cream border border-line" },
+            { name: "ink", cls: "bg-ink" },
+            { name: "pink", cls: "bg-pink-ink" },
+            { name: "blue", cls: "bg-blue" },
+            { name: "lime", cls: "bg-lime" },
+            { name: "aqua", cls: "bg-aqua" },
+          ].map((swatch) => (
+            <div class="reveal">
+              <div class={`h-20 rounded-md ${swatch.cls}`} />
+              <p class="mt-2 text-sm font-bold text-blue">{swatch.name}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+
+  <footer class="container-du border-t border-line py-8 text-sm text-[--du-text-muted]">
+    <p>duPolvo Studio — Guaratinguetá SP.</p>
+  </footer>
+</Layout>

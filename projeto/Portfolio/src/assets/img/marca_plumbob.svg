@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 300" width="700" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Marca X/A - plumbob roxo</title>
+  <desc id="desc">Ícone losango (plumbob) roxo #5500FF à esquerda e texto X/A em branco à direita, com espaçamento ajustado.</desc>
+
+  <!-- losango / plumbob -->
+  <polygon points="120,150 200,30 280,150 200,270"
+           fill="#5500FF" />
+
+  <!-- texto X/A -->
+  <g transform="translate(300,0)">
+    <text x="0" y="190"
+          font-family="Segoe UI, Roboto, Arial, sans-serif"
+          font-weight="700"
+          font-size="140"
+          letter-spacing="-6"
+          fill="#FFFFFF"
+          dominant-baseline="alphabetic">
+      X/A
+    </text>
+  </g>
+</svg>

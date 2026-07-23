@@ -1,0 +1,110 @@
+---
+/**
+ * TierPreco — comparação de planos/pacotes com opção central/recomendada
+ * destacada visualmente (ancoragem de preço).
+ *
+ * Origem do padrão: cerebro/raw/nichos/_sintese-geral.md (13.9),
+ * "Padrões universais" #3 — aparece em 5/13 nichos (fitness-gym,
+ * pet-veterinario, infoprodutos, empresa, odonto). O destaque visual do
+ * plano central/recomendado é a parte confirmada como robusta entre
+ * nichos; número de planos e conteúdo de cada um variam e devem vir do
+ * briefing real do cliente, nunca de valor inventado.
+ */
+interface Plano {
+  nome: string;
+  preco: string;
+  periodo?: string;
+  descricao?: string;
+  itens?: string[];
+  cta: { label: string; href: string };
+  destaque?: boolean;
+  badge?: string;
+}
+
+interface Props {
+  planos: Plano[];
+  titulo?: string;
+}
+
+const { planos, titulo } = Astro.props;
+---
+
+<section class="container-du section-y" aria-label={titulo ?? "Planos"}>
+  {titulo && (
+    <h2 class="reveal text-center text-3xl font-bold text-text md:text-4xl">{titulo}</h2>
+  )}
+  <div
+    class:list={[
+      "grid items-start gap-6 [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))]",
+      titulo && "mt-10",
+    ]}
+  >
+    {planos.map((plano, i) => (
+      <article
+        class:list={[
+          "reveal flex flex-col gap-6 rounded-lg p-8",
+          plano.destaque
+            ? "bg-surface-inverse text-text-inverse shadow-lg md:-translate-y-4"
+            : "bg-surface text-text-muted shadow-sm",
+        ]}
+        data-reveal-delay={(i * 0.1).toFixed(2)}
+      >
+        {plano.destaque && (
+          <p class="w-fit rounded-full bg-brand px-3 py-1 text-xs font-bold uppercase tracking-[0.1em] text-brand-contrast">
+            {plano.badge ?? "Recomendado"}
+          </p>
+        )}
+
+        <div>
+          <h3
+            class:list={[
+              "font-display text-xl font-bold",
+              plano.destaque ? "text-text-inverse" : "text-text",
+            ]}
+          >
+            {plano.nome}
+          </h3>
+          {plano.descricao && (
+            <p
+              class:list={[
+                "mt-1 text-sm",
+                plano.destaque ? "text-text-inverse opacity-80" : "text-text-muted",
+              ]}
+            >
+              {plano.descricao}
+            </p>
+          )}
+        </div>
+
+        <p>
+          <span class="font-display text-4xl font-extrabold">{plano.preco}</span>
+          {plano.periodo && <span class="text-sm opacity-80">/{plano.periodo}</span>}
+        </p>
+
+        {plano.itens && plano.itens.length > 0 && (
+          <ul class="flex flex-1 flex-col gap-2 text-sm">
+            {plano.itens.map((item) => (
+              <li class="flex items-start gap-2">
+                <span aria-hidden="true">✓</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <a
+          href={plano.cta.href}
+          class:list={[
+            "rounded-full px-6 py-3 text-center font-bold transition-transform duration-300 hover:-translate-y-0.5",
+            plano.destaque
+              ? "bg-brand text-brand-contrast"
+              : "border border-border text-text hover:bg-surface-alt",
+          ]}
+          aria-label={`${plano.cta.label} — plano ${plano.nome}`}
+        >
+          {plano.cta.label}
+        </a>
+      </article>
+    ))}
+  </div>
+</section>
