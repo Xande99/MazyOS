@@ -1,0 +1,121 @@
+---
+/**
+ * Hero — abertura do portfólio. Vídeo de fundo full-screen é decisão
+ * fechada do usuário (ver docs/superpowers/specs/2026-07-23-portfolio-
+ * vitrine-design.md) — não trocar por imagem estática mesmo que pese
+ * no Lighthouse; ajustar peso/condicional se a medição em Task 6 pedir.
+ *
+ * Em prefers-reduced-motion, o <video> não é exibido — cai num
+ * gradiente estático com os mesmos tokens de cor (--color-brand +
+ * --color-surface-inverse via color-mix), sem precisar extrair um
+ * frame/poster do vídeo externo.
+ */
+const VIDEO_SRC =
+  "https://res.cloudinary.com/dfonotyfb/video/upload/v1775585556/dds3_1_rqhg7x.mp4";
+---
+
+<section id="hero" class="relative flex min-h-screen items-center overflow-hidden bg-surface-inverse">
+  <video
+    class="hero-video absolute inset-0 z-0 h-full w-full object-cover"
+    autoplay
+    loop
+    muted
+    playsinline
+    aria-hidden="true"
+  >
+    <source src={VIDEO_SRC} type="video/mp4" />
+  </video>
+
+  <div class="hero-fallback absolute inset-0 z-0" aria-hidden="true"></div>
+
+  <div class="hero-overlay absolute inset-0 z-10" aria-hidden="true"></div>
+
+  <div class="container-du relative z-20">
+    <p class="reveal mb-4 font-body text-xs font-bold uppercase tracking-[0.18em] text-brand">
+      Portfólio
+    </p>
+    <h1 class="reveal font-display text-5xl leading-[0.96] font-bold text-text-inverse md:text-6xl">
+      Sites fora do óbvio,<br /> prontos pra converter.
+    </h1>
+    <p class="reveal mt-6 max-w-prose text-lg text-text-inverse/80" data-reveal-delay="0.1">
+      Eu sou o Xande. Projeto e desenvolvo sites e landing pages — dá uma olhada no que já fiz.
+    </p>
+    <div class="reveal mt-8" data-reveal-delay="0.2">
+      <a
+        href="#projetos"
+        class="inline-flex rounded-full bg-brand px-6 py-3 font-body font-bold text-brand-contrast transition-transform duration-300 hover:-translate-y-0.5"
+      >
+        Ver projetos
+      </a>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="hero-toggle absolute bottom-6 right-6 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-text-inverse/30 text-text-inverse transition-colors duration-300 hover:bg-surface-inverse/60"
+    aria-label="Pausar vídeo de fundo"
+    aria-pressed="false"
+  >
+    <svg class="icon-pause h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <rect x="6" y="5" width="4" height="14"></rect>
+      <rect x="14" y="5" width="4" height="14"></rect>
+    </svg>
+    <svg class="icon-play hidden h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <polygon points="7,4 20,12 7,20"></polygon>
+    </svg>
+  </button>
+</section>
+
+<style>
+  .hero-fallback {
+    display: none;
+    background: linear-gradient(
+      160deg,
+      color-mix(in oklch, var(--color-brand) 35%, var(--color-surface-inverse)),
+      var(--color-surface-inverse)
+    );
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--color-surface-inverse) 15%, transparent),
+      color-mix(in oklch, var(--color-surface-inverse) 80%, transparent)
+    );
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-video {
+      display: none;
+    }
+
+    .hero-fallback {
+      display: block;
+    }
+
+    .hero-toggle {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>(".hero-toggle");
+  const video = document.querySelector<HTMLVideoElement>(".hero-video");
+
+  toggle?.addEventListener("click", () => {
+    if (!video) return;
+    const wasPlaying = !video.paused;
+
+    if (wasPlaying) {
+      video.pause();
+    } else {
+      video.play();
+    }
+
+    toggle.setAttribute("aria-pressed", String(wasPlaying));
+    toggle.setAttribute("aria-label", wasPlaying ? "Tocar vídeo de fundo" : "Pausar vídeo de fundo");
+    toggle.querySelector(".icon-pause")?.classList.toggle("hidden", wasPlaying);
+    toggle.querySelector(".icon-play")?.classList.toggle("hidden", !wasPlaying);
+  });
+</script>
