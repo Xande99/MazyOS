@@ -118,18 +118,32 @@
 </style>
 
 <script>
-  const hero = document.querySelector<HTMLElement>("#hero");
-  const toggle = document.querySelector<HTMLButtonElement>(".hero-toggle");
-  const canvas = document.querySelector<HTMLCanvasElement>(".hero-shader");
+  import type { ShaderBackground } from "../scripts/shader-background";
 
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // Mitigação de performance medida (Task 7, Step 7 — ver .claude/decisions.md):
-  // abaixo do breakpoint `md` (767px, mesmo usado no h1 logo acima) o shader
-  // nem é baixado. `import()` dinâmico (não estático) garante que o chunk do
-  // Three.js só é requisitado quando o shader de fato vai rodar.
-  const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
+  // Instância viva do shader, se houver — precisa sobreviver entre disparos
+  // do listener (módulo executa uma vez só; astro:page-load é o que dispara
+  // de novo a cada navegação, ver comentário no final do arquivo).
+  let shader: ShaderBackground | null = null;
 
-  async function setup() {
+  async function setupHeroShader() {
+    const hero = document.querySelector<HTMLElement>("#hero");
+    const toggle = document.querySelector<HTMLButtonElement>(".hero-toggle");
+    const canvas = document.querySelector<HTMLCanvasElement>(".hero-shader");
+
+    // Navegação anterior pode ter deixado uma instância rodando (RAF loop +
+    // contexto WebGL + listener de resize) mesmo com o canvas antigo já fora
+    // do DOM — sem este destroy(), cada ida-e-volta via View Transitions
+    // vaza um WebGLRenderer novo sem liberar o anterior.
+    shader?.destroy();
+    shader = null;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Mitigação de performance medida (Task 7, Step 7 — ver .claude/decisions.md):
+    // abaixo do breakpoint `md` (767px, mesmo usado no h1 logo acima) o shader
+    // nem é baixado. `import()` dinâmico (não estático) garante que o chunk do
+    // Three.js só é requisitado quando o shader de fato vai rodar.
+    const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
+
     if (!canvas || prefersReducedMotion || isMobileViewport) {
       if (isMobileViewport && !prefersReducedMotion) {
         hero?.classList.add("hero-shader-mobile-off");
@@ -139,9 +153,13 @@
 
     try {
       const { initShaderBackground } = await import("../scripts/shader-background");
-      const shader = initShaderBackground(canvas);
+      shader = initShaderBackground(canvas);
 
+      // O `toggle` é um elemento novo a cada navegação (Hero não usa
+      // transition:name/persist — o DOM da seção é recriado do zero pelo
+      // View Transitions), então este listener nunca duplica.
       toggle?.addEventListener("click", () => {
+        if (!shader) return;
         const wasPaused = shader.isPaused();
 
         if (wasPaused) {
@@ -163,5 +181,12 @@
     }
   }
 
-  setup();
+  // Scripts module (bundled, sem is:inline) só executam uma vez — não rodam
+  // de novo após navegação client-side via View Transitions. `astro:page-load`
+  // é disparado pelo ClientRouter tanto na carga inicial quanto em toda
+  // navegação subsequente (mesmo padrão de src/scripts/reveal.ts), então
+  // basta escutar esse evento — sem chamada direta duplicada — pra cobrir os
+  // dois casos sem correr risco de inicializar o shader duas vezes na carga
+  // inicial.
+  document.addEventListener("astro:page-load", setupHeroShader);
 </script>
