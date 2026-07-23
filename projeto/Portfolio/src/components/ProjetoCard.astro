@@ -1,0 +1,54 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  projeto: CollectionEntry<"projetos">;
+  delay?: number;
+}
+
+const { projeto, delay = 0 } = Astro.props;
+const { titulo, descricao, url, screenshot, tags } = projeto.data;
+---
+
+<article
+  class="reveal group overflow-hidden rounded-lg bg-surface-alt shadow-sm transition-shadow duration-300 hover:shadow-md"
+  data-reveal-delay={delay.toFixed(2)}
+>
+  <div class="overflow-hidden">
+    <Image
+      src={screenshot}
+      alt={`Captura de tela do projeto ${titulo}`}
+      width={800}
+      height={500}
+      loading="lazy"
+      class="w-full object-cover transition-transform duration-500 group-hover:scale-105"
+    />
+  </div>
+  <div class="p-6">
+    <h3 class="font-display text-xl font-bold text-text">{titulo}</h3>
+    <p class="mt-2 text-text-muted">{descricao}</p>
+    <ul class="mt-4 flex flex-wrap gap-2">
+      {tags.map((tag) => (
+        <li class="rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand">{tag}</li>
+      ))}
+    </ul>
+    {url ? (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-6 inline-flex rounded-full bg-brand px-5 py-2 text-sm font-bold text-brand-contrast transition-transform duration-300 hover:-translate-y-0.5"
+      >
+        Ver site
+      </a>
+    ) : (
+      <span
+        class="mt-6 inline-flex cursor-not-allowed rounded-full bg-surface px-5 py-2 text-sm font-bold text-text-muted"
+        aria-disabled="true"
+      >
+        Em breve
+      </span>
+    )}
+  </div>
+</article>
