@@ -51,6 +51,7 @@ Não se aplica — portfólio pessoal, fora da taxonomia de nichos de cliente do
 ## Pendências
 - Domínio ainda não definido (`astro.config.mjs` está com placeholder `https://portfolio.exemplo.com.br`)
 - `curriculo_digital/` (HTML/CSS/JS vanilla, mesma paleta) é um projeto separado — não migrado nem relacionado a este.
+- QA rodado em 2026-07-23 (Task 6, montagem final): Performance 100 (desktop) / 99 (mobile), Accessibility 100, Best Practices 96, SEO 100 — vídeo do Hero sem impacto no LCP, elemento de LCP é o `<h1>` (confirmado via `lcp-breakdown-insight` do Lighthouse). Ressalva: neste ambiente de desenvolvimento o vídeo do Cloudinary retorna 401 (bloqueio de rede do sandbox, mesmo achado da Task 2) — a medição reflete o cenário de fallback, não o vídeo carregando de verdade; vale re-medir após deploy real. Best Practices 96 tem 1 audit reprovado (`errors-in-console`) só por causa desse mesmo 401 — não é falha de código, e 96 já está acima do threshold (≥95).
 
 ## Decisões
 - 2026-07-23: `astro` atualizado de `7.0.9` para `7.1.3` (patch de segurança, corrige XSS refletido via View Transitions) mesmo com a release tendo pouco mais de 68h — risco aceito conscientemente por ser patch oficial do próprio time do Astro (não é dependência nova/desconhecida) e por o bug afetar exatamente o recurso (View Transitions) que este projeto usa. `npm audit`: 0 vulnerabilidades depois da atualização.
