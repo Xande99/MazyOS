@@ -1,0 +1,43 @@
+---
+/**
+ * CTAFinal — fechamento da página, etapa Próximo Passo do framework
+ * Problema → História Real → Resultados Específicos → Próximo Passo.
+ * Específico deste projeto — não faz parte da biblioteca reutilizável.
+ *
+ * Contraste (ver .claude/decisions.md, 2026-07-22): usa `text-brand-500`
+ * explícito (primitivo, não o semântico `--color-brand`) porque esta
+ * seção tem fundo ESCURO (bg-surface-inverse) — o semântico foi
+ * redefinido pro degrau 800 pra funcionar em fundo claro, o que quebraria
+ * o contraste aqui. brand-500 é o único caso do projeto que precisa do
+ * verde original vibrante como texto.
+ */
+interface Props {
+  hotmartHref: string;
+}
+
+const { hotmartHref } = Astro.props;
+---
+
+<section class="bg-surface-inverse">
+  <div class="container-du section-y flex flex-col items-center gap-6 text-center">
+    <h2 class="reveal text-3xl font-bold text-text-inverse md:text-4xl">
+      As 50 receitas da <span class="font-display text-brand-500">Cozinha e Tal</span>, prontas pra você usar hoje
+    </h2>
+    <p class="reveal max-w-prose text-text-inverse opacity-80" data-reveal-delay="0.08">
+      Acesso imediato por e-mail · Garantia incondicional de 7 dias
+    </p>
+    <p class="reveal" data-reveal-delay="0.14">
+      <span class="mr-2 text-lg line-through text-text-inverse opacity-50">R$49,90</span>
+      <span class="font-display text-3xl font-extrabold text-brand-500">R$29,90</span>
+    </p>
+    <a
+      href={hotmartHref}
+      class="reveal rounded-full bg-accent-700 px-10 py-4 font-bold text-brand-contrast shadow-md transition-transform duration-300 hover:-translate-y-0.5"
+      data-reveal-delay="0.2"
+      aria-label="Quero o e-book agora — fechar compra por R$29,90"
+      rel="noopener"
+    >
+      Quero o e-book agora
+    </a>
+  </div>
+</section>

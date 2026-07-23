@@ -1,0 +1,77 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Caminho relativo em public/ pra imagem de compartilhamento (og:image). Opcional. */
+  ogImage?: string;
+  /** Marca a página como noindex/nofollow — usar em rotas internas (ex: /styleguide) que não devem aparecer em busca. */
+  noindex?: boolean;
+}
+
+const { title, description, ogImage, noindex } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// Preload da fonte de display — evita layout shift no maior texto acima
+// da dobra (LCP). Identidade própria do cliente (Winter Christmas, sem
+// licença web confirmada — ver briefing.md): preload aponta pro fallback
+// real self-hosted, Dancing Script Variable (Fontsource, pinado em
+// package.json). Se/quando Winter Christmas for licenciada e embutida,
+// trocar este preload pro arquivo dela.
+import preloadFontHref from "@fontsource-variable/dancing-script/files/dancing-script-latin-wght-normal.woff2?url";
+const preloadFontType = "font/woff2";
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Preload da fonte de display — evita layout shift no maior texto acima da dobra (LCP). Ver frontmatter. -->
+    <link
+      rel="preload"
+      href={preloadFontHref}
+      as="font"
+      type={preloadFontType}
+      crossorigin
+    />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.site)} />}
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    {ogImage && <meta property="twitter:image" content={new URL(ogImage, Astro.site)} />}
+
+    <ClientRouter />
+  </head>
+  <body>
+    <a
+      href="#conteudo"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-brand focus:px-5 focus:py-3 focus:font-bold focus:text-brand-contrast focus:shadow-lg"
+    >
+      Pular para o conteúdo
+    </a>
+    <slot />
+    <script src="../scripts/reveal.ts"></script>
+  </body>
+</html>

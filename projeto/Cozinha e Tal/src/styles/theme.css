@@ -1,0 +1,170 @@
+/*
+ * Cozinha e Tal — theme.css (Tailwind v4)
+ *
+ * Gerado a partir da identidade visual própria do cliente (briefing.md,
+ * seção "Identidade visual"). Escalas de brand/accent geradas em OKLCH a
+ * partir do hex real da marca (mesmo hue/chroma, variando luminosidade),
+ * cor original pousando no degrau 500/600 correspondente.
+ *
+ * Nomes de token são normativos e não podem mudar — ver
+ * `_memoria/tokens-contract.md`. Componentes/seções da biblioteca
+ * (`src/sections/`) só podem referenciar os tokens SEMÂNTICOS abaixo —
+ * nunca os primitivos direto, nunca hex/px soltos. O lint de tokens
+ * (stylelint) barra isso.
+ *
+ * Uso: `@import "./theme.css";` depois de `@import "tailwindcss";` no
+ * global.css.
+ */
+
+@import "tailwindcss";
+
+/* Dancing Script — fallback temporário pro display até a licença web/
+   comercial de Winter Christmas ser confirmada (ver briefing.md). Google
+   Fonts/SIL Open Font License, self-hosted via Fontsource (pinado em
+   package.json), uso comercial livre. Peso 700 é o usado no --font-display;
+   variável (400-700) importada inteira porque o pacote já entrega só o
+   range necessário via woff2-variations + unicode-range (~18kb no subset
+   latin, que cobre todos os acentos do pt-BR). */
+@import "@fontsource-variable/dancing-script/wght.css";
+
+@theme {
+  /* ============================================================
+   * PRIMITIVOS
+   * ============================================================ */
+
+  /* Verde de marca (#29C584, H≈159.5) — original pousa no degrau 500 */
+  --color-brand-50: oklch(0.97 0.02 159.5);
+  --color-brand-100: oklch(0.94 0.04 159.5);
+  --color-brand-200: oklch(0.89 0.07 159.5);
+  --color-brand-300: oklch(0.83 0.11 159.5);
+  --color-brand-400: oklch(0.78 0.14 159.5);
+  --color-brand-500: oklch(0.7306 0.1567 159.5); /* #29C584 exato */
+  --color-brand-600: oklch(0.63 0.16 159.5);
+  --color-brand-700: oklch(0.53 0.15 159.5);
+  --color-brand-800: oklch(0.42 0.12 159.5);
+  --color-brand-900: oklch(0.32 0.09 159.5);
+  --color-brand-950: oklch(0.22 0.06 159.5);
+
+  /* Vermelho de destaque/CTA (#E3233E, H≈21.3) — original pousa no degrau 600 */
+  --color-accent-50: oklch(0.97 0.02 21.3);
+  --color-accent-100: oklch(0.93 0.05 21.3);
+  --color-accent-200: oklch(0.87 0.09 21.3);
+  --color-accent-300: oklch(0.79 0.14 21.3);
+  --color-accent-400: oklch(0.70 0.19 21.3);
+  --color-accent-500: oklch(0.65 0.21 21.3);
+  --color-accent-600: oklch(0.5908 0.2209 21.3); /* #E3233E exato */
+  --color-accent-700: oklch(0.50 0.20 21.3);
+  --color-accent-800: oklch(0.40 0.16 21.3);
+  --color-accent-900: oklch(0.30 0.12 21.3);
+  --color-accent-950: oklch(0.20 0.08 21.3);
+
+  /* Rosa claro de suporte (#F2BFBD) — tom único, não é escala de 11 degraus */
+  --color-support: oklch(0.8494 0.0589 20.99); /* #F2BFBD exato */
+
+  /* Neutros — baixo chroma no hue da marca (159), fundo branco no 50 */
+  --color-neutral-50: oklch(0.99 0.003 159.5);
+  --color-neutral-100: oklch(0.96 0.004 159.5);
+  --color-neutral-200: oklch(0.91 0.005 159.5);
+  --color-neutral-300: oklch(0.83 0.006 159.5);
+  --color-neutral-400: oklch(0.68 0.007 159.5);
+  --color-neutral-500: oklch(0.55 0.007 159.5);
+  --color-neutral-600: oklch(0.44 0.006 159.5);
+  --color-neutral-700: oklch(0.34 0.005 159.5);
+  --color-neutral-800: oklch(0.24 0.004 159.5);
+  --color-neutral-900: oklch(0.16 0.003 159.5);
+  --color-neutral-950: oklch(0.10 0.002 159.5);
+
+  /* Winter Christmas: licença de uso web/comercial pendente de confirmação
+     (ver briefing.md) — nome já referenciado sem @font-face/self-host
+     próprio. "Dancing Script Variable" é o fallback real self-hosted
+     (Fontsource, licenciado) até a licença original ser resolvida. */
+  --font-display: "Winter Christmas", "Dancing Script Variable", cursive;
+  /* Candara: fonte proprietária Microsoft — usada só via system font
+     stack, nunca self-hosted (sem licença pra embutir o arquivo). */
+  --font-body: "Candara", "Segoe UI", system-ui, sans-serif;
+
+  /* ============================================================
+   * SEMÂNTICOS — geralmente fixo
+   * O que os componentes de fato consomem (bg-brand, text-text,
+   * bg-surface...). Só reapontar se o cliente pedir uma hierarquia
+   * fora do padrão — o nome nunca muda, só o var() de destino.
+   * ============================================================ */
+  /* --color-brand aponta pro degrau 800, não 500: o hex exato do cliente
+     (#29C584, brand-500) mede só 2.17:1 contra branco e 2.17:1 com texto
+     branco por cima — falha WCAG AA (4.5:1) em qualquer um dos dois usos
+     como texto/fundo-com-texto sobre superfície clara. brand-800 (#006034)
+     resolve isso (7.49:1 vs branco, 4.76:1 vs o rosa de suporte) mantendo
+     o mesmo matiz. brand-500 continua disponível pro caso oposto — texto
+     verde sobre fundo ESCURO (ex: CTAFinal.astro, --color-surface-inverse)
+     precisa do tom claro original pra manter contraste; usar
+     `text-brand-500` explícito nesses casos, nunca o semântico. Medido e
+     confirmado via axe-core (scan real, 2026-07-22) — não estimado.
+     Documentado em .claude/decisions.md. */
+  --color-brand: var(--color-brand-800);
+  --color-brand-contrast: var(--color-neutral-50);
+  --color-surface: var(--color-neutral-50);
+  --color-surface-alt: var(--color-support);
+  --color-surface-inverse: var(--color-neutral-950);
+  --color-text: var(--color-neutral-900);
+  --color-text-muted: var(--color-neutral-600);
+  --color-text-inverse: var(--color-neutral-50);
+  --color-border: var(--color-neutral-200);
+  --color-success: oklch(0.6 0.15 145);
+  /* accent-700, não -600: -600 mede 4.45:1 com texto branco / superfície
+     clara, abaixo do 4.5:1 exigido — texto de erro precisa ler bem em
+     qualquer tamanho. Medido com axe-core, 2026-07-22. */
+  --color-error: var(--color-accent-700);
+
+  /* Tipografia */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-hero: clamp(2.5rem, 5vw + 1rem, 5rem);
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Raio e sombra */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.08), 0 16px 40px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.12), 0 32px 72px rgba(0, 0, 0, 0.16);
+
+  /* Motion (assinatura de easing — ver Fase 4/motion.ts para os presets GSAP) */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/*
+ * Tokens sem namespace de utilitário no Tailwind v4 — variáveis CSS
+ * soltas, consumidas via var() em CSS custom ou como valor arbitrário
+ * do Tailwind (ex: `duration-[--duration-base]`).
+ */
+:root {
+  /* Espaçamento */
+  --space-section-y: clamp(72px, 9vw, 140px);
+  --space-section-y-lg: clamp(96px, 12vw, 180px);
+  --space-container-x: clamp(20px, 5vw, 48px);
+  --space-gap-grid: 24px;
+
+  /* Motion — durações */
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 600ms;
+
+  /* Deslocamento inicial do sistema .reveal (global.css/reveal.ts) */
+  --du-reveal-y: 26px;
+
+  /* Layout */
+  --container-max: 1280px;
+}

@@ -1,0 +1,191 @@
+---
+import { getImage } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import Hero from "../sections/Hero.astro";
+import Identificacao from "../sections/Identificacao.astro";
+import AncoraConfianca from "../sections/AncoraConfianca.astro";
+import ProvaNumerica from "../sections/ProvaNumerica.astro";
+import GridOferta from "../sections/GridOferta.astro";
+import Depoimentos from "../sections/Depoimentos.astro";
+import Checklist from "../sections/Checklist.astro";
+import TierPreco from "../sections/TierPreco.astro";
+import FAQ from "../sections/FAQ.astro";
+import CTAFinal from "../sections/CTAFinal.astro";
+import logo from "../assets/marca/logo-trim.jpg";
+import claudiaFoto from "../assets/marca/perfil-hero.jpg";
+
+// Link limpo do checkout Hotmart — fbclid/utm_content removidos porque
+// eram de um clique específico feito a partir da bio do Instagram, não
+// fazem sentido reaproveitados em todos os CTAs da página (ver
+// .claude/decisions.md).
+const HOTMART_URL =
+  "https://hotmart.com/pt-br/marketplace/produtos/hagsxd-ebook-de-receitas-cozinha-e-tal-e7563/D102258398J";
+
+const claudiaFotoOtimizada = await getImage({
+  src: claudiaFoto,
+  width: 192,
+  height: 192,
+  format: "webp",
+});
+---
+
+<Layout
+  title="Receitas Cozinha e Tal — E-book com 50 receitas da Claudia Fernandes"
+  description="50 receitas testadas por quem ensina culinária há mais de 12 anos: 20 bolos tradicionais, 20 receitas saudáveis e 10 sobremesas. Acesso imediato, por R$29,90."
+  ogImage="/og-image.jpg"
+>
+  <header class="container-du flex items-center justify-between py-4">
+    <img
+      src={logo.src}
+      alt="Cozinha e Tal, por Claudia Fernandes"
+      width={116}
+      height={100}
+      class="h-14 w-auto rounded-md"
+    />
+    <a
+      href={HOTMART_URL}
+      class="rounded-full bg-accent-700 px-5 py-2 text-sm font-bold text-brand-contrast transition-transform duration-300 hover:-translate-y-0.5"
+      rel="noopener"
+    >
+      Quero o e-book
+    </a>
+  </header>
+
+  <main id="conteudo">
+    <Hero hotmartHref={HOTMART_URL} />
+
+    <ProvaNumerica
+      itens={[
+        { numero: "191 mil", label: "seguidores no @cozinha_e_tal" },
+        { numero: "12+", label: "anos ensinando receitas" },
+        { numero: "2.198", label: "receitas e vídeos publicados" },
+      ]}
+    />
+
+    <Identificacao
+      titulo="Isso soa familiar?"
+      itens={[
+        "Você salva a receita no story e ela some depois de 24 horas.",
+        "Já testou receita de bolo que não deu certo e nem sabe o motivo.",
+        "Quer comer mais saudável sem abrir mão do sabor.",
+        "Na hora de fazer uma sobremesa especial, trava sem saber qual escolher.",
+      ]}
+    />
+
+    <div class="container-du">
+      <AncoraConfianca
+        variante="pessoa"
+        nome="Claudia Fernandes"
+        cargo="Criadora do @cozinha_e_tal"
+        foto={claudiaFotoOtimizada.src}
+        fotoAlt="Claudia Fernandes, criadora do @cozinha_e_tal"
+        fotoLargura={192}
+        fotoAltura={192}
+        anosExperiencia={12}
+      />
+      <p class="reveal mx-auto -mt-2 max-w-2xl pb-[--space-section-y] text-center text-lg text-text-muted">
+        Há mais de 12 anos a Claudia ensina quem segue o @cozinha_e_tal a cozinhar de
+        verdade — o bolo que não desmancha, a receita saudável que não parece dieta, a
+        sobremesa certa pra cada ocasião. Depois de milhares de mensagens pedindo "onde
+        anoto tudo isso", nasceu o e-book Receitas Cozinha e Tal: as 50 receitas mais
+        pedidas, testadas e prontas pra usar.
+      </p>
+    </div>
+
+    <GridOferta
+      titulo="O que tem dentro do e-book"
+      itens={[
+        {
+          titulo: "20 Bolos Tradicionais",
+          descricao:
+            "Os clássicos que nunca falham — bolo de fubá cremoso, receitas de família, o bolo de todo domingo. Passo a passo simples, sem erro.",
+        },
+        {
+          titulo: "20 Receitas Saudáveis",
+          descricao:
+            "Pra comer bem sem abrir mão do sabor — substituições inteligentes, menos açúcar, mais praticidade no dia a dia.",
+        },
+        {
+          titulo: "10 Sobremesas",
+          descricao:
+            "Pra impressionar em qualquer ocasião — do lanche da tarde à sobremesa de fim de semana especial.",
+        },
+      ]}
+    />
+
+    <Depoimentos titulo="Quem já usa, aprova" />
+
+    <Checklist
+      titulo="Esse e-book é pra você se..."
+      itens={[
+        "Você já segue a Claudia e quer ter as receitas dela sempre à mão, sem depender de story.",
+        "Quer aprender a fazer bolo de verdade, sem receita que não dá certo.",
+        "Busca opções saudáveis que a família realmente come.",
+        "Gosta de cozinha prática, sem ingrediente difícil de achar.",
+        "Quer ter sobremesas prontas pra qualquer ocasião especial.",
+      ]}
+    />
+
+    <TierPreco
+      titulo="Receitas Cozinha e Tal"
+      ctaVariante="accent"
+      planos={[
+        {
+          nome: "E-book Receitas Cozinha e Tal",
+          precoOriginal: "R$49,90",
+          preco: "R$29,90",
+          descricao: "Acesso imediato após a compra",
+          itens: [
+            "50 receitas: 20 bolos tradicionais, 20 saudáveis, 10 sobremesas",
+            "Envio automático por e-mail (Hotmart)",
+            "Acesso vitalício, no seu tempo",
+            "Garantia incondicional de 7 dias",
+          ],
+          cta: { label: "Quero o e-book agora", href: HOTMART_URL },
+          destaque: true,
+          badge: "Oferta por tempo limitado",
+        },
+      ]}
+    />
+
+    <FAQ
+      titulo="Perguntas frequentes"
+      itens={[
+        {
+          pergunta: "Como recebo o e-book depois de comprar?",
+          resposta:
+            "Envio automático por e-mail através da Hotmart, em poucos minutos após a confirmação do pagamento.",
+        },
+        {
+          pergunta: "Preciso ter experiência na cozinha pra usar as receitas?",
+          resposta:
+            "Não. As receitas foram organizadas passo a passo, do jeito que a Claudia ensina no dia a dia — dá pra seguir mesmo sendo iniciante.",
+        },
+        {
+          pergunta: "O e-book é físico ou digital?",
+          resposta:
+            "100% digital, em PDF. Você lê no celular, tablet ou computador, sem esperar entrega.",
+        },
+        {
+          pergunta: "E se eu não gostar?",
+          resposta:
+            "Você tem 7 dias de garantia incondicional. Se não for pra você, devolvemos 100% do valor, sem burocracia.",
+        },
+        {
+          pergunta: "As receitas saudáveis têm gosto de dieta?",
+          resposta: "Não — são substituições pensadas pra manter o sabor, não pra abrir mão dele.",
+        },
+        {
+          pergunta: "Por quanto tempo tenho acesso ao e-book?",
+          resposta: "Acesso vitalício. O arquivo é seu, no seu tempo.",
+        },
+      ]}
+    />
+
+    <CTAFinal hotmartHref={HOTMART_URL} />
+  </main>
+
+  <footer class="container-du py-8 text-center text-sm text-text-muted">
+    <p>Cozinha e Tal — por Claudia Fernandes. @cozinha_e_tal</p>
+  </footer>
+</Layout>

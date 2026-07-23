@@ -1,0 +1,91 @@
+---
+/**
+ * Hero — Cozinha e Tal (específico deste projeto, não faz parte da
+ * biblioteca reutilizável de src/sections/).
+ *
+ * Imagem principal: capa do e-book (decisão explícita do cliente,
+ * 2026-07-22 — sobrepõe o diagnóstico padrão da síntese de infoprodutos,
+ * que recomendaria a criadora como protagonista do hero). Claudia
+ * continua presente na seção de autoridade logo abaixo (AncoraConfianca
+ * em index.astro), só não é mais a imagem do Hero.
+ *
+ * Entrada orquestrada via o próprio sistema `.reveal` (data-reveal-delay
+ * escalonado) — mesma infra de src/sections/motion.ts, sem timeline GSAP
+ * própria. Overlap intencional entre os delays (headline entra antes da
+ * imagem terminar) em vez de tudo em sequência estrita.
+ *
+ * Contraste (ver .claude/decisions.md, 2026-07-22): preço "R$29,90" usa
+ * `text-accent-800`, não `-600`, porque o fundo aqui é o rosa de suporte
+ * (--color-surface-alt) — precisa de um degrau mais escuro que o CTA
+ * (que fica sobre branco) pra bater 4.5:1. Medido com axe-core.
+ */
+import { Image } from "astro:assets";
+import capaEbook from "../assets/marca/capa_ebook.jpeg";
+
+interface Props {
+  hotmartHref: string;
+}
+
+const { hotmartHref } = Astro.props;
+---
+
+<section class="container-du grid items-center gap-12 pt-10 pb-[--space-section-y-lg] md:grid-cols-2 md:pt-16">
+  <div>
+    <p
+      class="reveal font-body text-sm font-bold uppercase tracking-[0.14em] text-brand"
+    >
+      Por Claudia Fernandes · @cozinha_e_tal
+    </p>
+
+    <h1
+      class="reveal mt-4 text-4xl leading-[1.05] font-bold text-text sm:text-5xl md:text-6xl"
+      data-reveal-delay="0.08"
+    >
+      50 receitas simples pra você acertar na cozinha,
+      <span class="font-display text-brand">direto da Cozinha e Tal</span>
+    </h1>
+
+    <p class="reveal mt-6 max-w-prose text-lg text-text-muted" data-reveal-delay="0.16">
+      Mais de 12 anos ensinando quem segue o @cozinha_e_tal a cozinhar de verdade.
+      Agora, as 50 receitas mais pedidas — bolos tradicionais, opções saudáveis e
+      sobremesas — organizadas num só lugar, prontas pra usar.
+    </p>
+
+    <div class="reveal mt-8 flex flex-wrap items-center gap-4" data-reveal-delay="0.24">
+      <span
+        class="rounded-full bg-surface-alt px-4 py-2 text-sm font-bold text-text"
+        aria-label="De R$49,90 por R$29,90"
+      >
+        <span class="line-through text-text-muted">R$49,90</span>
+        <span class="ml-1 text-accent-800">R$29,90</span>
+      </span>
+    </div>
+
+    <div class="reveal mt-6 flex flex-wrap items-center gap-4" data-reveal-delay="0.28">
+      <a
+        href={hotmartHref}
+        class="rounded-full bg-accent-700 px-8 py-4 text-center font-bold text-brand-contrast shadow-md transition-transform duration-300 hover:-translate-y-0.5"
+        aria-label="Quero o e-book agora — comprar por R$29,90"
+        rel="noopener"
+      >
+        Quero o e-book agora
+      </a>
+    </div>
+
+    <p class="reveal mt-4 text-sm text-text-muted" data-reveal-delay="0.32">
+      Garantia incondicional de 7 dias · Acesso imediato por e-mail
+    </p>
+  </div>
+
+  <div class="reveal mx-auto w-full max-w-md" data-reveal-delay="0.14">
+    <Image
+      src={capaEbook}
+      alt="Capa do e-book Receitas Cozinha e Tal"
+      width={480}
+      height={480}
+      loading="eager"
+      fetchpriority="high"
+      class="w-full rounded-lg object-cover shadow-lg"
+    />
+  </div>
+</section>
