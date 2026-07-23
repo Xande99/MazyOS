@@ -57,3 +57,5 @@ Resumo aplicável a este projeto:
 
 - Fonte Winter Christmas: confirmar licença de uso web/comercial antes da entrega final (ver seção Identidade visual acima).
 - Domínio do cliente: ainda não definido — `astro.config.mjs` está com placeholder (`https://exemplo.duPolvo.com.br`), atualizar assim que houver domínio real (canonical/OG dependem disso).
+- Depoimentos: seção ainda com placeholder ("Depoimento real do cliente entra aqui" × 3) — coletar depoimentos reais antes da entrega final.
+- QA rodado em 2026-07-23 (build estático `dist/` já existente, servido localmente — ver `.claude/decisions.md` pro motivo): Lighthouse desktop 100/100/100/100, mobile 99/100/100/100. `astro@7.0.9` atualizado pra `7.1.3` (mesmo patch de segurança aplicado no Portfolio/starter — XSS via View Transitions), `npm audit`: 0 vulnerabilidades.
