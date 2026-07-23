@@ -90,6 +90,7 @@ A cópia final (headline do hero, descrição do projeto, microcopy dos botões)
 ## Performance
 
 - Vídeo do hero fica — decisão confirmada, não é negociável trocar por imagem estática. Mas a sequência de implementação mede o Lighthouse cedo (assim que o Hero com vídeo estiver de pé, antes de polir as demais seções) pra decidir se precisa de ajuste de peso/condicional (comprimir vídeo de origem, poster como LCP element, autoplay condicional por conexão) — decisão tomada com dado medido, não a priori, mas o vídeo em si está fora de discussão.
+- **Medido na Task 6 (QA final, 2026-07-23):** Lighthouse via `npx lighthouse` contra `npm run preview` — Performance 100 (desktop) / 99 (mobile emulado, throttling padrão), LCP 0.4s (desktop) / 1.8s (mobile), CLS 0, TBT 0ms (desktop) / 40ms (mobile). Elemento de LCP confirmado via `lcp-breakdown-insight`: é o `<h1>` do Hero (`body > section#hero > div.container-du > h1.reveal`), não o `<video>` — nenhum ajuste de peso/condicional foi necessário. Ressalva: neste sandbox de desenvolvimento o vídeo do Cloudinary retorna 401 (mesmo bloqueio de rede já visto na Task 2), então a medição reflete o cenário "vídeo falha e cai no fallback" — o vídeo carregando de verdade em produção não deve piorar o LCP (é `aria-hidden`, decorativo, fora do texto candidato a LCP), mas vale re-medir em produção real assim que o deploy for pra Netlify/Cloudflare Pages com acesso de rede normal.
 
 ## SEO
 

@@ -1,8 +1,0 @@
-<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="heroTitle">
-  <title id="heroTitle">Composição gráfica de exemplo da duPolvo, em amarelo-limão sobre azul-marinho escuro</title>
-  <rect width="1200" height="800" rx="28" fill="#020E20" />
-  <circle cx="860" cy="230" r="220" fill="#DFFF5A" opacity="0.9" />
-  <circle cx="360" cy="560" r="160" fill="#FD4B90" opacity="0.85" />
-  <circle cx="900" cy="600" r="90" fill="#81DFC0" opacity="0.9" />
-  <path d="M140 180 L420 180 L420 300 L140 300 Z" fill="none" stroke="#F7F4F1" stroke-width="3" opacity="0.35" rx="20" />
-</svg>

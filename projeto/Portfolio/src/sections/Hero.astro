@@ -97,11 +97,74 @@ const VIDEO_SRC =
       display: none;
     }
   }
+
+  /* Fallback forçado por JS quando o <video> falha por erro real de
+     rede/carregamento (ex: origem externa fora do ar) — mesmo tratamento
+     visual do prefers-reduced-motion, sem depender de media query. */
+  #hero.hero-video-error .hero-video {
+    display: none;
+  }
+
+  #hero.hero-video-error .hero-fallback {
+    display: block;
+  }
+
+  #hero.hero-video-error .hero-toggle {
+    display: none;
+  }
 </style>
 
 <script>
+  const hero = document.querySelector<HTMLElement>("#hero");
   const toggle = document.querySelector<HTMLButtonElement>(".hero-toggle");
   const video = document.querySelector<HTMLVideoElement>(".hero-video");
+
+  // Erro real de rede/carregamento do vídeo (ex: origem externa fora do
+  // ar, como o 401 do Cloudinary visto em sandbox na Task 2) — força o
+  // mesmo fallback visual do prefers-reduced-motion via classe no <section>,
+  // já que a media query só cobre a preferência do usuário, não falhas.
+  //
+  // O <video> não tem `src` direto, só um <source> filho — quando essa
+  // fonte falha (algoritmo de "resource selection" chega ao fim sem
+  // candidato válido), o evento `error` é disparado no próprio <source>,
+  // não no <video>, e esse evento NÃO faz bubbling. Por isso o listener
+  // vai na fase de captura (terceiro argumento `true`) do <video>, que
+  // intercepta o evento a caminho do alvo mesmo sem bubbling.
+  //
+  // Isso sozinho não é suficiente: o <video autoplay> começa a carregar
+  // durante o parse do HTML, e o `error` pode disparar antes desse script
+  // (module, portanto deferred) executar — confirmado na prática (o
+  // listener pegou o erro numa recarga e não pegou em outra, mesma
+  // página). Por isso dois reforços: 1) checar o estado do vídeo
+  // imediatamente ao rodar o script (`networkState`/`error` já setados
+  // se a falha foi rápida demais); 2) um timeout de segurança que aplica
+  // o fallback se o vídeo simplesmente nunca chegar a tocar de fato.
+  function applyVideoFallback() {
+    hero?.classList.add("hero-video-error");
+  }
+
+  function videoAlreadyFailed(el: HTMLVideoElement) {
+    return el.error !== null || el.networkState === el.NETWORK_NO_SOURCE;
+  }
+
+  if (video) {
+    if (videoAlreadyFailed(video)) {
+      applyVideoFallback();
+    } else {
+      video.addEventListener("error", applyVideoFallback, true);
+
+      // Rede lenta/CDN travado sem chegar a disparar `error`: se em poucos
+      // segundos o vídeo ainda não tiver dados suficientes pra tocar,
+      // assume-se falha e cai no mesmo fallback visual.
+      const safetyTimeout = setTimeout(() => {
+        if (video.readyState < video.HAVE_CURRENT_DATA) {
+          applyVideoFallback();
+        }
+      }, 4000);
+
+      video.addEventListener("playing", () => clearTimeout(safetyTimeout), { once: true });
+    }
+  }
 
   toggle?.addEventListener("click", () => {
     if (!video) return;
