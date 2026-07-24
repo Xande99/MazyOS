@@ -5,16 +5,14 @@ import ProjetoCard from "../components/ProjetoCard.astro";
 const projetos = await getCollection("projetos", ({ data }) => data.status === "entregue");
 ---
 
-<section id="projetos" class="container-du section-y">
-  <div class="relative">
-    <p
-      class="pointer-events-none absolute -top-6 left-0 select-none font-display text-7xl font-extrabold uppercase text-text/45 md:text-9xl"
-      aria-hidden="true"
-    >
-      Projetos
-    </p>
-    <h2 class="reveal relative font-display text-3xl font-bold text-text md:text-4xl">Projetos</h2>
-  </div>
+<section id="projetos" class="container-du section-y relative">
+  <p
+    class="pointer-events-none absolute -top-6 left-0 select-none font-display text-7xl font-extrabold uppercase text-text/45 md:text-9xl"
+    aria-hidden="true"
+  >
+    Projetos
+  </p>
+  <h2 class="reveal relative font-display text-3xl font-bold text-text md:text-4xl">Projetos</h2>
   <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {projetos.map((projeto, i) => <ProjetoCard projeto={projeto} delay={i * 0.1} />)}
   </div>
