@@ -29,6 +29,10 @@ node_modules/
 dados/*
 !dados/README.md
 
+# Material bruto de vídeo/foto de cliente (GB de footage — nunca vai pro Git,
+# só os clipes de preview já comprimidos em public/ dos projetos)
+clientes/*/materiais-brutos/
+
 # Projeto com repositório git próprio (github.com/Xande99/cv-digital) —
 # não é submodule registrado, fica de fora pra não virar embedded repo quebrado
 projeto/curriculo_digital/

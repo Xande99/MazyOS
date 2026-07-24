@@ -1,0 +1,118 @@
+/*
+ * Video e Tal — theme.css
+ *
+ * Gerado a partir de templates/tailwind-preset-dupolvo/theme.base.css pelo
+ * /novo-projeto (Passo 3.5), preenchido com a marca do cliente (ver
+ * briefing.md, seção "Identidade visual"). Nomes de token seguem o
+ * contrato em _memoria/tokens-contract.md — não renomear.
+ *
+ * Mapeamento de marca: a cor "principal" do cliente (#353336) é um cinza-
+ * carvão de chroma muito baixo (~0.006) — mapeada como base da escala
+ * --color-neutral-*. A cor "secundária" (#F6A728, laranja) é o que o
+ * contrato chama de --color-brand (CTA, links, destaques) — é ela que
+ * aparece nas peças do cliente (logo, referências) como cor de destaque.
+ */
+
+@theme {
+  /* ============================================================
+   * PRIMITIVOS — marca Video e Tal
+   * Brand (laranja #F6A728, hue ~71°): original pousa perto do 500.
+   * Neutral (cinza-carvão #353336, hue ~318°, chroma quase nula): original
+   * pousa perto do 700.
+   * ============================================================ */
+  --color-brand-50: oklch(0.97 0.03 71);
+  --color-brand-100: oklch(0.94 0.06 71);
+  --color-brand-200: oklch(0.90 0.10 71);
+  --color-brand-300: oklch(0.85 0.13 71);
+  --color-brand-400: oklch(0.81 0.15 71);
+  --color-brand-500: oklch(0.787 0.158 71); /* #F6A728 original */
+  --color-brand-600: oklch(0.68 0.17 71);
+  --color-brand-700: oklch(0.56 0.15 71);
+  --color-brand-800: oklch(0.44 0.12 71);
+  --color-brand-900: oklch(0.32 0.08 71);
+  --color-brand-950: oklch(0.18 0.05 71);
+
+  --color-neutral-50: oklch(0.98 0.002 318);
+  --color-neutral-100: oklch(0.95 0.003 318);
+  --color-neutral-200: oklch(0.89 0.004 318);
+  --color-neutral-300: oklch(0.80 0.005 318);
+  --color-neutral-400: oklch(0.65 0.006 318);
+  --color-neutral-500: oklch(0.53 0.006 318);
+  --color-neutral-600: oklch(0.43 0.006 318);
+  --color-neutral-700: oklch(0.324 0.006 318); /* #353336 original */
+  --color-neutral-800: oklch(0.24 0.005 318);
+  --color-neutral-900: oklch(0.16 0.004 318);
+  --color-neutral-950: oklch(0.10 0.003 318);
+
+  --font-display: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter Variable", "Inter", system-ui, sans-serif;
+
+  /* ============================================================
+   * SEMÂNTICOS — geralmente fixo
+   * O que os componentes de fato consomem (bg-brand, text-text,
+   * bg-surface...). Só reapontar se o cliente pedir uma hierarquia
+   * fora do padrão — o nome nunca muda, só o var() de destino.
+   * ============================================================ */
+  --color-brand: var(--color-brand-500);
+  --color-brand-contrast: var(--color-neutral-50);
+  --color-surface: var(--color-neutral-50);
+  --color-surface-alt: var(--color-neutral-100);
+  --color-surface-inverse: var(--color-neutral-950);
+  --color-text: var(--color-neutral-900);
+  --color-text-muted: var(--color-neutral-600);
+  --color-text-inverse: var(--color-neutral-50);
+  --color-border: var(--color-neutral-200);
+  --color-success: oklch(0.6 0.15 145);
+  --color-error: oklch(0.55 0.2 25);
+
+  /* Tipografia */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-hero: clamp(2.5rem, 5vw + 1rem, 5rem);
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Raio e sombra */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.08), 0 16px 40px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.12), 0 32px 72px rgba(0, 0, 0, 0.16);
+
+  /* Motion (assinatura de easing — ver Fase 4/motion.ts para os presets GSAP) */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/*
+ * Tokens sem namespace de utilitário no Tailwind v4 — variáveis CSS
+ * soltas, consumidas via var() em CSS custom ou como valor arbitrário
+ * do Tailwind (ex: `duration-[--duration-base]`). Mesmo padrão já usado
+ * em `dupolvo-theme.css` para --du-sp-*, --du-section-y etc.
+ */
+:root {
+  /* Espaçamento */
+  --space-section-y: clamp(72px, 9vw, 140px);
+  --space-section-y-lg: clamp(96px, 12vw, 180px);
+  --space-container-x: clamp(20px, 5vw, 48px);
+  --space-gap-grid: 24px;
+
+  /* Motion — durações */
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 600ms;
+
+  /* Layout */
+  --container-max: 1280px;
+}

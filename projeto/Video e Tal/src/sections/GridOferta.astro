@@ -1,0 +1,69 @@
+---
+/**
+ * GridOferta — grid de produtos/serviços-âncora. É o elemento mais
+ * recorrente da estrutura básica observada no Cérebro — presente na
+ * quase totalidade das notas de negócio local dos 13 nichos, base do
+ * "Esqueleto padrão do nicho" em praticamente todo _sintese.md e item
+ * 3 do "Wireframe-zero duPolvo" em cerebro/raw/nichos/_sintese-geral.md
+ * (13.9). Não tem uma contagem "X/13" isolada porque não é um padrão
+ * pontual — é a coluna vertebral estrutural que os outros padrões
+ * (prova de confiança, preço) se organizam ao redor.
+ */
+interface ItemOferta {
+  titulo: string;
+  descricao: string;
+  imagem?: string;
+  imagemAlt?: string;
+  cta?: { label: string; href: string };
+}
+
+interface Props {
+  itens: ItemOferta[];
+  titulo?: string;
+}
+
+const { itens, titulo } = Astro.props;
+---
+
+<section class="container-du section-y" aria-label={titulo ?? "O que oferecemos"}>
+  {titulo && (
+    <h2 class="reveal text-3xl font-bold text-text md:text-4xl">{titulo}</h2>
+  )}
+  <div
+    class:list={[
+      "grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))]",
+      titulo && "mt-10",
+    ]}
+  >
+    {itens.map((item, i) => (
+      <article
+        class="reveal flex flex-col overflow-hidden rounded-lg bg-surface-alt shadow-sm transition-transform duration-300 hover:-translate-y-1!"
+        data-reveal-delay={(i * 0.1).toFixed(2)}
+      >
+        {item.imagem && (
+          <img
+            src={item.imagem}
+            alt={item.imagemAlt ?? ""}
+            width={480}
+            height={320}
+            loading="lazy"
+            class="h-48 w-full object-cover"
+          />
+        )}
+        <div class="flex flex-1 flex-col gap-2 p-6">
+          <h3 class="font-display text-xl font-bold text-text">{item.titulo}</h3>
+          <p class="flex-1 text-text-muted">{item.descricao}</p>
+          {item.cta && (
+            <a
+              href={item.cta.href}
+              class="mt-2 inline-flex w-fit items-center gap-1 font-bold text-brand transition-colors duration-300 hover:opacity-80"
+              aria-label={`${item.cta.label} — ${item.titulo}`}
+            >
+              {item.cta.label} →
+            </a>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

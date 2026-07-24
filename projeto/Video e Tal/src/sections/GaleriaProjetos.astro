@@ -1,0 +1,170 @@
+---
+/**
+ * GaleriaProjetos — grid de cases de vídeo. Seção específica deste
+ * projeto (não faz parte da biblioteca cross-nicho documentada em
+ * src/sections/README.md) — é a prova primária de trabalho do Video e
+ * Tal, por isso vem antes da LogoWall na hierarquia da página ("mostra,
+ * não conta": o trabalho em si convence mais que o nome de uma marca).
+ *
+ * Hover (desktop) troca a thumbnail estática por um preview em vídeo,
+ * loop e mudo — curiosidade como gatilho, o preview real do case como
+ * recompensa (variável de card pra card, nunca a mesma). Só ativa em
+ * dispositivos com hover real (`(hover: hover) and (pointer: fine)`),
+ * gated tanto no CSS quanto no JS: em touch, o <video> nunca recebe
+ * `src` (lazy, via data-src) e a sobreposição de play permanece fixa —
+ * sem isso, um tap simulando :hover em algum navegador mobile revelaria
+ * um <video> vazio. `prefers-reduced-motion: reduce` também desativa o
+ * preview, mesmo em desktop.
+ *
+ * Todo o card é um <a> — thumbnail, vídeo e texto levam pra mesma página
+ * de case (`href`), sem alvo de clique redundante.
+ */
+interface ProjetoItem {
+  titulo: string;
+  cliente?: string;
+  categoria?: string;
+  thumbnail: string;
+  thumbnailAlt?: string;
+  /** Preview em vídeo (mp4/webm), mudo e em loop — carregado só no primeiro hover (desktop). */
+  video?: string;
+  href: string;
+}
+
+interface Props {
+  itens: ProjetoItem[];
+  titulo?: string;
+}
+
+const { itens, titulo } = Astro.props;
+---
+
+<section class="container-du section-y" aria-label={titulo ?? "Projetos"}>
+  {titulo && (
+    <h2 class="reveal text-3xl font-bold text-text md:text-4xl">{titulo}</h2>
+  )}
+  <div
+    class:list={[
+      "grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]",
+      titulo && "mt-10",
+    ]}
+  >
+    {itens.map((item, i) => (
+      <a
+        href={item.href}
+        class="reveal group flex flex-col overflow-hidden rounded-lg bg-surface-alt shadow-sm transition-transform duration-300 hover:-translate-y-1!"
+        data-reveal-delay={(i * 0.1).toFixed(2)}
+        data-galeria-card
+      >
+        <div class="relative aspect-video w-full overflow-hidden">
+          <img
+            src={item.thumbnail}
+            alt={item.thumbnailAlt ?? ""}
+            width={640}
+            height={360}
+            loading="lazy"
+            class="h-full w-full object-cover"
+          />
+
+          {item.video && (
+            <video
+              data-src={item.video}
+              muted
+              loop
+              playsinline
+              preload="none"
+              aria-hidden="true"
+              tabindex="-1"
+              class="galeria-video pointer-events-none absolute inset-0 h-full w-full object-cover"
+            />
+          )}
+
+          <span class="galeria-play pointer-events-none absolute inset-0 flex items-center justify-center">
+            <span class="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-brand-contrast shadow-md">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+          </span>
+        </div>
+
+        <div class="flex flex-1 flex-col gap-1 p-5">
+          {item.categoria && (
+            <p class="text-xs font-bold uppercase tracking-[0.1em] text-brand">{item.categoria}</p>
+          )}
+          <h3 class="font-display text-lg font-bold text-text">{item.titulo}</h3>
+          {item.cliente && <p class="text-sm text-text-muted">{item.cliente}</p>}
+          <span class="mt-2 inline-flex w-fit items-center gap-1 text-sm font-bold text-brand">
+            Ver o case →
+          </span>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .galeria-video {
+    opacity: 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .galeria-video {
+      transition: opacity var(--duration-base) var(--ease-out-expo);
+    }
+
+    .galeria-play {
+      transition: opacity var(--duration-base) var(--ease-out-expo);
+    }
+
+    .group:hover .galeria-video,
+    .group:focus-visible .galeria-video {
+      opacity: 1;
+    }
+
+    .group:hover .galeria-play,
+    .group:focus-visible .galeria-play {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  function initGaleriaProjetos() {
+    const canPreview =
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!canPreview) return;
+
+    const cards = document.querySelectorAll<HTMLElement>("[data-galeria-card]");
+
+    cards.forEach((card) => {
+      const video = card.querySelector("video");
+      if (!video) return;
+
+      let loaded = false;
+
+      const play = () => {
+        if (!loaded) {
+          const src = video.dataset.src;
+          if (src) video.src = src;
+          loaded = true;
+        }
+        video.play().catch(() => {});
+      };
+
+      const pause = () => {
+        video.pause();
+        video.currentTime = 0;
+      };
+
+      card.addEventListener("mouseenter", play);
+      card.addEventListener("mouseleave", pause);
+      card.addEventListener("focus", play);
+      card.addEventListener("blur", pause);
+    });
+  }
+
+  initGaleriaProjetos();
+  document.addEventListener("astro:page-load", initGaleriaProjetos);
+</script>

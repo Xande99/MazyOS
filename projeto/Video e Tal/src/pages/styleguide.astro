@@ -1,0 +1,254 @@
+---
+/**
+ * /styleguide — QA visual interno e demo pro cliente.
+ *
+ * Dev-only: em produção (`astro build`/`astro preview` com PROD=true)
+ * responde 404 em vez de renderizar. Mesmo quando acessível, leva
+ * noindex/nofollow (ver Layout) como segunda camada de proteção.
+ *
+ * Mostra os tokens do contrato (_memoria/tokens-contract.md) aplicados
+ * ao theme.css deste projeto — cor, tipografia, espaçamento, raio/sombra
+ * — e as 5 seções da biblioteca renderizadas com o tema real. Trocar
+ * theme.css e recarregar esta página é o jeito mais rápido de conferir
+ * se a marca nova está coerente antes de montar as páginas de verdade.
+ */
+import Layout from "../layouts/Layout.astro";
+import AncoraConfianca from "../sections/AncoraConfianca.astro";
+import ProvaNumerica from "../sections/ProvaNumerica.astro";
+import TierPreco from "../sections/TierPreco.astro";
+import GridOferta from "../sections/GridOferta.astro";
+import FAQ from "../sections/FAQ.astro";
+import GaleriaProjetos from "../sections/GaleriaProjetos.astro";
+import LogoWall from "../sections/LogoWall.astro";
+import placeholderThumb from "../assets/hero.svg";
+
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+const cores = [
+  { nome: "--color-brand", classe: "bg-brand" },
+  { nome: "--color-brand-contrast", classe: "bg-brand-contrast" },
+  { nome: "--color-surface", classe: "bg-surface" },
+  { nome: "--color-surface-alt", classe: "bg-surface-alt" },
+  { nome: "--color-surface-inverse", classe: "bg-surface-inverse" },
+  { nome: "--color-text", classe: "bg-text" },
+  { nome: "--color-text-muted", classe: "bg-text-muted" },
+  { nome: "--color-text-inverse", classe: "bg-text-inverse" },
+  { nome: "--color-border", classe: "bg-border" },
+  { nome: "--color-success", classe: "bg-success" },
+  { nome: "--color-error", classe: "bg-error" },
+];
+
+const tipografia = [
+  "text-xs",
+  "text-sm",
+  "text-base",
+  "text-lg",
+  "text-xl",
+  "text-2xl",
+  "text-3xl",
+  "text-4xl",
+  "text-5xl",
+];
+
+const espacamentos = [
+  { nome: "--space-container-x", var: "--space-container-x" },
+  { nome: "--space-gap-grid", var: "--space-gap-grid" },
+  { nome: "--space-section-y", var: "--space-section-y" },
+  { nome: "--space-section-y-lg", var: "--space-section-y-lg" },
+];
+
+const raios = ["rounded-sm", "rounded-md", "rounded-lg", "rounded-full"];
+const sombras = ["shadow-sm", "shadow-md", "shadow-lg"];
+---
+
+<Layout
+  title="Styleguide (dev)"
+  description="QA visual interno — tokens de marca e biblioteca de seções aplicados ao theme.css deste projeto."
+  noindex
+>
+  <div class="container-du section-y">
+    <p class="text-sm font-bold uppercase tracking-[0.1em] text-brand">Dev-only · noindex</p>
+    <h1 class="text-4xl font-bold text-text">Styleguide</h1>
+    <p class="mt-2 max-w-prose text-text-muted">
+      Tokens semânticos do contrato (<code>_memoria/tokens-contract.md</code>) aplicados ao
+      <code>theme.css</code> deste projeto, seguidos das 5 seções da biblioteca com o mesmo tema.
+    </p>
+
+    <h2 class="mt-16 text-2xl font-bold text-text">Cor</h2>
+    <div class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+      {
+        cores.map((cor) => (
+          <div>
+            <div class:list={["h-16 rounded-md border border-border", cor.classe]} />
+            <p class="mt-2 font-mono text-xs text-text-muted">{cor.nome}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <h2 class="mt-16 text-2xl font-bold text-text">Tipografia</h2>
+    <div class="mt-6 flex flex-col gap-3">
+      {
+        tipografia.map((classe) => (
+          <p class:list={[classe, "text-text"]}>
+            {classe} — Fora do óbvio, desde o primeiro deploy
+          </p>
+        ))
+      }
+      <p class="text-hero font-display font-bold text-text">text-hero</p>
+    </div>
+
+    <h2 class="mt-16 text-2xl font-bold text-text">Espaçamento</h2>
+    <div class="mt-6 flex flex-col gap-4">
+      {
+        espacamentos.map((sp) => (
+          <div class="flex items-center gap-4">
+            <div class="h-4 bg-brand" style={`width: var(${sp.var})`} />
+            <p class="font-mono text-xs text-text-muted">{sp.nome}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <h2 class="mt-16 text-2xl font-bold text-text">Raio e sombra</h2>
+    <div class="mt-6 flex flex-wrap gap-6">
+      {
+        raios.map((classe) => (
+          <div class:list={["flex h-20 w-20 items-center justify-center border border-border bg-surface-alt text-xs text-text-muted", classe]}>
+            {classe}
+          </div>
+        ))
+      }
+      {
+        sombras.map((classe) => (
+          <div class:list={["flex h-20 w-20 items-center justify-center rounded-md bg-surface-alt text-xs text-text-muted", classe]}>
+            {classe}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <h2 class="container-du mt-8 text-2xl font-bold text-text">Biblioteca de seções</h2>
+
+  <AncoraConfianca variante="pessoa" nome="Dra. Marina Alves" cargo="Cirurgiã-dentista" anosExperiencia={12} />
+  <ProvaNumerica
+    titulo="Números que importam"
+    itens={[
+      { numero: "12+", label: "anos de experiência" },
+      { numero: "3.400", label: "pacientes atendidos" },
+      { numero: "98%", label: "satisfação" },
+    ]}
+  />
+  <GridOferta
+    titulo="O que oferecemos"
+    itens={[
+      { titulo: "Clareamento", descricao: "Procedimento clínico com resultado visível.", cta: { label: "Saiba mais", href: "#" } },
+      { titulo: "Ortodontia", descricao: "Alinhamento com acompanhamento contínuo.", cta: { label: "Saiba mais", href: "#" } },
+      { titulo: "Implantes", descricao: "Reposição dentária com planejamento 3D.", cta: { label: "Saiba mais", href: "#" } },
+    ]}
+  />
+  <TierPreco
+    titulo="Planos"
+    planos={[
+      { nome: "Essencial", preco: "R$ 150", periodo: "mês", itens: ["Consulta", "Avaliação"], cta: { label: "Escolher", href: "#" } },
+      { nome: "Completo", preco: "R$ 350", periodo: "mês", destaque: true, badge: "Mais procurado", itens: ["Consulta", "Avaliação", "Limpeza"], cta: { label: "Escolher", href: "#" } },
+    ]}
+  />
+  <FAQ
+    titulo="Perguntas frequentes"
+    itens={[
+      { pergunta: "Quanto tempo dura o tratamento?", resposta: "Varia por caso, entre 3 e 18 meses." },
+      { pergunta: "Vocês aceitam convênio?", resposta: "Sim, principais convênios da região." },
+    ]}
+  />
+
+  <h2 class="container-du mt-8 text-2xl font-bold text-text">Seções específicas — Video e Tal</h2>
+
+  <p class="container-du text-sm text-text-muted">
+    Título/cliente/categoria dos 7 projetos abaixo já confirmados pelo cliente (2026-07-24) — falta só substituir os hrefs "#" pelas páginas de case reais quando existirem.
+  </p>
+  <GaleriaProjetos
+    titulo="Projetos"
+    itens={[
+      {
+        titulo: "ACIAL",
+        cliente: "ACIAL — Associação Comercial",
+        categoria: "Institucional",
+        thumbnail: "/images/projetos/acial.jpg",
+        video: "/videos/preview-acial.mp4",
+        href: "#",
+      },
+      {
+        titulo: "Cripto Sangue",
+        cliente: "Projeto pessoal",
+        categoria: "RPG",
+        thumbnail: "/images/projetos/cripto-sangue.jpg",
+        video: "/videos/preview-cripto-sangue.mp4",
+        href: "#",
+      },
+      {
+        titulo: "Curta Laranja",
+        cliente: "Projeto pessoal",
+        categoria: "Curta-metragem",
+        thumbnail: "/images/projetos/curta-laranja.jpg",
+        video: "/videos/preview-curta-laranja.mp4",
+        href: "#",
+      },
+      {
+        titulo: "Figurinhas da Copa",
+        cliente: "Projeto pessoal",
+        categoria: "Documentário",
+        thumbnail: "/images/projetos/figurinhas-copa.jpg",
+        video: "/videos/preview-figurinhas-copa.mp4",
+        href: "#",
+      },
+      {
+        titulo: "Reel Havan",
+        cliente: "Havan",
+        categoria: "Comercial",
+        thumbnail: "/images/projetos/reel-havan.jpg",
+        video: "/videos/preview-reel-havan.mp4",
+        href: "#",
+      },
+      {
+        titulo: "Site Certho",
+        cliente: "Certho — Centro de Hematologia e Oncologia",
+        categoria: "Institucional",
+        thumbnail: "/images/projetos/site-certho.jpg",
+        video: "/videos/preview-site-certho.mp4",
+        href: "#",
+      },
+      {
+        titulo: "Unha Milena Shine",
+        cliente: "Milena Shine",
+        categoria: "Comercial",
+        thumbnail: "/images/projetos/unha-milena-shine.jpg",
+        video: "/videos/preview-unha-milena-shine.mp4",
+        href: "#",
+      },
+    ]}
+  />
+
+  <LogoWall
+    titulo="Já trabalhei com"
+    logos={[
+      { nome: "ACIAL", src: "/images/logos/acial.jpeg" },
+      { nome: "Havan", src: "/images/logos/havan.jpg" },
+      { nome: "Certho", src: "/images/logos/certho.png" },
+      { nome: "Estúdio Vega (placeholder)", src: placeholderThumb.src },
+      { nome: "Casa Prisma (placeholder)", src: placeholderThumb.src },
+      { nome: "Grupo Âmbar (placeholder)", src: placeholderThumb.src },
+    ]}
+  />
+</Layout>
+
+<style>
+  /* Página de QA/demo: conteúdo visível de cara, sem depender de scroll pra disparar o .reveal. */
+  :global(.reveal) {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+</style>
