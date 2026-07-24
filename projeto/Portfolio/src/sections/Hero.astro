@@ -9,15 +9,14 @@
  * no gradiente estático (.hero-fallback), reaproveitado sem alteração do
  * design original do vídeo.
  *
- * Mitigação de performance (Task 7, Step 7 — decisão com dado medido, ver
- * .claude/decisions.md): abaixo do breakpoint `md` (767px), o shader também
- * não inicializa — mesmo fallback estático, e o import() dinâmico garante
- * que o chunk do Three.js nem é baixado nesse caso. Lighthouse mobile mediu
- * Performance 83 (abaixo do threshold ≥90) com o shader ativo em toda
- * largura, causado pelo bundle do Three.js bloqueando a main thread
- * (bootup-time 1.6s, TBT 400ms) sob CPU throttling mobile — não pelo custo
- * de GPU por frame do fragment shader. Resultado pós-mitigação: 97
- * (bootup-time 0.5s, TBT 140ms).
+ * Roda em qualquer largura de tela, inclusive mobile (decisão de 2026-07-24,
+ * ver .claude/decisions.md — supersede a mitigação anterior que desligava o
+ * shader abaixo de `md`/767px). Único mitigador de performance restante: a
+ * inicialização (import() dinâmico do chunk do Three.js + setup do
+ * WebGLRenderer) é adiada via `requestIdleCallback` (fallback `setTimeout`),
+ * pra não competir com o carregamento/pintura inicial da página — o gargalo
+ * medido era bootup-time/TBT do bundle bloqueando a main thread, não o
+ * custo de GPU por frame do shader.
  */
 ---
 
@@ -97,22 +96,17 @@
   }
 
   /* Fallback forçado por JS quando o WebGL falha ao inicializar (ex:
-     contexto indisponível), ou quando o shader é deliberadamente
-     desligado em telas pequenas por mitigação de performance medida
-     (Task 7, Step 7 — ver .claude/decisions.md) — mesmo tratamento
-     visual do prefers-reduced-motion, sem depender de media query. */
-  #hero.hero-shader-error .hero-shader,
-  #hero.hero-shader-mobile-off .hero-shader {
+     contexto indisponível) — mesmo tratamento visual do
+     prefers-reduced-motion, sem depender de media query. */
+  #hero.hero-shader-error .hero-shader {
     display: none;
   }
 
-  #hero.hero-shader-error .hero-fallback,
-  #hero.hero-shader-mobile-off .hero-fallback {
+  #hero.hero-shader-error .hero-fallback {
     display: block;
   }
 
-  #hero.hero-shader-error .hero-toggle,
-  #hero.hero-shader-mobile-off .hero-toggle {
+  #hero.hero-shader-error .hero-toggle {
     display: none;
   }
 </style>
@@ -138,46 +132,51 @@
     shader = null;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // Mitigação de performance medida (Task 7, Step 7 — ver .claude/decisions.md):
-    // abaixo do breakpoint `md` (767px, mesmo usado no h1 logo acima) o shader
-    // nem é baixado. `import()` dinâmico (não estático) garante que o chunk do
-    // Three.js só é requisitado quando o shader de fato vai rodar.
-    const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
 
-    if (!canvas || prefersReducedMotion || isMobileViewport) {
-      if (isMobileViewport && !prefersReducedMotion) {
-        hero?.classList.add("hero-shader-mobile-off");
+    if (!canvas || prefersReducedMotion) return;
+
+    // Setup real (import() dinâmico do chunk do Three.js + WebGLRenderer) é
+    // adiado pro navegador ficar ocioso — mitigação de 2026-07-24 (ver
+    // .claude/decisions.md) que substitui a antiga desativação em mobile: o
+    // gargalo medido era bootup-time/TBT do bundle competindo com o
+    // carregamento inicial da página, não o custo de GPU por frame do
+    // shader em si. `requestIdleCallback` não existe no Safari — fallback
+    // `setTimeout` cobre esse caso.
+    const initShader = async () => {
+      try {
+        const { initShaderBackground } = await import("../scripts/shader-background");
+        shader = initShaderBackground(canvas);
+
+        // O `toggle` é um elemento novo a cada navegação (Hero não usa
+        // transition:name/persist — o DOM da seção é recriado do zero pelo
+        // View Transitions), então este listener nunca duplica.
+        toggle?.addEventListener("click", () => {
+          if (!shader) return;
+          const wasPaused = shader.isPaused();
+
+          if (wasPaused) {
+            shader.resume();
+          } else {
+            shader.pause();
+          }
+
+          toggle.setAttribute("aria-pressed", String(!wasPaused));
+          toggle.setAttribute(
+            "aria-label",
+            wasPaused ? "Pausar animação de fundo" : "Tocar animação de fundo",
+          );
+          toggle.querySelector(".icon-pause")?.classList.toggle("hidden", !wasPaused);
+          toggle.querySelector(".icon-play")?.classList.toggle("hidden", wasPaused);
+        });
+      } catch {
+        hero?.classList.add("hero-shader-error");
       }
-      return;
-    }
+    };
 
-    try {
-      const { initShaderBackground } = await import("../scripts/shader-background");
-      shader = initShaderBackground(canvas);
-
-      // O `toggle` é um elemento novo a cada navegação (Hero não usa
-      // transition:name/persist — o DOM da seção é recriado do zero pelo
-      // View Transitions), então este listener nunca duplica.
-      toggle?.addEventListener("click", () => {
-        if (!shader) return;
-        const wasPaused = shader.isPaused();
-
-        if (wasPaused) {
-          shader.resume();
-        } else {
-          shader.pause();
-        }
-
-        toggle.setAttribute("aria-pressed", String(!wasPaused));
-        toggle.setAttribute(
-          "aria-label",
-          wasPaused ? "Pausar animação de fundo" : "Tocar animação de fundo",
-        );
-        toggle.querySelector(".icon-pause")?.classList.toggle("hidden", !wasPaused);
-        toggle.querySelector(".icon-play")?.classList.toggle("hidden", wasPaused);
-      });
-    } catch {
-      hero?.classList.add("hero-shader-error");
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(initShader, { timeout: 1000 });
+    } else {
+      setTimeout(initShader, 200);
     }
   }
 

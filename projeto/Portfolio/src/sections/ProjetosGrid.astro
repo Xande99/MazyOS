@@ -5,11 +5,39 @@ import ProjetoCard from "../components/ProjetoCard.astro";
 const projetos = await getCollection("projetos", ({ data }) => data.status === "entregue");
 ---
 
-<section id="projetos" class="section-y relative bg-surface-inverse">
-  <div class="container-du relative">
+<section id="projetos" class="section-y relative overflow-hidden bg-surface-inverse">
+  <canvas class="particles-field absolute inset-0 z-0 h-full w-full" aria-hidden="true"></canvas>
+
+  <div class="container-du relative z-10">
     <h2 class="reveal relative font-display text-3xl font-bold text-text-inverse md:text-4xl">Projetos</h2>
     <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {projetos.map((projeto, i) => <ProjetoCard projeto={projeto} delay={i * 0.1} />)}
     </div>
   </div>
 </section>
+
+<script>
+  import type { ParticlesField } from "../scripts/particles-field";
+
+  // Instância viva do campo de partículas, se houver — precisa sobreviver
+  // entre disparos do listener (mesmo padrão de src/sections/Hero.astro).
+  let field: ParticlesField | null = null;
+
+  async function setupParticlesField() {
+    const canvas = document.querySelector<HTMLCanvasElement>("#projetos .particles-field");
+
+    field?.destroy();
+    field = null;
+
+    if (!canvas) return;
+
+    try {
+      const { initParticlesField } = await import("../scripts/particles-field");
+      field = initParticlesField(canvas);
+    } catch {
+      canvas.style.display = "none";
+    }
+  }
+
+  document.addEventListener("astro:page-load", setupParticlesField);
+</script>
